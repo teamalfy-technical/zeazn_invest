@@ -338,4 +338,22 @@ class ProjectDsImpl implements ProjectDs {
       );
     });
   }
+
+  @override
+  Future<ApiResponse<List<ProjectCategory>>> getProjectCategories({
+    String? name,
+  }) async {
+    return await asyncFunctionWrapper.handleAsyncNetworkCall(() async {
+      final res = await apiService.callService(
+        requestType: RequestType.get,
+        queryParams: name == null ? null : {'filter[name]': name},
+        endPoint: Env.getProjectCategories,
+      );
+      return ApiResponse<List<ProjectCategory>>.fromJson(
+        res,
+        (data) =>
+            (data as List).map((e) => ProjectCategory.fromJson(e)).toList(),
+      );
+    });
+  }
 }

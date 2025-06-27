@@ -170,4 +170,10 @@ class ProjectServiceImpl implements ProjectService {
       location: location,
     );
   }
+
+  @override
+  Future<Either<ZFailure, ApiResponse<List<ProjectCategory>>>>
+  getProjectCategories({String? name}) async {
+    return projectRepo.getProjectCategories(name: name);
+  }
 }

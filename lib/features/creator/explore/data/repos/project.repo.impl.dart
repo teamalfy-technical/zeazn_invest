@@ -226,4 +226,12 @@ class ProjectRepoImpl implements ProjectRepo {
           ),
     );
   }
+
+  @override
+  Future<Either<ZFailure, ApiResponse<List<ProjectCategory>>>>
+  getProjectCategories({String? name}) async {
+    return await customRepositoryWrapper.wrapRepositoryFunction(
+      function: () async => await projectDs.getProjectCategories(name: name),
+    );
+  }
 }

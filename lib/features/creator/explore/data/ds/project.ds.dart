@@ -4,6 +4,9 @@ import 'package:zeazn_invest_app/core/network/network.dart';
 import 'package:zeazn_invest_app/features/creator/explore/explore.dart';
 
 abstract class ProjectDs {
+  Future<ApiResponse<List<ProjectCategory>>> getProjectCategories({
+    String? name,
+  });
   Future<ApiResponse<Project>> addProject({
     required int projectCategoryId,
     required String name,

@@ -168,5 +168,9 @@ abstract class Env {
   static final String getProjectVideoUploadStatus =
       _Env.getProjectVideoUploadStatus;
 
+  /// [GetProjectCategories] endpoint
+  @EnviedField(defaultValue: '/project-categories', obfuscate: true)
+  static final String getProjectCategories = _Env.getProjectCategories;
+
   /// -------------------- Project Endpoints Ends Here ------------------------- ///
 }

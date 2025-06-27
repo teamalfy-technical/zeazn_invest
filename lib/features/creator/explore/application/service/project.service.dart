@@ -6,6 +6,9 @@ import 'package:zeazn_invest_app/core/network/network.dart';
 import 'package:zeazn_invest_app/features/creator/explore/explore.dart';
 
 abstract class ProjectService {
+  Future<Either<ZFailure, ApiResponse<List<ProjectCategory>>>>
+  getProjectCategories({String? name});
+
   Future<Either<ZFailure, ApiResponse<Project>>> addProject({
     required int projectCategoryId,
     required String name,
