@@ -43,7 +43,10 @@ class ZCatchApiErrorWrapperImpl implements CatchApiErrorWrapper {
             errorMessage = err.response?.data['message'] ?? 'Forbidden Access';
             zeaznLogger.e(err.response?.data);
           } else if (err.response?.statusCode == 404) {
-            errorMessage = err.message ?? 'Requested resource is not found';
+            zeaznLogger.e(err.response?.data['data']);
+            errorMessage = extractError(err.response?.data);
+            // errorMessage = err.response!.data['data'].toString();
+            // errorMessage = err.message ?? 'Requested resource is not found';
           } else if (err.response?.statusCode == 422) {
             // ApiErrorResponse error =
             //     ApiErrorResponse.fromJson(err.response?.data);
@@ -83,5 +86,26 @@ class ZCatchApiErrorWrapperImpl implements CatchApiErrorWrapper {
     } else {
       return ZUnknownFailure();
     }
+  }
+
+  String extractError(Map<String, dynamic> response) {
+    zeaznLogger.e(response);
+    if (response.containsKey("data")) {
+      for (var entry in response["data"].entries) {
+        if (entry.value is List && entry.value.isNotEmpty) {
+          return entry.value.first; // Return the first error message found
+        }
+        if (entry.value is String && entry.value.isNotEmpty) {
+          return entry.value; // Return the error message found
+        }
+      }
+    } else {
+      for (var entry in response.entries) {
+        if (entry.value is List && entry.value.isNotEmpty) {
+          return entry.value.first; // Return the first error message found
+        }
+      }
+    }
+    return "Bad Request"; // Return an empty string if no error is found
   }
 }

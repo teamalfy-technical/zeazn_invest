@@ -9,7 +9,7 @@ import 'package:zeazn_invest_app/routes/app.pages.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
 
 class ZTrendingProjectWidget extends StatelessWidget {
-  final Project project;
+  final Projects project;
   final String? supportValue;
   final Function()? onTap;
   final Function()? onSupportTap;

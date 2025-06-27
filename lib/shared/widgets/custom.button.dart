@@ -45,7 +45,7 @@ class ZCustomButton extends StatelessWidget {
               ),
             ),
           ),
-          ZAppSize.s20.horizontalSpace,
+          ZAppSize.s4.horizontalSpace,
           icon ?? Assets.icons.arrowRectRightIcon.svg(height: ZAppSize.s32),
         ],
       ),

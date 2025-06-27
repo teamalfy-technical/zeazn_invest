@@ -18,3 +18,4 @@ export 'presentation/pages/signup.step.three.dart';
 export 'presentation/pages/signup.step.twelve.dart';
 export 'presentation/pages/signup.step.two.dart';
 export 'presentation/vm/signup.vm.dart';
+export 'presentation/widgets/id.scanner.widget.dart';

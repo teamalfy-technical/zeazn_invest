@@ -49,5 +49,16 @@
 	<true/>
 	<key>LSSupportsOpeningDocumentsInPlace</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+	<string>$(FLUTTER_BUILD_NAME) app needs access to your camera to allow you to take and upload photos.</string>
+	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
+	<string>$(FLUTTER_BUILD_NAME) app requires access to location to help your nearby supporters to connect with.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>$(FLUTTER_BUILD_NAME) app requires access to location to help your nearby supporters to connect with.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>$(FLUTTER_BUILD_NAME) app needs access to your microphone so you can record and send voice messages to your friends.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>$(FLUTTER_BUILD_NAME) app needs access to your photo library so you can upload and share photos with your friends.</string>
+
 </dict>
 </plist>

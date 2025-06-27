@@ -11,6 +11,8 @@ import 'package:zeazn_invest_app/shared/widgets/popup.dialog.dart';
 class ZExploreVM extends GetxController {
   static ZExploreVM get instance => Get.find();
 
+  var projects = [].obs;
+
   List<File> files = [];
   List<File> media = [];
   List<File> thumbnailFiles = [];

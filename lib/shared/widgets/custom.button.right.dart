@@ -23,39 +23,51 @@ class ZCustomButtonRight extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: width ?? ZDeviceUtil.getDeviceWidth(context) * 0.43,
+      width: width ?? ZDeviceUtil.getDeviceWidth(context) * 0.45,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
-            padding: EdgeInsets.symmetric(
-              horizontal: ZAppSize.s32,
-              vertical: ZAppSize.s10,
-            ),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(ZAppSize.s16),
-                bottomLeft: Radius.circular(ZAppSize.s16),
+          Expanded(
+            child: Container(
+              padding: EdgeInsets.symmetric(
+                horizontal: ZAppSize.s25,
+                vertical: ZAppSize.s10,
               ),
-              border: Border.all(
-                width: ZAppSize.s1,
-                color: borderColor ?? ZAppColor.whiteColor,
-              ),
-              color: backgroundColor,
-            ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  label,
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                    color: textColor ?? ZAppColor.whiteColor,
-                    fontWeight: FontWeight.w400,
-                    fontSize: ZAppSize.s17,
-                  ),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(ZAppSize.s16),
+                  bottomLeft: Radius.circular(ZAppSize.s16),
                 ),
-              ],
+                border: Border.all(
+                  width: ZAppSize.s1,
+                  color: borderColor ?? ZAppColor.whiteColor,
+                ),
+                color: backgroundColor,
+              ),
+              child: Text(
+                label,
+                style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: textColor ?? ZAppColor.whiteColor,
+                  fontWeight: FontWeight.w400,
+                  fontSize: ZAppSize.s17,
+                ),
+              ),
+              // Row(
+              //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              //   crossAxisAlignment: CrossAxisAlignment.center,
+              //   children: [
+              //     Expanded(
+              //       child: Text(
+              //         label,
+              //         style: Theme.of(context).textTheme.titleSmall?.copyWith(
+              //           color: textColor ?? ZAppColor.whiteColor,
+              //           fontWeight: FontWeight.w400,
+              //           fontSize: ZAppSize.s17,
+              //         ),
+              //       ),
+              //     ),
+              //   ],
+              // ),
             ),
           ),
           ZAppSize.s8.horizontalSpace,

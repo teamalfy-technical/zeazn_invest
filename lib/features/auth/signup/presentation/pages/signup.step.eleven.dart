@@ -1,11 +1,9 @@
-import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
 import 'package:zeazn_invest_app/features/auth/signup/presentation/vm/signup.vm.dart';
 import 'package:zeazn_invest_app/gen/assets.gen.dart';
-import 'package:zeazn_invest_app/routes/app.pages.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
 
 class ZSignupStep11 extends StatefulWidget {
@@ -17,6 +15,46 @@ class ZSignupStep11 extends StatefulWidget {
 
 class _ZSignupStep11State extends State<ZSignupStep11> {
   final ctrl = Get.find<ZSignupVm>();
+
+  bool _isLoading = true;
+
+  @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      getDeviceLocation();
+    });
+
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // ctrl.locationTEC.clear();
+    super.dispose();
+  }
+
+  void getDeviceLocation() {
+    ZGeolocator.checkIfLocationPermEnabled(
+      context: context,
+      onSuccess: (position) async {
+        ctrl.position(position);
+        // geodecode place from coordinates
+        final place = await ZGeodecoder.getAddressFromLatLng(
+          position.latitude,
+          position.longitude,
+        );
+        setState(() {
+          _isLoading = false;
+          ctrl.countryTEC.text = place.country ?? '';
+          ctrl.locationTEC.text =
+              '${place.subAdministrativeArea}, ${place.locality}';
+        });
+        zeaznLogger.i('Place: ${place.toJson()}');
+        zeaznLogger.i('Position: ${position.toJson()}');
+        zeaznLogger.i('Location: ${ctrl.locationTEC.text}');
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,145 +82,192 @@ class _ZSignupStep11State extends State<ZSignupStep11> {
 
               //SvgPicture.asset('assets/icons/logo.dark.svg'),
             ),
-            Positioned(
-              top: ZDeviceUtil.getDeviceHeight(context) * 0.03,
-              right: ZDeviceUtil.getDeviceWidth(context) * 0.01,
-              left: ZDeviceUtil.getDeviceWidth(context) * 0.01,
-              bottom: ZDeviceUtil.getDeviceHeight(context) * 0.18,
-              child:
-                  Column(
-                    children: [
-                      Text(
-                        'country_and_location'.tr,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.headlineMedium?.copyWith(
-                          color: ZAppColor.whiteColor,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      ZAppSize.s10.verticalSpace,
-                      Text(
-                        'country_and_location_desc'.tr,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: ZAppColor.whiteColor,
-
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-
-                      ZAppSize.s26.verticalSpace,
-
-                      // scanningDataWidget(
-                      //   'country'.tr,
-                      //   Assets.icons.globeIcon.svg(),
-                      //   Assets.icons.arrowDownIos.svg(),
-                      // ),
-                      scanningDataWidget(
-                        leadingIcon: Assets.icons.globeIcon.svg(
-                          fit: BoxFit.contain,
-                          width: ZAppSize.s24,
-                          height: ZAppSize.s24,
-                        ),
-                        content: CountryCodePicker(
-                          key: ctrl.countryPickerKey,
-                          onChanged: ctrl.onCountryChange,
-                          // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
-                          initialSelection: ctrl.mySelectedCountry.code,
-                          favorite: ['+233', 'GH'],
-                          // optional. Shows only country name and flag
-                          showCountryOnly: true,
-
-                          showFlag: false,
-                          // optional. Shows only country name and flag when popup is closed.
-                          showOnlyCountryWhenClosed: true,
-                          // headerAlignment: MainAxisAlignment.spaceBetween,
-                          // optional. aligns the flag and the Text left
-                          alignLeft: true,
-                          padding: EdgeInsets.zero,
-                          margin: EdgeInsets.zero,
-
-                          showDropDownButton: false,
-                          dialogBackgroundColor: ZAppColor.darkFillColor,
-                          textStyle: Theme.of(context).textTheme.bodyMedium,
-                          boxDecoration: BoxDecoration(
-                            color: ZAppColor.darkFillColor,
-                            borderRadius: BorderRadius.circular(ZAppSize.s8),
-                          ),
-                        ),
-                        trailingIcon: Assets.icons.arrowDownIos
-                            .svg(
-                              fit: BoxFit.contain,
-                              width: ZAppSize.s24,
-                              height: ZAppSize.s24,
-                            )
-                            .onPressed(
-                              onTap:
-                                  () =>
-                                      ctrl.countryPickerKey.currentState
-                                          ?.showCountryCodePickerDialog(),
-                            ),
-                      ),
-
-                      ZAppSize.s16.verticalSpace,
-
-                      TextField(
-                        decoration: InputDecoration(
-                          prefixIcon: Transform.scale(
-                            scale: ZAppSize.s0_6_5,
-                            child: Assets.icons.locationPinIcon.svg(
-                              fit: BoxFit.contain,
-                              width: ZAppSize.s4,
-                              height: ZAppSize.s4,
+            _isLoading
+                ? Align(
+                  alignment: Alignment.center,
+                  child: ZCustomLoadingIndicator(),
+                )
+                : Positioned(
+                  top: ZDeviceUtil.getDeviceHeight(context) * 0.03,
+                  right: ZDeviceUtil.getDeviceWidth(context) * 0.01,
+                  left: ZDeviceUtil.getDeviceWidth(context) * 0.01,
+                  bottom: ZDeviceUtil.getDeviceHeight(context) * 0.18,
+                  child:
+                      Column(
+                        children: [
+                          Text(
+                            'country_and_location'.tr,
+                            textAlign: TextAlign.start,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.headlineMedium?.copyWith(
+                              color: ZAppColor.whiteColor,
+                              fontWeight: FontWeight.w600,
                             ),
                           ),
-                          hintText: 'search_here'.tr,
-                          fillColor: ZAppColor.darkFillColor,
-                          filled: true,
-                          enabledBorder: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(ZAppSize.s5),
+                          ZAppSize.s10.verticalSpace,
+                          Text(
+                            'country_and_location_desc'.tr,
+                            textAlign: TextAlign.start,
+                            style: Theme.of(
+                              context,
+                            ).textTheme.titleLarge?.copyWith(
+                              color: ZAppColor.whiteColor,
+
+                              fontWeight: FontWeight.w500,
+                            ),
                           ),
-                          focusedBorder: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(ZAppSize.s5),
+
+                          ZAppSize.s26.verticalSpace,
+
+                          // scanningDataWidget(
+                          //   'country'.tr,
+                          //   Assets.icons.globeIcon.svg(),
+                          //   Assets.icons.arrowDownIos.svg(),
+                          // ),
+                          // scanningDataWidget(
+                          //   leadingIcon: Assets.icons.globeIcon.svg(
+                          //     fit: BoxFit.contain,
+                          //     width: ZAppSize.s24,
+                          //     height: ZAppSize.s24,
+                          //   ),
+                          //   content: CountryCodePicker(
+                          //     key: ctrl.countryPickerKey,
+                          //     onChanged: ctrl.onCountryChange,
+                          //     // Initial selection and favorite can be one of code ('IT') OR dial_code('+39')
+                          //     initialSelection: ctrl.mySelectedCountry.code,
+                          //     favorite: ['+233', 'GH'],
+                          //     // optional. Shows only country name and flag
+                          //     showCountryOnly: true,
+
+                          //     showFlag: false,
+                          //     // optional. Shows only country name and flag when popup is closed.
+                          //     showOnlyCountryWhenClosed: true,
+                          //     // headerAlignment: MainAxisAlignment.spaceBetween,
+                          //     // optional. aligns the flag and the Text left
+                          //     alignLeft: true,
+                          //     padding: EdgeInsets.zero,
+                          //     margin: EdgeInsets.zero,
+                          //     showDropDownButton: false,
+                          //     dialogBackgroundColor: ZAppColor.darkFillColor,
+                          //     textStyle: Theme.of(context).textTheme.bodyMedium,
+                          //     boxDecoration: BoxDecoration(
+                          //       color: ZAppColor.darkFillColor,
+                          //       borderRadius: BorderRadius.circular(ZAppSize.s8),
+                          //     ),
+                          //   ),
+                          //   trailingIcon: Assets.icons.arrowDownIos
+                          //       .svg(
+                          //         fit: BoxFit.contain,
+                          //         width: ZAppSize.s24,
+                          //         height: ZAppSize.s24,
+                          //       )
+                          //       .onPressed(
+                          //         onTap:
+                          //             () =>
+                          //                 ctrl.countryPickerKey.currentState
+                          //                     ?.showCountryCodePickerDialog(),
+                          //       ),
+                          // ),
+                          TextField(
+                            controller: ctrl.countryTEC,
+                            decoration: InputDecoration(
+                              prefixIcon: Transform.scale(
+                                scale: ZAppSize.s0_5,
+                                child: Assets.icons.globeIcon.svg(
+                                  fit: BoxFit.contain,
+                                  width: ZAppSize.s4,
+                                  height: ZAppSize.s4,
+                                ),
+                              ),
+                              hintText: 'enter_here'.tr,
+                              fillColor: ZAppColor.darkFillColor,
+                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(
+                                  ZAppSize.s5,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(
+                                  ZAppSize.s5,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(
+                                  ZAppSize.s5,
+                                ),
+                              ),
+                            ),
                           ),
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide.none,
-                            borderRadius: BorderRadius.circular(ZAppSize.s5),
+
+                          ZAppSize.s16.verticalSpace,
+
+                          TextField(
+                            controller: ctrl.locationTEC,
+                            decoration: InputDecoration(
+                              prefixIcon: Transform.scale(
+                                scale: ZAppSize.s0_6_5,
+                                child: Assets.icons.locationPinIcon.svg(
+                                  fit: BoxFit.contain,
+                                  width: ZAppSize.s4,
+                                  height: ZAppSize.s4,
+                                ),
+                              ),
+                              hintText: 'enter_here'.tr,
+                              fillColor: ZAppColor.darkFillColor,
+                              filled: true,
+                              enabledBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(
+                                  ZAppSize.s5,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(
+                                  ZAppSize.s5,
+                                ),
+                              ),
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide.none,
+                                borderRadius: BorderRadius.circular(
+                                  ZAppSize.s5,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
 
-                      ZAppSize.s16.verticalSpace,
+                          ZAppSize.s16.verticalSpace,
 
-                      Image.asset(Assets.images.mapImg.path),
+                          Image.asset(Assets.images.mapImg.path),
 
-                      // scanningDataWidget('DOB: 28.08.1977'),
-                      ZAppSize.s13.verticalSpace,
-                    ],
-                  ).scrollable(),
-            ),
-
-            Positioned(
-              bottom: ZDeviceUtil.getDeviceHeight(context) * 0.1,
-              right: ZAppSize.s0,
-              child: SizedBox(
-                width: ZDeviceUtil.getDeviceWidth(context) * 0.55,
-                child: ZCustomButton(
-                  label: 'submit'.tr,
-                  radius: ZAppSize.s5,
-                  icon: Assets.icons.arrowRectDiag.svg(height: ZAppSize.s32),
-                  onTap:
-                      () => ZHelperFunction.switchScreen(
-                        destination: Routes.signupStep12,
-                        args: ctrl.role.value,
-                      ),
+                          // scanningDataWidget('DOB: 28.08.1977'),
+                          ZAppSize.s13.verticalSpace,
+                        ],
+                      ).scrollable(),
                 ),
-              ),
-            ),
+
+            _isLoading
+                ? SizedBox.shrink()
+                : Positioned(
+                  bottom: ZDeviceUtil.getDeviceHeight(context) * 0.1,
+                  right: ZAppSize.s0,
+                  child: SizedBox(
+                    width: ZDeviceUtil.getDeviceWidth(context) * 0.55,
+                    child: ZCustomButton(
+                      label: 'submit'.tr,
+                      radius: ZAppSize.s5,
+                      icon: Assets.icons.arrowRectDiag.svg(
+                        height: ZAppSize.s32,
+                      ),
+                      onTap: () => ctrl.submitKYC(context: context),
+                    ),
+                  ),
+                ),
           ],
         ).symmetric(horizontal: ZAppSize.s24),
       ),

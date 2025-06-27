@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fpdart/src/either.dart';
 import 'package:get/get.dart';
 import 'package:zeazn_invest_app/core/errors/failure.dart';
@@ -101,6 +103,88 @@ class SignupRepoImpl implements SignupRepo {
         zeaznLogger.w(res.data?.toJson());
         ZSecureStorage().saveAuthResponse(res.data?.toJson());
         zeaznLogger.w('Token: ${ZSecureStorage().getAuthResponse()?.token}');
+        return res;
+      },
+    );
+  }
+
+  @override
+  Future<Either<ZFailure, ApiResponse<User>>> submitKYC({
+    required String nameOnId,
+    required String numberOnId,
+    required String idType,
+    required String dobOnId,
+    required String sexOnId,
+    required String expiryDateOnId,
+    required File selfieImage,
+    required File idFrontImage,
+    required File idBackImage,
+  }) async {
+    return await customRepositoryWrapper.wrapRepositoryFunction(
+      function: () async {
+        final res = await signupDs.submitKYC(
+          nameOnId: nameOnId,
+          numberOnId: numberOnId,
+          idType: idType,
+          dobOnId: dobOnId,
+          sexOnId: sexOnId,
+          expiryDateOnId: expiryDateOnId,
+          selfieImage: selfieImage,
+          idFrontImage: idFrontImage,
+          idBackImage: idBackImage,
+        );
+
+        return res;
+      },
+    );
+  }
+
+  @override
+  Future<Either<ZFailure, ApiResponse<User>>> updateKYC({
+    required String nameOnId,
+    required String numberOnId,
+    required String idType,
+    required String dobOnId,
+    required String sexOnId,
+    required String expiryDateOnId,
+    required File selfieImage,
+    required File idFrontImage,
+    required File idBackImage,
+  }) async {
+    return await customRepositoryWrapper.wrapRepositoryFunction(
+      function: () async {
+        final res = await signupDs.updateKYC(
+          nameOnId: nameOnId,
+          numberOnId: numberOnId,
+          idType: idType,
+          dobOnId: dobOnId,
+          sexOnId: sexOnId,
+          expiryDateOnId: expiryDateOnId,
+          selfieImage: selfieImage,
+          idFrontImage: idFrontImage,
+          idBackImage: idBackImage,
+        );
+
+        return res;
+      },
+    );
+  }
+
+  @override
+  Future<Either<ZFailure, ApiResponse<List<Message>>>> addLocation({
+    required String country,
+    required String city,
+    required double latitude,
+    required double longitude,
+  }) async {
+    return await customRepositoryWrapper.wrapRepositoryFunction(
+      function: () async {
+        final res = await signupDs.addLocation(
+          country: country,
+          city: city,
+          latitude: latitude,
+          longitude: longitude,
+        );
         return res;
       },
     );

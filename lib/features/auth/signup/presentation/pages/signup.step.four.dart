@@ -45,7 +45,7 @@ class ZSignupStep4 extends StatelessWidget {
                             destination: Routes.signupStep5,
                           ),
                       backgroundColor: ZAppColor.primary,
-                      width: ZDeviceUtil.getDeviceWidth(context) * 0.45,
+                      width: ZDeviceUtil.getDeviceWidth(context) * 0.47,
                       borderColor: ZAppColor.primary,
                     ),
                   ),

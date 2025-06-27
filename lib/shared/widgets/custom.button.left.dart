@@ -27,7 +27,7 @@ class ZCustomButtonLeft extends StatelessWidget {
         ZAppSize.s8.horizontalSpace,
         Container(
           padding: EdgeInsets.symmetric(
-            horizontal: ZAppSize.s32,
+            horizontal: ZAppSize.s25,
             vertical: ZAppSize.s10,
           ),
           decoration: BoxDecoration(

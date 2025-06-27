@@ -7,7 +7,7 @@ import 'package:zeazn_invest_app/gen/assets.gen.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
 
 class ZProjectFaqPage extends StatelessWidget {
-  final Project project;
+  final Projects project;
   ZProjectFaqPage({super.key, required this.project});
 
   final ctrl = Get.put(ZExploreVM());

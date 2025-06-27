@@ -1,5 +1,14 @@
+export 'application/service/project.service.dart';
+export 'application/service/project.service.impl.dart';
+export 'application/video.compressor.dart';
+export 'data/ds/project.ds.dart';
+export 'data/ds/project.ds.impl.dart';
+export 'data/repos/project.repo.dart';
+export 'data/repos/project.repo.impl.dart';
+export 'domain/models/paginated.project.model.dart';
 export 'domain/models/plan.model.dart';
 export 'domain/models/project.model.dart';
+export 'domain/models/projects.model.dart';
 export 'presentation/pages/exclusive.experiences.page.dart';
 export 'presentation/pages/explore.page.dart';
 export 'presentation/pages/funding.details.page.dart';

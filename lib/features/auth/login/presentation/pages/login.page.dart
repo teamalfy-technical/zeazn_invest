@@ -40,6 +40,7 @@ class ZLoginPage extends StatelessWidget {
                 labelText: 'email_address'.tr,
                 hintText: 'hint_email_address'.tr,
                 prefixIcon: null,
+                validator: ZValidator.validateEmail,
                 controller: ctrl.emailTEC,
               ),
               ZAppSize.s24.verticalSpace,

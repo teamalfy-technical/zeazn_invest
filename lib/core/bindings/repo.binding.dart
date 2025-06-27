@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:zeazn_invest_app/features/auth/login/login.dart';
 import 'package:zeazn_invest_app/features/auth/signup/signup.dart';
+import 'package:zeazn_invest_app/features/creator/profile/profile.dart';
 
 class RepoBinding implements Bindings {
   @override
@@ -10,6 +11,11 @@ class RepoBinding implements Bindings {
     Get.lazyPut<SignupRepo>(
       () => SignupRepoImpl(),
       tag: (SignupRepo).toString(),
+    );
+
+    Get.lazyPut<ProfileRepo>(
+      () => ProfileRepoImpl(),
+      tag: (ProfileRepo).toString(),
     );
 
     // Get.lazyPut<PostRepo>(

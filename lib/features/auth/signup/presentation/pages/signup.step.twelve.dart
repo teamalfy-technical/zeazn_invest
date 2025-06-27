@@ -5,7 +5,6 @@ import 'package:zeazn_invest_app/core/utils/utils.dart';
 import 'package:zeazn_invest_app/features/auth/signup/presentation/vm/signup.vm.dart';
 import 'package:zeazn_invest_app/gen/assets.gen.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
-import 'package:zeazn_invest_app/shared/widgets/custom.button.right.dart';
 import 'package:zeazn_invest_app/shared/widgets/custom.scaffold.dart';
 
 class ZSignupStep12 extends StatelessWidget {
@@ -61,7 +60,7 @@ class ZSignupStep12 extends StatelessWidget {
                 child: SizedBox(
                   width: ZDeviceUtil.getDeviceWidth(context) * 0.39,
                   child: ZCustomButtonRight(
-                    label: 'verify'.tr,
+                    label: 'next'.tr,
                     onTap: () {
                       if (ctrl.addPasswordFormKey.currentState!.validate()) {
                         ZDeviceUtil.hideKeyboard(context);

@@ -45,6 +45,10 @@ abstract class Env {
   @EnviedField(defaultValue: '/reset-password', obfuscate: true)
   static final String resetPassword = _Env.resetPassword;
 
+  /// [AddLocation] endpoint
+  @EnviedField(defaultValue: '/add-location', obfuscate: true)
+  static final String addLocation = _Env.addLocation;
+
   /// [AddPassword] endpoint
   @EnviedField(defaultValue: '/add-password', obfuscate: true)
   static final String addPassword = _Env.addPassword;
@@ -56,6 +60,10 @@ abstract class Env {
   /// [GetProfile] endpoint
   @EnviedField(defaultValue: '/profile', obfuscate: true)
   static final String getProfile = _Env.getProfile;
+
+  /// [GetProfile] endpoint
+  @EnviedField(defaultValue: '/user/show-profile', obfuscate: true)
+  static final String showUserProfile = _Env.showUserProfile;
 
   /// [Logout] endpoint
   @EnviedField(defaultValue: '/logout', obfuscate: true)
@@ -79,4 +87,86 @@ abstract class Env {
   static final String getKYC = _Env.getKYC;
 
   /// -------------------- KYC Endpoints Ends Here ------------------------- ///
+  ///
+  ///
+  /// -------------------- Project Endpoints Starts Here ------------------------- ///
+  ///
+  /// [AddProject] endpoint
+  @EnviedField(defaultValue: '/project/creator/store', obfuscate: true)
+  static final String addProject = _Env.addProject;
+
+  /// [AddProjectFundingGoal] endpoint
+  @EnviedField(defaultValue: '/project/funding-goal', obfuscate: true)
+  static final String addProjectFundingGoal = _Env.addProjectFundingGoal;
+
+  /// [GetProjectByCreator] endpoint
+  @EnviedField(defaultValue: '/project/by-creator', obfuscate: true)
+  static final String getProjectByCreator = _Env.getProjectByCreator;
+
+  /// [GetProjectCountByCreator] endpoint
+  @EnviedField(defaultValue: '/project/creator/count', obfuscate: true)
+  static final String getProjectCountByCreator = _Env.getProjectCountByCreator;
+
+  /// [UpdateProjectByCreator] endpoint
+  @EnviedField(defaultValue: '/project/creator/update', obfuscate: true)
+  static final String updateProjectByCreator = _Env.updateProjectByCreator;
+
+  /// [GetAllProjects] endpoint
+  @EnviedField(defaultValue: '/all-projects', obfuscate: true)
+  static final String getAllProjects = _Env.getAllProjects;
+
+  /// [GetProject] endpoint
+  @EnviedField(defaultValue: '/project/show', obfuscate: true)
+  static final String getProject = _Env.getProject;
+
+  /// [GetAllProjectsCount] endpoint
+  @EnviedField(defaultValue: '/project/count/all', obfuscate: true)
+  static final String getAllProjectsCount = _Env.getAllProjectsCount;
+
+  /// [GetProjectSlug] endpoint
+  @EnviedField(defaultValue: '/project/show/slug', obfuscate: true)
+  static final String getProjectSlug = _Env.getProjectSlug;
+
+  /// [PublishProject] endpoint
+  @EnviedField(defaultValue: '/project/publish', obfuscate: true)
+  static final String publishProject = _Env.publishProject;
+
+  /// [SaveProjectAsDraft] endpoint
+  @EnviedField(defaultValue: '/project/draft', obfuscate: true)
+  static final String saveProjectAsDraft = _Env.saveProjectAsDraft;
+
+  /// [ArchiveProject] endpoint
+  @EnviedField(defaultValue: '/project/archive', obfuscate: true)
+  static final String archiveProject = _Env.archiveProject;
+
+  /// [AddProjectMedia] endpoint
+  @EnviedField(defaultValue: '/project/add-media', obfuscate: true)
+  static final String addProjectMedia = _Env.addProjectMedia;
+
+  /// [GetProjectSupporters] endpoint
+  @EnviedField(defaultValue: '/project/supporters', obfuscate: true)
+  static final String getProjectSupporters = _Env.getProjectSupporters;
+
+  /// [GetProjectComments] endpoint
+  @EnviedField(defaultValue: '/project/comments', obfuscate: true)
+  static final String getProjectComments = _Env.getProjectComments;
+
+  /// [GetProjectReviews] endpoint
+  @EnviedField(defaultValue: '/project/reviews', obfuscate: true)
+  static final String getProjectReviews = _Env.getProjectReviews;
+
+  /// [GetProjectFaqs] endpoint
+  @EnviedField(defaultValue: '/project/faqs', obfuscate: true)
+  static final String getProjectFaqs = _Env.getProjectFaqs;
+
+  /// [DeleteProject] endpoint
+  @EnviedField(defaultValue: '/project/creator/del', obfuscate: true)
+  static final String deleteProject = _Env.deleteProject;
+
+  /// [GetProjectVideoUploadStatus] endpoint
+  @EnviedField(defaultValue: '/project/video-upload/status', obfuscate: true)
+  static final String getProjectVideoUploadStatus =
+      _Env.getProjectVideoUploadStatus;
+
+  /// -------------------- Project Endpoints Ends Here ------------------------- ///
 }

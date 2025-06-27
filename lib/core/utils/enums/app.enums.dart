@@ -21,6 +21,8 @@ enum Direction { left, right }
 
 enum UserRole { creator, investor, other }
 
+enum KycType { front, back, selfie }
+
 enum SupportType { one, two }
 
 enum ConnectivityStatus { connected, disconnected }

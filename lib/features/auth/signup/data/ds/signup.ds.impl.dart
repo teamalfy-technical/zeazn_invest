@@ -1,7 +1,9 @@
+import 'dart:io';
+
 import 'package:dio/dio.dart' as dio;
 import 'package:get/get.dart';
 import 'package:zeazn_invest_app/core/network/network.dart';
-import 'package:zeazn_invest_app/core/utils/enums/app.enums.dart';
+import 'package:zeazn_invest_app/core/utils/utils.dart';
 import 'package:zeazn_invest_app/env/env.dart';
 import 'package:zeazn_invest_app/features/auth/login/login.dart';
 import 'package:zeazn_invest_app/features/auth/signup/signup.dart';
@@ -139,6 +141,114 @@ class SignupDsImpl implements SignupDs {
         endPoint: Env.verifyOTPOnRegister,
       );
       return ApiResponse<User>.fromJson(res, (data) => User.fromJson(data));
+    });
+  }
+
+  @override
+  Future<ApiResponse<User>> submitKYC({
+    required String nameOnId,
+    required String numberOnId,
+    required String idType,
+    required String dobOnId,
+    required String sexOnId,
+    required String expiryDateOnId,
+    required File selfieImage,
+    required File idFrontImage,
+    required File idBackImage,
+  }) async {
+    return await asyncFunctionWrapper.handleAsyncNetworkCall(() async {
+      final res = await apiService.callService(
+        requestType: RequestType.post,
+        payload: dio.FormData.fromMap({
+          'national_id_type': idType,
+          'name_on_id': nameOnId,
+          'dob_on_id': dobOnId,
+          'sex': sexOnId,
+          'expiry_date': expiryDateOnId,
+          'national_id_number': numberOnId,
+          'selfie_image': await dio.MultipartFile.fromFile(
+            selfieImage.path,
+            filename: selfieImage.path.split('/').last.split('.').first,
+          ),
+          'id_image_front': await dio.MultipartFile.fromFile(
+            idFrontImage.path,
+            filename: idFrontImage.path.split('/').last.split('.').first,
+          ),
+          'id_image_back': await dio.MultipartFile.fromFile(
+            idBackImage.path,
+            filename: idBackImage.path.split('/').last.split('.').first,
+          ),
+        }),
+        endPoint: Env.storeKYC,
+      );
+      return ApiResponse<User>.fromJson(res, (data) => User.fromJson(data));
+    });
+  }
+
+  @override
+  Future<ApiResponse<User>> updateKYC({
+    required String nameOnId,
+    required String numberOnId,
+    required String idType,
+    required String dobOnId,
+    required String sexOnId,
+    required String expiryDateOnId,
+    required File selfieImage,
+    required File idFrontImage,
+    required File idBackImage,
+  }) async {
+    return await asyncFunctionWrapper.handleAsyncNetworkCall(() async {
+      final res = await apiService.callService(
+        requestType: RequestType.post,
+        payload: dio.FormData.fromMap({
+          'national_id_type': idType,
+          'name_on_id': nameOnId,
+          'dob_on_id': dobOnId,
+          'sex': sexOnId,
+          'expiry_date': expiryDateOnId,
+          'national_id_number': numberOnId,
+          'selfie_image': await dio.MultipartFile.fromFile(
+            selfieImage.path,
+            filename: selfieImage.path.split('/').last.split('.').first,
+          ),
+          'id_image_front': await dio.MultipartFile.fromFile(
+            idFrontImage.path,
+            filename: idFrontImage.path.split('/').last.split('.').first,
+          ),
+          'id_image_back': await dio.MultipartFile.fromFile(
+            idBackImage.path,
+            filename: idBackImage.path.split('/').last.split('.').first,
+          ),
+        }),
+        endPoint: Env.updateKYC,
+      );
+      return ApiResponse<User>.fromJson(res, (data) => User.fromJson(data));
+    });
+  }
+
+  @override
+  Future<ApiResponse<List<Message>>> addLocation({
+    required String country,
+    required String city,
+    required double latitude,
+    required double longitude,
+  }) async {
+    final payload = dio.FormData.fromMap({
+      'country': country,
+      'city': city,
+      'latitude': latitude,
+      'longitude': longitude,
+    });
+    return await asyncFunctionWrapper.handleAsyncNetworkCall(() async {
+      final res = await apiService.callService(
+        requestType: RequestType.post,
+        payload: payload,
+        endPoint: Env.addLocation,
+      );
+      return ApiResponse<List<Message>>.fromJson(
+        res,
+        (data) => (data as List).map((e) => Message.fromJson(e)).toList(),
+      );
     });
   }
 }

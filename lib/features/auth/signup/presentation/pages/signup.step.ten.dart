@@ -7,6 +7,7 @@ import 'package:zeazn_invest_app/core/utils/utils.dart';
 import 'package:zeazn_invest_app/features/auth/signup/presentation/vm/signup.vm.dart';
 import 'package:zeazn_invest_app/gen/assets.gen.dart';
 import 'package:zeazn_invest_app/routes/app.pages.dart';
+import 'package:zeazn_invest_app/shared/shared.dart';
 
 class ZSignupStep10 extends StatefulWidget {
   const ZSignupStep10({super.key});
@@ -24,7 +25,7 @@ class _ZSignupStep10State extends State<ZSignupStep10> {
 
   @override
   void initState() {
-    startScanTimer();
+    // startScanTimer();
     super.initState();
   }
 
@@ -61,100 +62,234 @@ class _ZSignupStep10State extends State<ZSignupStep10> {
         bottom: false,
         left: false,
         right: false,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            // ZAppSize.s20.verticalSpace,
-            Expanded(
-              child:
-                  Column(
-                    children: [
-                      ZAppSize.s20.verticalSpace,
-                      Text(
-                        _scanDuration < 1.0 ? 'face_id'.tr : 'successful'.tr,
-                        textAlign: TextAlign.start,
-                        style: Theme.of(
-                          context,
-                        ).textTheme.headlineMedium?.copyWith(
-                          color: ZAppColor.whiteColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-                      ZAppSize.s26.verticalSpace,
-                      Text(
-                        _scanDuration < 1.0
-                            ? 'face_id_desc'.tr
-                            : 'id_confirmed'.tr,
-                        textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          height: 1.6,
-                          color: ZAppColor.whiteColor,
-
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-
-                      ZAppSize.s24.verticalSpace,
-
-                      Container(
-                        width: ZDeviceUtil.getDeviceWidth(context),
-                        height: ZDeviceUtil.getDeviceHeight(context) / 2,
-                        decoration: BoxDecoration(
-                          image: DecorationImage(
-                            fit: BoxFit.cover,
-                            image: AssetImage(Assets.images.faceIdImg.path),
-                          ),
-                        ),
-                      ),
-
-                      ZAppSize.s16.verticalSpace,
-
-                      Text(
-                        '${(_scanDuration * 100).toStringAsFixed(0)}%',
-                        textAlign: TextAlign.start,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: ZAppColor.whiteColor,
-                          fontWeight: FontWeight.w500,
-                        ),
-                      ),
-
-                      ZAppSize.s6.verticalSpace,
-
-                      LinearProgressIndicator(
-                        minHeight: ZAppSize.s15,
-                        borderRadius: BorderRadius.circular(ZAppSize.s12),
-                        value: _scanDuration,
-                        backgroundColor: ZAppColor.primary.withOpacityExt(
-                          ZAppSize.s0_2,
-                        ),
-                        valueColor: AlwaysStoppedAnimation(ZAppColor.primary),
-                      ).symmetric(horizontal: ZAppSize.s24),
-
-                      ZAppSize.s6.verticalSpace,
-
-                      if (_scanDuration < 1.0)
+        child: Obx(
+          () => Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              ZAppSize.s20.verticalSpace,
+              Expanded(
+                child:
+                    Column(
+                      children: [
                         Text(
-                          'scanning'.tr,
+                          'face_id'.tr,
                           textAlign: TextAlign.start,
                           style: Theme.of(
                             context,
-                          ).textTheme.bodyMedium?.copyWith(
+                          ).textTheme.headlineMedium?.copyWith(
                             color: ZAppColor.whiteColor,
                             fontWeight: FontWeight.w500,
                           ),
                         ),
+                        ZAppSize.s26.verticalSpace,
+                        Text(
+                          'face_id_desc'.tr,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.titleLarge?.copyWith(
+                            color: ZAppColor.whiteColor,
 
-                      ZAppSize.s26.verticalSpace,
-                    ],
-                  ).scrollable(),
-            ),
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ),
 
-            Image.asset(Assets.images.logoDark.path),
+                        ZAppSize.s24.verticalSpace,
 
-            ZAppSize.s16.verticalSpace,
-          ],
+                        ctrl.selfieImage.value.path.isNotEmpty
+                            ? Container(
+                              width: ZDeviceUtil.getDeviceWidth(context),
+                              height: ZDeviceUtil.getDeviceHeight(context) / 3,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xFFd9d9d9),
+                                // borderRadius: BorderRadius.circular(
+                                //   ZAppSize.s10,
+                                // ),
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: FileImage(ctrl.selfieImage.value),
+                                ),
+                              ),
+                            )
+                            : Container(
+                              width: ZDeviceUtil.getDeviceWidth(context),
+                              height: ZDeviceUtil.getDeviceHeight(context) / 4,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Color(0xFFd9d9d9),
+                                // borderRadius: BorderRadius.circular(
+                                //   ZAppSize.s180,
+                                // ),
+                              ),
+                            ),
+
+                        ZAppSize.s20.verticalSpace,
+
+                        Text(
+                          'upload_from_gallery'.tr.toUpperCase(),
+                          textAlign: TextAlign.start,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.titleLarge?.copyWith(
+                            color: ZAppColor.whiteColor,
+
+                            fontWeight: FontWeight.w500,
+                          ),
+                        ).onPressed(
+                          onTap:
+                              () => ctrl.chooseFromGallery(
+                                kycType: KycType.selfie,
+                              ),
+                        ),
+
+                        ZAppSize.s20.verticalSpace,
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: SizedBox(
+                            width: ZDeviceUtil.getDeviceWidth(context) * 0.52,
+                            child: ZCustomButtonRight(
+                              label:
+                                  ctrl.selfieImage.value.path.isNotEmpty
+                                      ? 'next'.tr.toUpperCase()
+                                      : 'take_selfie'.tr.toUpperCase(),
+                              onTap: () {
+                                if (ctrl.selfieImage.value.path.isEmpty) {
+                                  ctrl.takePhoto(kycType: KycType.selfie);
+                                } else {
+                                  ZHelperFunction.switchScreen(
+                                    destination: Routes.signupStep11,
+                                  );
+                                  // ZHelperFunction.switchScreen(
+                                  //   destination: Routes.completeStatePage,
+                                  //   args: [
+                                  //     true,
+                                  //     Routes.signupStep8,
+                                  //     'upload_successful'.tr,
+                                  //   ],
+                                  // );
+                                }
+                              },
+                              backgroundColor: ZAppColor.primary,
+                              borderColor: ZAppColor.primary,
+                            ),
+                          ),
+                        ),
+
+                        ZAppSize.s26.verticalSpace,
+                      ],
+                    ).scrollable(),
+              ),
+
+              Image.asset(Assets.images.logoDark.path),
+
+              ZAppSize.s16.verticalSpace,
+            ],
+          ).symmetric(horizontal: ZAppSize.s24),
         ),
       ),
     );
+
+    // return Scaffold(
+    //   body: SafeArea(
+    //     top: true,
+    //     bottom: false,
+    //     left: false,
+    //     right: false,
+    //     child: Column(
+    //       crossAxisAlignment: CrossAxisAlignment.center,
+    //       children: [
+    //         // ZAppSize.s20.verticalSpace,
+    //         Expanded(
+    //           child:
+    //               Column(
+    //                 children: [
+    //                   ZAppSize.s20.verticalSpace,
+    //                   Text(
+    //                     _scanDuration < 1.0 ? 'face_id'.tr : 'successful'.tr,
+    //                     textAlign: TextAlign.start,
+    //                     style: Theme.of(
+    //                       context,
+    //                     ).textTheme.headlineMedium?.copyWith(
+    //                       color: ZAppColor.whiteColor,
+    //                       fontWeight: FontWeight.w500,
+    //                     ),
+    //                   ),
+    //                   ZAppSize.s26.verticalSpace,
+    //                   Text(
+    //                     _scanDuration < 1.0
+    //                         ? 'face_id_desc'.tr
+    //                         : 'id_confirmed'.tr,
+    //                     textAlign: TextAlign.center,
+    //                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
+    //                       height: 1.6,
+    //                       color: ZAppColor.whiteColor,
+
+    //                       fontWeight: FontWeight.w500,
+    //                     ),
+    //                   ),
+
+    //                   ZAppSize.s24.verticalSpace,
+
+    //                   Container(
+    //                     width: ZDeviceUtil.getDeviceWidth(context),
+    //                     height: ZDeviceUtil.getDeviceHeight(context) / 2,
+    //                     decoration: BoxDecoration(
+    //                       image: DecorationImage(
+    //                         fit: BoxFit.cover,
+    //                         image: AssetImage(Assets.images.faceIdImg.path),
+    //                       ),
+    //                     ),
+    //                   ),
+
+    //                   ZAppSize.s16.verticalSpace,
+
+    //                   Text(
+    //                     '${(_scanDuration * 100).toStringAsFixed(0)}%',
+    //                     textAlign: TextAlign.start,
+    //                     style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+    //                       color: ZAppColor.whiteColor,
+    //                       fontWeight: FontWeight.w500,
+    //                     ),
+    //                   ),
+
+    //                   ZAppSize.s6.verticalSpace,
+
+    //                   LinearProgressIndicator(
+    //                     minHeight: ZAppSize.s15,
+    //                     borderRadius: BorderRadius.circular(ZAppSize.s12),
+    //                     value: _scanDuration,
+    //                     backgroundColor: ZAppColor.primary.withOpacityExt(
+    //                       ZAppSize.s0_2,
+    //                     ),
+    //                     valueColor: AlwaysStoppedAnimation(ZAppColor.primary),
+    //                   ).symmetric(horizontal: ZAppSize.s24),
+
+    //                   ZAppSize.s6.verticalSpace,
+
+    //                   if (_scanDuration < 1.0)
+    //                     Text(
+    //                       'scanning'.tr,
+    //                       textAlign: TextAlign.start,
+    //                       style: Theme.of(
+    //                         context,
+    //                       ).textTheme.bodyMedium?.copyWith(
+    //                         color: ZAppColor.whiteColor,
+    //                         fontWeight: FontWeight.w500,
+    //                       ),
+    //                     ),
+
+    //                   ZAppSize.s26.verticalSpace,
+    //                 ],
+    //               ).scrollable(),
+    //         ),
+
+    //         Image.asset(Assets.images.logoDark.path),
+
+    //         ZAppSize.s16.verticalSpace,
+    //       ],
+    //     ),
+    //   ),
+    // );
   }
 }

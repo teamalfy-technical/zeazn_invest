@@ -4,6 +4,7 @@ import 'package:country_code_picker/country_code_picker.dart';
 import 'package:country_picker/country_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,7 +18,37 @@ class ZSignupVm extends GetxController {
 
   var role = UserRole.creator.obs;
 
+  final countryTEC = TextEditingController();
+  final locationTEC = TextEditingController();
+
+  // var nameOnId = ''.obs;
+  // var numberOnId = ''.obs;
+  // var dobOnId = ''.obs;
+  // var sexOnId = ''.obs;
+  // var expiryDateOnId = ''.obs;
+  // var idType = ''.obs;
+
   var obscure = true.obs;
+
+  var country = ''.obs;
+
+  var position =
+      Position(
+        latitude: 0,
+        longitude: 0,
+        timestamp: DateTime.timestamp(),
+        accuracy: 0,
+        altitude: 0,
+        altitudeAccuracy: 0,
+        heading: 0,
+        headingAccuracy: 0,
+        speed: 0,
+        speedAccuracy: 0,
+      ).obs;
+
+  var idFrontImage = File('').obs;
+  var idBackImage = File('').obs;
+  var selfieImage = File('').obs;
 
   onObscureChanged() => obscure.value = !obscure.value;
 
@@ -30,9 +61,16 @@ class ZSignupVm extends GetxController {
     zeaznLogger.e(role.value);
   }
 
-  var profileFile = File('').obs;
-
   final addPasswordFormKey = GlobalKey<FormState>();
+
+  final nameOnIdTEC = TextEditingController();
+  var idName = ''.obs;
+  var idNumber = ''.obs;
+  var numberOnIdTEC = TextEditingController();
+  var dobOnIdTEC = TextEditingController();
+  var sexOnIdTEC = TextEditingController();
+  var expiryDateOnIdTEC = TextEditingController();
+  var idTypeTEC = TextEditingController();
 
   final nameTEC = TextEditingController();
   final phoneTEC = TextEditingController();
@@ -42,13 +80,17 @@ class ZSignupVm extends GetxController {
 
   // final context = Get.context!;
 
-  var selectedIndex = 0.obs;
+  var selectedIndex = 2.obs;
   List<String> verificationMethods = [
     'passport'.tr.toUpperCase(),
     'driver_license'.tr.toUpperCase(),
     'national_id'.tr.toUpperCase(),
   ];
 
+  var selectedIdType = 'Ghana Card'.obs;
+  List<String> idTypes = ['Ghana Card', 'Voter ID'];
+
+  onIdTypeChanged(String? value) => selectedIdType.value = value ?? '';
   onSelectedVerificationMethod(int index) => selectedIndex.value = index;
 
   final GlobalKey<CountryCodePickerState> countryPickerKey = GlobalKey();
@@ -73,26 +115,46 @@ class ZSignupVm extends GetxController {
   void setSelectedCountry(Country country) {
     selectedCountry.value = country;
     selectedCountry.value.flagEmoji;
+    zeaznLogger.i("Selected Country: ${selectedCountry.value}");
   }
 
-  // Pick an image.
-  Future<void> chooseFromGallery() async {
+  void onCountryChange(CountryCode countryCode) {
+    country.value = countryCode.name ?? '';
+    zeaznLogger.i("New Country selected: ${countryCode.name}");
+  }
+
+  // Take photo with camera
+  Future<void> takePhoto({required KycType kycType}) async {
     final XFile? image;
     try {
-      image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      image = await ImagePicker().pickImage(
+        source: ImageSource.camera,
+        preferredCameraDevice:
+            kycType == KycType.selfie ? CameraDevice.front : CameraDevice.rear,
+      );
       if (image == null) return;
-      _cropImage(imagePath: image.path);
+      _cropImage(imagePath: image.path, kycType: kycType);
     } on PlatformException catch (err) {
       debugPrint('Failed to pick image: $err');
     }
   }
 
-  void onCountryChange(CountryCode countryCode) {
-    //TODO : manipulate the selected country code here
-    print("New Country selected: $countryCode");
+  // Pick an image.
+  Future<void> chooseFromGallery({required KycType kycType}) async {
+    final XFile? image;
+    try {
+      image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (image == null) return;
+      _cropImage(imagePath: image.path, kycType: kycType);
+    } on PlatformException catch (err) {
+      debugPrint('Failed to pick image: $err');
+    }
   }
 
-  Future<void> _cropImage({required String imagePath}) async {
+  Future<void> _cropImage({
+    required String imagePath,
+    required KycType kycType,
+  }) async {
     try {
       final croppedFile = await ImageCropper().cropImage(
         sourcePath: imagePath,
@@ -113,9 +175,26 @@ class ZSignupVm extends GetxController {
         ],
       );
       if (croppedFile == null) return;
-      profileFile.value = File(croppedFile.path);
+      final compressedFile = await ZHelperFunction.compressFile(
+        File(croppedFile.path),
+      );
+      updateSelectedKYC(compressedFile, kycType);
     } on PlatformException catch (err) {
       debugPrint('Failed to crop photo: $err');
+    }
+  }
+
+  updateSelectedKYC(File croppedFile, KycType kycType) {
+    switch (kycType) {
+      case KycType.front:
+        idFrontImage.value = croppedFile;
+        break;
+      case KycType.back:
+        idBackImage.value = croppedFile;
+        break;
+      case KycType.selfie:
+        selfieImage.value = croppedFile;
+        break;
     }
   }
 
@@ -244,6 +323,73 @@ class ZSignupVm extends GetxController {
           destination: Routes.progressStatePage,
           args: [true, Routes.loginPage, 'signing_up_msg'.tr],
         );
+      },
+    );
+  }
+
+  /// [Function] to add creator's location
+  /// @params => context
+  Future<void> addLocation({required BuildContext context}) async {
+    checkIfPasswordMatch(context);
+    final result = await signupService.addLocation(
+      // country: country.value,
+      country: countryTEC.text.trim(),
+      city: locationTEC.text.trim(),
+      latitude: position.value.latitude,
+      longitude: position.value.longitude,
+    );
+    result.fold(
+      (err) {
+        ZPopupDialog(
+          context,
+        ).errorMessage(title: 'error'.tr, message: err.message);
+      },
+      (res) {
+        ZHelperFunction.switchScreen(
+          destination: Routes.signupStep12,
+          args: role.value,
+        );
+      },
+    );
+  }
+
+  /// [Function] to submit KYC to user account
+  /// @params => context
+  Future<void> submitKYC({required BuildContext context}) async {
+    // zeaznLogger.e(nameOnIdTEC.text.trim());
+    // zeaznLogger.e(numberOnIdTEC.text.trim());
+    // zeaznLogger.e(sexOnIdTEC.text.trim());
+    // zeaznLogger.e(dobOnIdTEC.text.trim());
+    // zeaznLogger.e(idTypeTEC.text.trim());
+    // zeaznLogger.e(expiryDateOnIdTEC.text.trim());
+    // zeaznLogger.e('Selfie: ${selfieImage.value}');
+    // zeaznLogger.e('FrontImage: ${idFrontImage.value}');
+    // zeaznLogger.e('BackImage: ${idFrontImage.value}');
+    checkIfPasswordMatch(context);
+
+    final result = await signupService.submitKYC(
+      nameOnId: nameOnIdTEC.text.trim(),
+      numberOnId: numberOnIdTEC.text.trim(),
+      sexOnId: sexOnIdTEC.text.trim(),
+      dobOnId: dobOnIdTEC.text.trim(),
+      idType: selectedIdType.value, // idTypeTEC.text.trim(),
+      expiryDateOnId: expiryDateOnIdTEC.text.trim(),
+      selfieImage: selfieImage.value,
+      idFrontImage: idFrontImage.value,
+      idBackImage: idBackImage.value,
+    );
+    result.fold(
+      (err) {
+        ZPopupDialog(
+          context,
+        ).errorMessage(title: 'error'.tr, message: err.message);
+      },
+      (res) {
+        addLocation(context: context);
+        // ZHelperFunction.switchScreen(
+        //   destination: Routes.signupStep12,
+        //   args: role.value,
+        // );
       },
     );
   }

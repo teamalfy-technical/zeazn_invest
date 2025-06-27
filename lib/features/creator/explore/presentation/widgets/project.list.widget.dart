@@ -8,7 +8,7 @@ import 'package:zeazn_invest_app/gen/assets.gen.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
 
 class ZProjectListWidget extends StatelessWidget {
-  final Project project;
+  final Projects project;
   // final ZExploreVM ctrl;
   final dynamic ctrl;
   final Function()? onTap;

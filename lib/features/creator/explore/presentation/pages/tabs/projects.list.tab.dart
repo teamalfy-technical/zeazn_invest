@@ -14,7 +14,7 @@ class ZProjectListTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return projects.isEmpty
+    return ctrl.projects.isEmpty
         ? Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -43,9 +43,9 @@ class ZProjectListTab extends StatelessWidget {
           ],
         ).scrollable()
         : ListView.builder(
-          itemCount: projects.length,
+          itemCount: ctrl.projects.length,
           itemBuilder: (context, index) {
-            final project = projects[index];
+            final project = ctrl.projects[index];
             return ZProjectListWidget(
               project: project,
               ctrl: ctrl,

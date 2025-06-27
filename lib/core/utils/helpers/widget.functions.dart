@@ -172,7 +172,7 @@ Future showSucccessdialog({
 Future showSupportViaCrowdfundingDialog({
   required BuildContext context,
   required ZSExploreVM ctrl,
-  required Project project,
+  required Projects project,
 }) {
   return showDialog(
     context: context,
@@ -306,7 +306,7 @@ Future showSupportViaCrowdfundingDialog({
 Future showSupportViaExperiencesDialog({
   required BuildContext context,
   required ZSExploreVM ctrl,
-  required Project project,
+  required Projects project,
 }) {
   return showDialog(
     context: context,
@@ -636,7 +636,7 @@ Future showCalendarPickerDialog({
 
 Future showReviewPaymentModal(
   BuildContext context,
-  Project project,
+  Projects project,
   ZSExploreVM ctrl,
   double supportPrice,
 ) {

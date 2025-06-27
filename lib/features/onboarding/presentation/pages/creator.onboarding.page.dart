@@ -71,7 +71,7 @@ class ZCreatorOnboardingPage extends StatelessWidget {
                   ctrl.cPageIndex.value == 3
                       ? SizedBox.shrink()
                       : SizedBox(
-                        width: ZDeviceUtil.getDeviceWidth(context) * 0.42,
+                        width: ZDeviceUtil.getDeviceWidth(context) * 0.43,
                         child: ZCustomButton(
                           label:
                               (ctrl.cPageIndex.value == 4 ||

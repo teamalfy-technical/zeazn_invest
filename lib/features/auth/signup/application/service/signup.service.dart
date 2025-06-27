@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fpdart/fpdart.dart';
 import 'package:zeazn_invest_app/core/errors/errors.dart';
 import 'package:zeazn_invest_app/core/network/network.dart';
@@ -10,6 +12,37 @@ abstract class SignupService {
     required String email,
     required String phone,
     required UserRole role,
+  });
+
+  Future<Either<ZFailure, ApiResponse<User>>> submitKYC({
+    required String nameOnId,
+    required String numberOnId,
+    required String idType,
+    required String dobOnId,
+    required String sexOnId,
+    required String expiryDateOnId,
+    required File selfieImage,
+    required File idFrontImage,
+    required File idBackImage,
+  });
+
+  Future<Either<ZFailure, ApiResponse<User>>> updateKYC({
+    required String nameOnId,
+    required String numberOnId,
+    required String idType,
+    required String dobOnId,
+    required String sexOnId,
+    required String expiryDateOnId,
+    required File selfieImage,
+    required File idFrontImage,
+    required File idBackImage,
+  });
+
+  Future<Either<ZFailure, ApiResponse<List<Message>>>> addLocation({
+    required String country,
+    required String city,
+    required double latitude,
+    required double longitude,
   });
 
   Future<Either<ZFailure, ApiResponse<User>>> verifyOTPOnRegister({

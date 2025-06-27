@@ -4,12 +4,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
 
-class PCustomLoadingIndicator extends StatelessWidget {
+class ZCustomLoadingIndicator extends StatelessWidget {
   final double size;
   final Color color;
   final bool centered;
 
-  const PCustomLoadingIndicator({
+  const ZCustomLoadingIndicator({
     super.key,
     this.size = ZAppSize.s20,
     this.color = ZAppColor.whiteColor,

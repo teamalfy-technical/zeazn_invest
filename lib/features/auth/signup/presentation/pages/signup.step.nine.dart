@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
-import 'package:zeazn_invest_app/features/auth/signup/presentation/vm/signup.vm.dart';
+import 'package:zeazn_invest_app/features/auth/signup/signup.dart';
 import 'package:zeazn_invest_app/gen/assets.gen.dart';
 import 'package:zeazn_invest_app/routes/app.pages.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
@@ -91,38 +91,40 @@ class _ZSignupStep9State extends State<ZSignupStep9> {
 
                       ZAppSize.s10.verticalSpace,
 
-                      scanningDataWidget('Name: Sandra Smith'),
-
-                      ZAppSize.s13.verticalSpace,
-
-                      scanningDataWidget('DOB: 28.08.1977'),
-
-                      ZAppSize.s13.verticalSpace,
-
-                      scanningDataWidget('Sex: male'),
-
-                      ZAppSize.s13.verticalSpace,
-
-                      scanningDataWidget('Expires: 28.09.2027'),
-
-                      ZAppSize.s13.verticalSpace,
-
-                      scanningDataWidget('ID Type: Ghana card'),
-
-                      ZAppSize.s13.verticalSpace,
-
-                      Row(
-                        children: [
-                          Expanded(
-                            child: scanningDataWidget(
-                              'Pictures',
-                              Alignment.center,
-                            ),
-                          ),
-                          Expanded(child: Container()),
-                        ],
+                      IDScannerWidget(
+                        identificationCard: ctrl.idFrontImage.value,
                       ),
 
+                      // scanningDataWidget('Name: Sandra Smith'),
+
+                      // ZAppSize.s13.verticalSpace,
+
+                      // scanningDataWidget('DOB: 28.08.1977'),
+
+                      // ZAppSize.s13.verticalSpace,
+
+                      // scanningDataWidget('Sex: male'),
+
+                      // ZAppSize.s13.verticalSpace,
+
+                      // scanningDataWidget('Expires: 28.09.2027'),
+
+                      // ZAppSize.s13.verticalSpace,
+
+                      // scanningDataWidget('ID Type: Ghana card'),
+                      // ZAppSize.s13.verticalSpace,
+
+                      // Row(
+                      //   children: [
+                      //     Expanded(
+                      //       child: scanningDataWidget(
+                      //         'Pictures',
+                      //         Alignment.center,
+                      //       ),
+                      //     ),
+                      //     Expanded(child: Container()),
+                      //   ],
+                      // ),
                       ZAppSize.s16.verticalSpace,
 
                       // uploaded card images
@@ -138,6 +140,10 @@ class _ZSignupStep9State extends State<ZSignupStep9> {
                                 borderRadius: BorderRadius.circular(
                                   ZAppSize.s5,
                                 ),
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: FileImage(ctrl.idFrontImage.value),
+                                ),
                               ),
                             ),
                           ),
@@ -152,6 +158,10 @@ class _ZSignupStep9State extends State<ZSignupStep9> {
                                 borderRadius: BorderRadius.circular(
                                   ZAppSize.s5,
                                 ),
+                                image: DecorationImage(
+                                  fit: BoxFit.fill,
+                                  image: FileImage(ctrl.idBackImage.value),
+                                ),
                               ),
                             ),
                           ),
@@ -160,41 +170,53 @@ class _ZSignupStep9State extends State<ZSignupStep9> {
 
                       ZAppSize.s16.verticalSpace,
 
-                      Container(
-                        width: ZDeviceUtil.getDeviceWidth(context),
-                        height: ZDeviceUtil.getDeviceHeight(context) * 0.12,
-                        padding: EdgeInsets.all(15),
-                        decoration: BoxDecoration(
-                          color: ZAppColor.blackColor,
-                          border: Border.all(color: ZAppColor.whiteColor),
-                          borderRadius: BorderRadius.circular(ZAppSize.s5),
-                        ),
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CircleAvatar(
-                              radius: 35, // Adjust size
-                              backgroundImage: AssetImage(
-                                Assets.images.slideFour.path,
+                      Obx(
+                        () => Container(
+                          width: ZDeviceUtil.getDeviceWidth(context),
+                          height: ZDeviceUtil.getDeviceHeight(context) * 0.12,
+                          padding: EdgeInsets.all(15),
+                          decoration: BoxDecoration(
+                            color: ZAppColor.blackColor,
+                            border: Border.all(color: ZAppColor.whiteColor),
+                            borderRadius: BorderRadius.circular(ZAppSize.s5),
+                          ),
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CircleAvatar(
+                                radius: 35, // Adjust size
+                                backgroundImage: AssetImage(
+                                  Assets.images.slideFour.path,
+                                ),
                               ),
-                            ),
 
-                            ZAppSize.s16.horizontalSpace,
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  'Sarah Smith ID no.',
-                                  style: Theme.of(context).textTheme.titleLarge,
+                              ZAppSize.s16.horizontalSpace,
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      '${ctrl.idName.value} ID no.',
+                                      style:
+                                          Theme.of(
+                                            context,
+                                          ).textTheme.titleLarge,
+                                    ),
+                                    Text(
+                                      ctrl.idNumber.value.isEmpty
+                                          ? ctrl.numberOnIdTEC.text
+                                          : ctrl.idNumber.value,
+                                      style:
+                                          Theme.of(
+                                            context,
+                                          ).textTheme.titleLarge,
+                                    ),
+                                  ],
                                 ),
-                                Text(
-                                  '234435453466575577656',
-                                  style: Theme.of(context).textTheme.titleLarge,
-                                ),
-                              ],
-                            ),
-                          ],
+                              ),
+                            ],
+                          ),
                         ),
                       ),
 
@@ -213,7 +235,9 @@ class _ZSignupStep9State extends State<ZSignupStep9> {
                   radius: ZAppSize.s5,
                   icon: Assets.icons.arrowRectDiag.svg(height: ZAppSize.s32),
                   onTap:
-                      () => ZHelperFunction.switchScreen(
+                      () =>
+                      //ctrl.submitKYC(context: context),
+                      ZHelperFunction.switchScreen(
                         destination: Routes.progressStatePage,
                         args: [
                           true,
@@ -237,23 +261,6 @@ class _ZSignupStep9State extends State<ZSignupStep9> {
       //     onTap: () {},
       //   ),
       // ),
-    );
-  }
-
-  Widget scanningDataWidget(
-    String text, [
-    Alignment alignament = Alignment.centerLeft,
-  ]) {
-    return Container(
-      alignment: alignament,
-      width: double.infinity,
-      height: ZAppSize.s45,
-      padding: EdgeInsets.symmetric(horizontal: ZAppSize.s15),
-      decoration: BoxDecoration(
-        color: ZAppColor.darkFillColor,
-        borderRadius: BorderRadius.circular(ZAppSize.s5),
-      ),
-      child: Text(text),
     );
   }
 }

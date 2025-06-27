@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:zeazn_invest_app/features/auth/login/login.dart';
 import 'package:zeazn_invest_app/features/auth/signup/signup.dart';
+import 'package:zeazn_invest_app/features/creator/profile/profile.dart';
 
 class DataSourceBinding implements Bindings {
   @override
@@ -8,6 +9,8 @@ class DataSourceBinding implements Bindings {
     Get.lazyPut<LoginDs>(() => LoginDsImpl(), tag: (LoginDs).toString());
 
     Get.lazyPut<SignupDs>(() => SignupDsImpl(), tag: (SignupDs).toString());
+
+    Get.lazyPut<ProfileDs>(() => ProfileDsImpl(), tag: (ProfileDs).toString());
 
     // Get.lazyPut<PostDs>(
     //   () => PostDsImpl(),

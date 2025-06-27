@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
-import 'package:zeazn_invest_app/features/creator/explore/domain/models/project.model.dart';
+import 'package:zeazn_invest_app/features/creator/explore/domain/models/projects.model.dart';
 import 'package:zeazn_invest_app/features/supporter/explore/presentation/vm/s.explore.vm.dart';
 import 'package:zeazn_invest_app/gen/assets.gen.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
 
 class ZChooseSupportTypePage extends StatelessWidget {
-  final Project project;
+  final Projects project;
   ZChooseSupportTypePage({super.key, required this.project});
   final ctrl = Get.find<ZSExploreVM>();
 

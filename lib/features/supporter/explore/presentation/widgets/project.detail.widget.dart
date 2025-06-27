@@ -6,7 +6,7 @@ import 'package:zeazn_invest_app/core/utils/utils.dart';
 import 'package:zeazn_invest_app/features/creator/explore/explore.dart';
 
 class ZProjectDetailWidget extends StatelessWidget {
-  final Project project;
+  final Projects project;
   final Function()? onTap;
   const ZProjectDetailWidget({super.key, required this.project, this.onTap});
 

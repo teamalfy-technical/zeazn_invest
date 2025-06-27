@@ -1,6 +1,7 @@
 import 'package:get/get.dart';
 import 'package:zeazn_invest_app/features/auth/login/login.dart';
 import 'package:zeazn_invest_app/features/auth/signup/signup.dart';
+import 'package:zeazn_invest_app/features/creator/profile/profile.dart';
 
 class ServiceBinding implements Bindings {
   @override
@@ -13,6 +14,11 @@ class ServiceBinding implements Bindings {
     Get.lazyPut<SignupService>(
       () => SignupServiceImpl(),
       tag: (SignupService).toString(),
+    );
+
+    Get.lazyPut<ProfileService>(
+      () => ProfileServiceImpl(),
+      tag: (ProfileService).toString(),
     );
 
     // Get.lazyPut<PostService>(

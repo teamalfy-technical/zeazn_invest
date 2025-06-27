@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:fpdart/src/either.dart';
 import 'package:get/get.dart';
 import 'package:zeazn_invest_app/core/errors/failure.dart';
@@ -75,5 +77,70 @@ class SignupServiceImpl implements SignupService {
     required String email,
   }) {
     return signupRepo.verifyOTPOnRegister(otp: otp, email: email);
+  }
+
+  @override
+  Future<Either<ZFailure, ApiResponse<User>>> submitKYC({
+    required String nameOnId,
+    required String numberOnId,
+    required String idType,
+    required String dobOnId,
+    required String sexOnId,
+    required String expiryDateOnId,
+    required File selfieImage,
+    required File idFrontImage,
+    required File idBackImage,
+  }) {
+    return signupRepo.submitKYC(
+      nameOnId: nameOnId,
+      numberOnId: numberOnId,
+      idType: idType,
+      dobOnId: dobOnId,
+      sexOnId: sexOnId,
+      expiryDateOnId: expiryDateOnId,
+      selfieImage: selfieImage,
+      idFrontImage: idFrontImage,
+      idBackImage: idBackImage,
+    );
+  }
+
+  @override
+  Future<Either<ZFailure, ApiResponse<User>>> updateKYC({
+    required String nameOnId,
+    required String numberOnId,
+    required String idType,
+    required String dobOnId,
+    required String sexOnId,
+    required String expiryDateOnId,
+    required File selfieImage,
+    required File idFrontImage,
+    required File idBackImage,
+  }) {
+    return signupRepo.updateKYC(
+      nameOnId: nameOnId,
+      numberOnId: numberOnId,
+      idType: idType,
+      dobOnId: dobOnId,
+      sexOnId: sexOnId,
+      expiryDateOnId: expiryDateOnId,
+      selfieImage: selfieImage,
+      idFrontImage: idFrontImage,
+      idBackImage: idBackImage,
+    );
+  }
+
+  @override
+  Future<Either<ZFailure, ApiResponse<List<Message>>>> addLocation({
+    required String country,
+    required String city,
+    required double latitude,
+    required double longitude,
+  }) {
+    return signupRepo.addLocation(
+      country: country,
+      city: city,
+      latitude: latitude,
+      longitude: longitude,
+    );
   }
 }

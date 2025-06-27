@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart' as filePicker;
 import 'package:flutter/material.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
@@ -72,6 +73,15 @@ class ZHelperFunction {
     int maxValue = intValues.reduce((a, b) => a > b ? a : b);
 
     return maxValue.toDouble();
+  }
+
+  static Future<File> compressFile(File file) async {
+    final compressedFile = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      '${file.absolute.path}_compressed.jpg',
+      quality: 70, // You can adjust compression ratio
+    );
+    return File(compressedFile?.path ?? file.path);
   }
 
   // open device gallery

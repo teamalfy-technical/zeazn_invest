@@ -33,7 +33,7 @@ class ZCompleteStatePage extends StatelessWidget {
         children: [
           Align(
             alignment: Alignment.center,
-            child: Assets.icons.logoLight.svg(),
+            child: Assets.icons.logoLight.svg(height: ZAppSize.s80),
             //Image.asset(Assets.images.logoLight.path),
           ),
           ZAppSize.s20.verticalSpace,

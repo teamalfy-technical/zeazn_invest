@@ -11,6 +11,7 @@ class ZCustomDropdown<T> extends StatelessWidget {
   final Widget? hint;
   final String hintText;
   final Color fillColor;
+  final Color borderColor;
   final bool filled;
   final List<T> items;
   final Function(T?)? onChanged;
@@ -26,6 +27,7 @@ class ZCustomDropdown<T> extends StatelessWidget {
     required this.hintText,
     required this.label,
     this.fillColor = ZAppColor.blackColor,
+    this.borderColor = ZAppColor.primary,
     this.filled = true,
   });
 
@@ -34,16 +36,20 @@ class ZCustomDropdown<T> extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          label,
-          textAlign: TextAlign.start,
-          style: Theme.of(context).textTheme.bodySmall,
-        ),
-        ZAppSize.s4.verticalSpace,
+        label.isNotEmpty
+            ? Text(
+              label,
+              textAlign: TextAlign.start,
+              style: Theme.of(context).textTheme.bodySmall,
+            )
+            : SizedBox.shrink(),
+        label.isNotEmpty
+            ? ZAppSize.s4.verticalSpace
+            : ZAppSize.s0.verticalSpace,
         SizedBox(
           height: height,
           child: DropdownButtonFormField<T>(
-            focusColor: ZAppColor.fillColor2,
+            focusColor: borderColor, //ZAppColor.fillColor2,
             dropdownColor:
                 ZHelperFunction.isDarkMode(context)
                     ? ZAppColor.lightBlackColor
@@ -57,24 +63,15 @@ class ZCustomDropdown<T> extends StatelessWidget {
                 color: ZAppColor.hintTextColor,
               ),
               border: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  width: ZAppSize.s1,
-                  color: ZAppColor.primary,
-                ),
+                borderSide: BorderSide(width: ZAppSize.s1, color: borderColor),
                 borderRadius: BorderRadius.circular(ZAppSize.s5),
               ),
               enabledBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  width: ZAppSize.s1,
-                  color: ZAppColor.primary,
-                ),
+                borderSide: BorderSide(width: ZAppSize.s1, color: borderColor),
                 borderRadius: BorderRadius.circular(ZAppSize.s5),
               ),
               focusedBorder: OutlineInputBorder(
-                borderSide: const BorderSide(
-                  width: ZAppSize.s1,
-                  color: ZAppColor.primary,
-                ),
+                borderSide: BorderSide(width: ZAppSize.s1, color: borderColor),
                 borderRadius: BorderRadius.circular(ZAppSize.s5),
               ),
               filled: filled,
@@ -84,7 +81,6 @@ class ZCustomDropdown<T> extends StatelessWidget {
                 horizontal: ZAppSize.s10,
               ),
             ),
-
             // hint: hint,
             value: value,
             items:

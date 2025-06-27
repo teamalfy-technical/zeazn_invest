@@ -14,9 +14,11 @@ class ZCustomTextField extends StatelessWidget {
   final int? minLines;
   final int? maxLines;
   final Color? fillColor;
+  final Color borderColor;
   final bool filled;
   final EdgeInsetsGeometry? contentPadding;
   final String? Function(String?)? validator;
+
   final Function(String)? onChanged;
 
   const ZCustomTextField({
@@ -34,6 +36,7 @@ class ZCustomTextField extends StatelessWidget {
     this.maxLines = 1,
     this.onChanged,
     this.fillColor,
+    this.borderColor = ZAppColor.primary,
     this.filled = false,
     this.contentPadding,
   });
@@ -62,14 +65,25 @@ class ZCustomTextField extends StatelessWidget {
           controller: controller,
           validator: validator,
           enabled: enabled,
-          maxLines: maxLines,
           minLines: minLines,
+          maxLines: maxLines,
           onChanged: onChanged,
           decoration: InputDecoration(
             fillColor: fillColor,
             filled: filled,
             contentPadding: contentPadding,
-
+            border: OutlineInputBorder(
+              borderSide: BorderSide(width: ZAppSize.s1, color: borderColor),
+              borderRadius: BorderRadius.circular(ZAppSize.s5),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: ZAppSize.s1, color: borderColor),
+              borderRadius: BorderRadius.circular(ZAppSize.s5),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(width: ZAppSize.s1, color: borderColor),
+              borderRadius: BorderRadius.circular(ZAppSize.s5),
+            ),
             focusColor: focusColor,
             prefixIcon: prefixIcon
                 ?.svg(

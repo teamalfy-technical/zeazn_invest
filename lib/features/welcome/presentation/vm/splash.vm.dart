@@ -32,6 +32,10 @@ class ZSplashVm extends GetxController {
               replace: true,
             );
           } else {
+            // ZHelperFunction.switchScreen(
+            //   destination: Routes.signupStep4,
+            //   replace: true,
+            // );
             ZHelperFunction.switchScreen(
               destination: Routes.creatorDashboardPage,
               replace: true,

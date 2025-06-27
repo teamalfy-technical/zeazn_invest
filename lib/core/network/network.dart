@@ -2,6 +2,7 @@
 export 'helpers/api.service.dart';
 export 'helpers/dio.client.dart';
 export 'response/api.response.dart';
+export 'response/media.upload.response.dart';
 // Response Imports
 export 'response/message.response.dart';
 // Wrapper Imports
