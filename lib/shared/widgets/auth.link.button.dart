@@ -2,13 +2,13 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
 
-class PAuthLinkButton extends StatelessWidget {
+class ZAuthLinkButton extends StatelessWidget {
   final String title;
   final String subtitle;
   final double fontSize;
   final Color? subtitleColor;
   final Function()? onTap;
-  const PAuthLinkButton({
+  const ZAuthLinkButton({
     super.key,
     required this.title,
     required this.subtitle,

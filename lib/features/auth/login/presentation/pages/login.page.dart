@@ -4,8 +4,8 @@ import 'package:get/get.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
 import 'package:zeazn_invest_app/features/auth/login/presentation/vm/login.vm.dart';
 import 'package:zeazn_invest_app/gen/assets.gen.dart';
+import 'package:zeazn_invest_app/routes/app.pages.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
-import 'package:zeazn_invest_app/shared/widgets/custom.button.right.dart';
 import 'package:zeazn_invest_app/shared/widgets/custom.scaffold.dart';
 
 class ZLoginPage extends StatelessWidget {
@@ -66,6 +66,16 @@ class ZLoginPage extends StatelessWidget {
                   backgroundColor: ZAppColor.primary,
                   borderColor: ZAppColor.primary,
                 ),
+              ),
+              ZAppSize.s60.verticalSpace,
+              ZAuthLinkButton(
+                title: '${'dont_have_account'.tr} ',
+                subtitle: 'sign_up'.tr,
+                subtitleColor: ZAppColor.primary,
+                onTap:
+                    () => ZHelperFunction.switchScreen(
+                      destination: Routes.signupStep1,
+                    ),
               ),
             ],
           ).scrollable().symmetric(horizontal: ZAppSize.s18),

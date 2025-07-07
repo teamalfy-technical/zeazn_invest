@@ -175,6 +175,20 @@ extension MyIterable<E> on Iterable<E> {
 //   }
 // }
 
+extension UserRoleExtension on UserRole {
+  String get value {
+    switch (this) {
+      case UserRole.creator:
+        return 'creator';
+      case UserRole.investor:
+        return 'investor';
+      case UserRole.other:
+      default:
+        return 'other';
+    }
+  }
+}
+
 extension StringExtension on String {
   String displayTimeAgoFromTimestamp() {
     final year = int.parse(substring(0, 4));

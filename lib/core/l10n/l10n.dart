@@ -92,6 +92,11 @@ class AppTranslations extends Translations {
       'verifying_docs_msg': 'Zeazn is verifying your documents..',
       'scanning': 'Scanning...',
       'face_id': 'Face ID',
+      'not_applicable': 'N/A',
+      'already_have_account': 'Already have an account?',
+      'dont_have_account': 'Don\'t have an account?',
+      'sign_in': 'Sign in',
+      'sign_up': 'Sign up',
       // 'face_id_desc':
       //     'Scan your face to verify Identity \nPlease look into the camera and hold still',
       'face_id_desc':
@@ -116,9 +121,7 @@ class AppTranslations extends Translations {
       'create_password': 'Create Password',
       'signing_up_msg': 'Zeazn is getting you set up...',
       'welcome_back': 'Welcome Back',
-      'sign_in': 'Sign In',
       'id_type': 'ID Type',
-      'pictures': 'Pictures',
       'submit': 'Submit',
       'driver_license': 'Drivers License',
       'upload_successful': 'Upload Successful',
@@ -137,6 +140,10 @@ class AppTranslations extends Translations {
       'hint_project_title': 'Enter Project Title',
       'description': 'Description',
       'hint_description': 'Describe your project',
+      'short_description': 'Short Description',
+      'hint_short_description': 'Short description of your project',
+      'internal_error_msg':
+          'Something went wrong on our side. Please try again shortly.',
       'category': 'Category',
       'hint_category': 'Select Category',
       'location': 'Location',
@@ -148,8 +155,6 @@ class AppTranslations extends Translations {
       'media_upload': 'Media Upload',
       'media_upload_desc':
           'This is where you upload all media links and videos for your project',
-
-      'action_required': 'Action Required',
       'funding_details': 'Funding Details',
       'funding_details_desc':
           'Slide to the total amount of money that needs to be raised',

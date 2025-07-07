@@ -62,20 +62,31 @@ class ProjectDsImpl implements ProjectDs {
     required int projectId,
     required List<File> media,
   }) async {
+    // zeaznLogger.e(
+    final medias =
+        media
+            .map(
+              (file) async => await dio.MultipartFile.fromFile(
+                file.path,
+                filename: file.path.split('/').last.split('.').first,
+              ),
+            )
+            .toList();
+    // );
     return await asyncFunctionWrapper.handleAsyncNetworkCall(() async {
+      final payload = dio.FormData.fromMap({
+        'media[]': await Future.wait(
+          media.map(
+            (file) => dio.MultipartFile.fromFile(
+              file.path,
+              filename: file.path.split('/').last.split('.').first,
+            ),
+          ),
+        ),
+      });
       final res = await apiService.callService(
         requestType: RequestType.post,
-        payload: dio.FormData.fromMap({
-          'media[]':
-              media
-                  .map(
-                    (file) async => await dio.MultipartFile.fromFile(
-                      file.path,
-                      filename: file.path.split('/').last.split('.').first,
-                    ),
-                  )
-                  .toList(),
-        }),
+        payload: payload,
         endPoint: '${Env.addProjectMedia}/$projectId',
       );
       return MediaUploadResponse.fromJson(res);
@@ -353,6 +364,37 @@ class ProjectDsImpl implements ProjectDs {
         res,
         (data) =>
             (data as List).map((e) => ProjectCategory.fromJson(e)).toList(),
+      );
+    });
+  }
+
+  @override
+  Future<ApiResponse<ProjectReward>> addProjectReward({
+    required int projectId,
+    required String name,
+    required String description,
+    required String amount,
+    required String location,
+    required String dateTime,
+    required String slotsAvailable,
+  }) async {
+    final payload = dio.FormData.fromMap({
+      'project_id': projectId,
+      'reward_name': name,
+      'description': description,
+      'amount': amount,
+      'slots_available': slotsAvailable,
+      //'location': location,
+    });
+    return await asyncFunctionWrapper.handleAsyncNetworkCall(() async {
+      final res = await apiService.callService(
+        requestType: RequestType.post,
+        payload: payload,
+        endPoint: '${Env.addProjectReward}/$projectId',
+      );
+      return ApiResponse<ProjectReward>.fromJson(
+        res,
+        (data) => ProjectReward.fromJson(data),
       );
     });
   }

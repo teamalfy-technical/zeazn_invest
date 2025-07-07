@@ -56,7 +56,7 @@ class ZLoginVm extends GetxController {
         ).errorMessage(title: 'error'.tr, message: err.message);
       },
       (res) {
-        if (res.data?.role == UserRole.creator.name.capitalizeFirst) {
+        if (res.data?.role == UserRole.creator) {
           ZHelperFunction.switchScreen(
             destination: Routes.creatorDashboardPage,
             replace: true,

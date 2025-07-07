@@ -21,6 +21,8 @@ class ZSignupVm extends GetxController {
   final countryTEC = TextEditingController();
   final locationTEC = TextEditingController();
 
+  var loading = LoadingState.completed.obs;
+
   // var nameOnId = ''.obs;
   // var numberOnId = ''.obs;
   // var dobOnId = ''.obs;
@@ -367,6 +369,8 @@ class ZSignupVm extends GetxController {
     // zeaznLogger.e('BackImage: ${idFrontImage.value}');
     checkIfPasswordMatch(context);
 
+    loading(LoadingState.loading);
+
     final result = await signupService.submitKYC(
       nameOnId: nameOnIdTEC.text.trim(),
       numberOnId: numberOnIdTEC.text.trim(),
@@ -380,11 +384,13 @@ class ZSignupVm extends GetxController {
     );
     result.fold(
       (err) {
+        loading(LoadingState.error);
         ZPopupDialog(
           context,
         ).errorMessage(title: 'error'.tr, message: err.message);
       },
       (res) {
+        loading(LoadingState.completed);
         addLocation(context: context);
         // ZHelperFunction.switchScreen(
         //   destination: Routes.signupStep12,

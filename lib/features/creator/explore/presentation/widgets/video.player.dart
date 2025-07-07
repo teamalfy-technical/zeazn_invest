@@ -93,7 +93,7 @@ class _ZVideoPlayerState extends State<ZVideoPlayer> {
               ),
             ),
           ],
-        ).only(bottom: ZAppSize.s24)
+        ).only(bottom: ZAppSize.s20)
         : Container(
           width: ZDeviceUtil.getDeviceWidth(context),
           height: ZAppSize.s200,

@@ -1,8 +1,10 @@
 import 'package:get/get.dart';
+import 'package:zeazn_invest_app/core/bindings/bindings.dart';
 import 'package:zeazn_invest_app/features/auth/login/presentation/vm/login.vm.dart';
 import 'package:zeazn_invest_app/features/auth/signup/presentation/vm/signup.vm.dart';
 import 'package:zeazn_invest_app/features/creator/chat/chat.dart';
 import 'package:zeazn_invest_app/features/creator/dashboard/presentation/vm/dashboard.vm.dart';
+import 'package:zeazn_invest_app/features/creator/explore/presentation/vm/create.project.vm.dart';
 import 'package:zeazn_invest_app/features/creator/explore/presentation/vm/explore.vm.dart';
 import 'package:zeazn_invest_app/features/creator/insights/presentation/vm/insights.vm.dart';
 import 'package:zeazn_invest_app/features/creator/profile/presentation/vm/profile.vm.dart';
@@ -20,7 +22,8 @@ class InitialBinding implements Bindings {
     Get.lazyPut(() => ZLoginVm());
     Get.put(ZSignupVm(), permanent: true);
     Get.lazyPut(() => ZDashboardVm());
-    Get.lazyPut(() => ZExploreVM());
+    Get.lazyPut<ZExploreVM>(() => ZExploreVM());
+    Get.put<ZCreateProjectVM>(ZCreateProjectVM(), permanent: true);
     Get.lazyPut(() => ZSExploreVM());
     Get.lazyPut(() => ZProfileVM());
     Get.lazyPut(() => ZInsightsVM());
@@ -43,14 +46,14 @@ class InitialBinding implements Bindings {
     // Get.lazyPut(() => TSettingsVm());
     // Get.lazyPut(() => TNotificationVm());
 
-    // /// [DataSource] injection
-    // DataSourceBinding().dependencies();
+    /// [DataSource] injection
+    DataSourceBinding().dependencies();
 
-    // /// [Repository] injection
-    // RepoBinding().dependencies();
+    /// [Repository] injection
+    RepoBinding().dependencies();
 
-    // /// [Service] injection
-    // ServiceBinding().dependencies();
+    /// [Service] injection
+    ServiceBinding().dependencies();
 
     // // [Data Wrapper Functions] injection
     // WrapperFxnBinding().dependencies();

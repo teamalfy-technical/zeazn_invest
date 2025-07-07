@@ -7,6 +7,8 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
 import 'package:zeazn_invest_app/features/auth/login/application/service/login.service.impl.dart';
+import 'package:zeazn_invest_app/features/auth/login/domain/models/user.dart';
+import 'package:zeazn_invest_app/features/creator/profile/profile.dart';
 import 'package:zeazn_invest_app/routes/app.pages.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
 
@@ -14,6 +16,7 @@ class ZProfileVM extends GetxController {
   static ZProfileVM get instance => Get.find();
 
   var profileFile = File('').obs;
+  var userProfile = User().obs;
   var legalDocs = <File>[].obs;
 
   var loading = LoadingState.completed.obs;
@@ -26,6 +29,12 @@ class ZProfileVM extends GetxController {
   final bRewardTEC = TextEditingController();
   final bLocationTEC = TextEditingController();
   final bSlotsTEC = TextEditingController();
+
+  @override
+  void onInit() {
+    getProfile();
+    super.onInit();
+  }
 
   // Pick an image.
   Future<void> chooseFromGallery() async {
@@ -85,9 +94,62 @@ class ZProfileVM extends GetxController {
   //   return Image.memory(pageImage.bytes);
   // }
 
+  // Get user profile information
+  Future<void> getProfile() async {
+    loading(LoadingState.loading);
+    final result = await profileService.getProfile();
+    result.fold(
+      (err) {
+        loading(LoadingState.error);
+        ZPopupDialog(
+          context,
+        ).errorMessage(title: 'error'.tr, message: err.message);
+      },
+      (res) {
+        loading(LoadingState.completed);
+        userProfile.value = res.data ?? User();
+      },
+    );
+  }
+
+  // Get other user profile information
+  Future<void> getOtherUserProfile({required String userId}) async {
+    final result = await profileService.showUserProfile(userId: userId);
+    result.fold(
+      (err) {
+        ZPopupDialog(
+          context,
+        ).errorMessage(title: 'error'.tr, message: err.message);
+      },
+      (res) {
+        userProfile.value = res.data ?? User();
+      },
+    );
+  }
+
   // Clear user data, token, etc.
   // Then navigate to login screen
   Future<void> signout() async {
+    final result = await loginService.logout();
+    result.fold(
+      (err) {
+        ZPopupDialog(
+          context,
+        ).errorMessage(title: 'error'.tr, message: err.message);
+      },
+      (res) {
+        clearCache();
+        // navigate to next screen
+        ZHelperFunction.switchScreen(
+          destination: Routes.loginPage,
+          replace: true,
+        );
+      },
+    );
+  }
+
+  /// [Function] to delete user account from system.
+  Future<void> deleteAccount() async {
     final result = await loginService.logout();
     result.fold(
       (err) {

@@ -37,7 +37,7 @@ class ZTrendingProjectsTab extends StatelessWidget {
                 onProfileTap: () {
                   ZHelperFunction.switchScreen(
                     destination: Routes.profilePage,
-                    args: UserRole.creator,
+                    args: ZSecureStorage().getAuthResponse()?.role,
                   );
                 },
                 onTap: () {

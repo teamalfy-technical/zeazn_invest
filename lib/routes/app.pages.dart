@@ -117,7 +117,7 @@ class AppPages {
       name: _Paths.paymentProcessingPage,
       page: () => ZPaymentProcessingPage(),
     ),
-    GetPage(name: _Paths.paymentSucessPage, page: () => ZPaymentSuccessPage()),
+    GetPage(name: _Paths.paymentSuccessPage, page: () => ZPaymentSuccessPage()),
     GetPage(name: _Paths.reportPage, page: () => ZReportPage()),
     GetPage(name: _Paths.sendReportPage, page: () => ZSendReportPage()),
     GetPage(name: _Paths.uploadLegalDocPage, page: () => ZUploadLegalDocPage()),

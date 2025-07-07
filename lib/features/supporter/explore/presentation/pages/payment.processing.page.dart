@@ -43,7 +43,7 @@ class _ZPaymentProcessingPageState extends State<ZPaymentProcessingPage> {
       }
       if (_tick == 6) {
         _timer?.cancel();
-        ZHelperFunction.switchScreen(destination: Routes.paymentSucessPage);
+        ZHelperFunction.switchScreen(destination: Routes.paymentSuccessPage);
       }
     });
   }

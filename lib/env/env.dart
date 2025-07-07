@@ -143,6 +143,10 @@ abstract class Env {
   @EnviedField(defaultValue: '/project/add-media', obfuscate: true)
   static final String addProjectMedia = _Env.addProjectMedia;
 
+  /// [AddProjectRewards] endpoint
+  @EnviedField(defaultValue: '/project/add-reward', obfuscate: true)
+  static final String addProjectReward = _Env.addProjectReward;
+
   /// [GetProjectSupporters] endpoint
   @EnviedField(defaultValue: '/project/supporters', obfuscate: true)
   static final String getProjectSupporters = _Env.getProjectSupporters;

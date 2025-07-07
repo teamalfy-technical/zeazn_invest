@@ -17,6 +17,16 @@ abstract class ProjectService {
     required String location,
   });
 
+  Future<Either<ZFailure, ApiResponse<ProjectReward>>> addProjectReward({
+    required int projectId,
+    required String name,
+    required String description,
+    required String amount,
+    required String location,
+    required String dateTime,
+    required String slotsAvailable,
+  });
+
   Future<Either<ZFailure, ApiResponse<Project>>> addProjectFundingGoal({
     required int projectId,
     required String fundingGoal,

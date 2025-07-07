@@ -21,7 +21,7 @@ class _ZSignupStep10State extends State<ZSignupStep10> {
 
   double _scanDuration = 0.0;
 
-  late Timer _timer;
+  Timer? _timer;
 
   @override
   void initState() {
@@ -35,7 +35,7 @@ class _ZSignupStep10State extends State<ZSignupStep10> {
         if (_scanDuration < 1.0) {
           _scanDuration += 0.1; // Increase progress by 0.1 every second
         } else {
-          _timer.cancel(); // Stop the timer when the progress reaches 100%
+          _timer?.cancel(); // Stop the timer when the progress reaches 100%
         }
       });
       zeaznLogger.e(_scanDuration);
@@ -49,8 +49,8 @@ class _ZSignupStep10State extends State<ZSignupStep10> {
 
   @override
   void dispose() {
-    _timer
-        .cancel(); // Don't forget to cancel the timer when the widget is disposed
+    _timer?.cancel();
+    _timer == null;
     super.dispose();
   }
 

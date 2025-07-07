@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:redacted/redacted.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
 import 'package:zeazn_invest_app/features/creator/profile/profile.dart';
 import 'package:zeazn_invest_app/gen/assets.gen.dart';
@@ -15,12 +16,18 @@ class ZProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final currentUser = ZSecureStorage().getAuthResponse();
+    ctrl.getProfile();
     return Scaffold(
       backgroundColor: ZAppColor.offWhiteColor,
       // logoPath: Assets.images.zeaznLogoDark.path,
       body: SafeArea(
         child: Obx(
-          () => Column(
+          () =>
+          // ctrl.loading.value == LoadingState.loading
+          //     ? ZCustomLoadingIndicator(color: ZAppColor.primary)
+          //     :
+          Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               ZAppSize.s20.verticalSpace,
@@ -32,10 +39,15 @@ class ZProfilePage extends StatelessWidget {
                 //     color: ZAppColor.blackColor,
                 //   ),
                 // ),
-                Icon(
-                  Icons.arrow_back_ios,
-                  color: ZAppColor.blackColor,
-                ).onPressed(onTap: () => ZHelperFunction.pop()),
+                Icon(Icons.arrow_back_ios, color: ZAppColor.blackColor)
+                    .onPressed(onTap: () => ZHelperFunction.pop())
+                    .redacted(
+                      context: context,
+                      redact:
+                          ctrl.loading.value == LoadingState.loading
+                              ? true
+                              : false,
+                    ),
 
               Expanded(
                 child:
@@ -84,7 +96,13 @@ class ZProfilePage extends StatelessWidget {
                               ),
                             ),
                           ],
-                        ).centered(),
+                        ).centered().redacted(
+                          context: context,
+                          redact:
+                              ctrl.loading.value == LoadingState.loading
+                                  ? true
+                                  : false,
+                        ),
 
                         ZAppSize.s20.verticalSpace,
                         // Name
@@ -97,12 +115,24 @@ class ZProfilePage extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               color: ZAppColor.blackColor,
                             ),
+                          ).redacted(
+                            context: context,
+                            redact:
+                                ctrl.loading.value == LoadingState.loading
+                                    ? true
+                                    : false,
                           ),
                           isExpanded: true,
                           showDivider: false,
-                          expandedIcon: Assets.icons.arrowDownIos.svg(
-                            color: ZAppColor.primary,
-                          ),
+                          expandedIcon: Assets.icons.arrowDownIos
+                              .svg(color: ZAppColor.primary)
+                              .redacted(
+                                context: context,
+                                redact:
+                                    ctrl.loading.value == LoadingState.loading
+                                        ? true
+                                        : false,
+                              ),
                           collapsedIcon: Assets.icons.arrowForwardIos.svg(
                             color: ZAppColor.text500,
                           ),
@@ -121,7 +151,8 @@ class ZProfilePage extends StatelessWidget {
                                 ),
                               ),
                               child: Text(
-                                'Angela White',
+                                ctrl.userProfile.value.name ??
+                                    'not_applicable'.tr,
                                 style: Theme.of(
                                   context,
                                 ).textTheme.bodyMedium?.copyWith(
@@ -129,6 +160,12 @@ class ZProfilePage extends StatelessWidget {
                                   color: ZAppColor.text500,
                                 ),
                               ),
+                            ).redacted(
+                              context: context,
+                              redact:
+                                  ctrl.loading.value == LoadingState.loading
+                                      ? true
+                                      : false,
                             ),
                           ],
                         ),
@@ -143,14 +180,26 @@ class ZProfilePage extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               color: ZAppColor.blackColor,
                             ),
+                          ).redacted(
+                            context: context,
+                            redact:
+                                ctrl.loading.value == LoadingState.loading
+                                    ? true
+                                    : false,
                           ),
                           showDivider: false,
                           expandedIcon: Assets.icons.arrowDownIos.svg(
                             color: ZAppColor.primary,
                           ),
-                          collapsedIcon: Assets.icons.arrowForwardIos.svg(
-                            color: ZAppColor.text500,
-                          ),
+                          collapsedIcon: Assets.icons.arrowForwardIos
+                              .svg(color: ZAppColor.text500)
+                              .redacted(
+                                context: context,
+                                redact:
+                                    ctrl.loading.value == LoadingState.loading
+                                        ? true
+                                        : false,
+                              ),
                           children: [
                             Container(
                               width: ZDeviceUtil.getDeviceWidth(context),
@@ -166,7 +215,8 @@ class ZProfilePage extends StatelessWidget {
                                 ),
                               ),
                               child: Text(
-                                'angelawhite@gmail.com',
+                                ctrl.userProfile.value.email ??
+                                    'not_applicable'.tr,
                                 style: Theme.of(
                                   context,
                                 ).textTheme.bodyMedium?.copyWith(
@@ -174,6 +224,12 @@ class ZProfilePage extends StatelessWidget {
                                   color: ZAppColor.text500,
                                 ),
                               ),
+                            ).redacted(
+                              context: context,
+                              redact:
+                                  ctrl.loading.value == LoadingState.loading
+                                      ? true
+                                      : false,
                             ),
                           ],
                         ),
@@ -188,14 +244,26 @@ class ZProfilePage extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               color: ZAppColor.blackColor,
                             ),
+                          ).redacted(
+                            context: context,
+                            redact:
+                                ctrl.loading.value == LoadingState.loading
+                                    ? true
+                                    : false,
                           ),
                           showDivider: false,
                           expandedIcon: Assets.icons.arrowDownIos.svg(
                             color: ZAppColor.primary,
                           ),
-                          collapsedIcon: Assets.icons.arrowForwardIos.svg(
-                            color: ZAppColor.text500,
-                          ),
+                          collapsedIcon: Assets.icons.arrowForwardIos
+                              .svg(color: ZAppColor.text500)
+                              .redacted(
+                                context: context,
+                                redact:
+                                    ctrl.loading.value == LoadingState.loading
+                                        ? true
+                                        : false,
+                              ),
                           children: [
                             Container(
                               width: ZDeviceUtil.getDeviceWidth(context),
@@ -211,7 +279,8 @@ class ZProfilePage extends StatelessWidget {
                                 ),
                               ),
                               child: Text(
-                                'California, United States',
+                                ctrl.userProfile.value.country ??
+                                    'not_applicable'.tr,
                                 style: Theme.of(
                                   context,
                                 ).textTheme.bodyMedium?.copyWith(
@@ -219,6 +288,12 @@ class ZProfilePage extends StatelessWidget {
                                   color: ZAppColor.text500,
                                 ),
                               ),
+                            ).redacted(
+                              context: context,
+                              redact:
+                                  ctrl.loading.value == LoadingState.loading
+                                      ? true
+                                      : false,
                             ),
                           ],
                         ),
@@ -233,14 +308,26 @@ class ZProfilePage extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               color: ZAppColor.blackColor,
                             ),
+                          ).redacted(
+                            context: context,
+                            redact:
+                                ctrl.loading.value == LoadingState.loading
+                                    ? true
+                                    : false,
                           ),
 
                           expandedIcon: Assets.icons.arrowDownIos.svg(
                             color: ZAppColor.primary,
                           ),
-                          collapsedIcon: Assets.icons.arrowForwardIos.svg(
-                            color: ZAppColor.text500,
-                          ),
+                          collapsedIcon: Assets.icons.arrowForwardIos
+                              .svg(color: ZAppColor.text500)
+                              .redacted(
+                                context: context,
+                                redact:
+                                    ctrl.loading.value == LoadingState.loading
+                                        ? true
+                                        : false,
+                              ),
                           showDivider: false,
                           children: [
                             Container(
@@ -257,7 +344,8 @@ class ZProfilePage extends StatelessWidget {
                                 ),
                               ),
                               child: Text(
-                                '233546788890',
+                                ctrl.userProfile.value.phone ??
+                                    'not_applicable'.tr,
                                 style: Theme.of(
                                   context,
                                 ).textTheme.bodyMedium?.copyWith(
@@ -265,6 +353,12 @@ class ZProfilePage extends StatelessWidget {
                                   color: ZAppColor.text500,
                                 ),
                               ),
+                            ).redacted(
+                              context: context,
+                              redact:
+                                  ctrl.loading.value == LoadingState.loading
+                                      ? true
+                                      : false,
                             ),
                           ],
                         ),
@@ -279,14 +373,32 @@ class ZProfilePage extends StatelessWidget {
                               fontWeight: FontWeight.w400,
                               color: ZAppColor.blackColor,
                             ),
+                          ).redacted(
+                            context: context,
+                            redact:
+                                ctrl.loading.value == LoadingState.loading
+                                    ? true
+                                    : false,
                           ),
-                          expandedIcon: Assets.icons.arrowDownIos.svg(
-                            color: ZAppColor.primary,
-                          ),
-                          collapsedIcon: Assets.icons.arrowForwardIos.svg(
-                            color: ZAppColor.text500,
-                          ),
-                          isExpanded: true,
+                          expandedIcon: Assets.icons.arrowDownIos
+                              .svg(color: ZAppColor.primary)
+                              .redacted(
+                                context: context,
+                                redact:
+                                    ctrl.loading.value == LoadingState.loading
+                                        ? true
+                                        : false,
+                              ),
+                          collapsedIcon: Assets.icons.arrowForwardIos
+                              .svg(color: ZAppColor.text500)
+                              .redacted(
+                                context: context,
+                                redact:
+                                    ctrl.loading.value == LoadingState.loading
+                                        ? true
+                                        : false,
+                              ),
+                          isExpanded: false,
                           showDivider: false,
                           children: [
                             Row(
@@ -319,11 +431,17 @@ class ZProfilePage extends StatelessWidget {
                                   ),
                                 ),
                               ],
+                            ).redacted(
+                              context: context,
+                              redact:
+                                  ctrl.loading.value == LoadingState.loading
+                                      ? true
+                                      : false,
                             ),
                           ],
                         ),
 
-                        if (role == UserRole.creator)
+                        if (currentUser?.role == UserRole.creator)
                           Column(
                             children: [
                               ZAppSize.s14.verticalSpace,
@@ -342,9 +460,15 @@ class ZProfilePage extends StatelessWidget {
                                     ),
                               ),
                             ],
+                          ).redacted(
+                            context: context,
+                            redact:
+                                ctrl.loading.value == LoadingState.loading
+                                    ? true
+                                    : false,
                           ),
 
-                        if (role == UserRole.investor)
+                        if (currentUser?.role == UserRole.investor)
                           Column(
                             children: [
                               ZAppSize.s14.verticalSpace,
@@ -364,28 +488,50 @@ class ZProfilePage extends StatelessWidget {
                                 },
                               ),
                             ],
+                          ).redacted(
+                            context: context,
+                            redact:
+                                ctrl.loading.value == LoadingState.loading
+                                    ? true
+                                    : false,
                           ),
 
                         ZAppSize.s24.verticalSpace,
                         Text(
-                          'logout'.tr,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: ZAppColor.blackColor,
-                          ),
-                        ).onPressed(onTap: () => ctrl.signout()),
+                              'logout'.tr,
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w400,
+                                color: ZAppColor.blackColor,
+                              ),
+                            )
+                            .onPressed(onTap: () => ctrl.signout())
+                            .redacted(
+                              context: context,
+                              redact:
+                                  ctrl.loading.value == LoadingState.loading
+                                      ? true
+                                      : false,
+                            ),
                         ZAppSize.s24.verticalSpace,
                         Text(
-                          'delete_account'.tr,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyMedium?.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: ZAppColor.redColor,
-                          ),
-                        ).onPressed(onTap: () {}),
+                              'delete_account'.tr,
+                              style: Theme.of(
+                                context,
+                              ).textTheme.bodyMedium?.copyWith(
+                                fontWeight: FontWeight.w400,
+                                color: ZAppColor.redColor,
+                              ),
+                            )
+                            .onPressed(onTap: () {})
+                            .redacted(
+                              context: context,
+                              redact:
+                                  ctrl.loading.value == LoadingState.loading
+                                      ? true
+                                      : false,
+                            ),
                         ZAppSize.s16.verticalSpace,
                       ],
                     ).scrollable(),
@@ -394,7 +540,8 @@ class ZProfilePage extends StatelessWidget {
           ),
         ).symmetric(
           horizontal:
-              (role == UserRole.investor || role == UserRole.creator)
+              (currentUser?.role == UserRole.investor ||
+                      role == UserRole.creator)
                   ? ZAppSize.s18
                   : ZAppSize.s0,
         ),

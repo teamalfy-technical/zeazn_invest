@@ -1,4 +1,5 @@
 import 'package:device_preview/device_preview.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -10,10 +11,11 @@ import 'package:zeazn_invest_app/core/bindings/bindings.dart';
 import 'package:zeazn_invest_app/core/l10n/l10n.dart';
 import 'package:zeazn_invest_app/core/theme/app.theme.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
+import 'package:zeazn_invest_app/firebase_options.dart';
 import 'package:zeazn_invest_app/routes/app.pages.dart';
 
 Future<void> main() async {
-  await GetStorage.init();
+  await initDependencies();
   // Lock to portrait only
   await SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
@@ -64,4 +66,29 @@ class MyApp extends StatelessWidget {
       },
     );
   }
+}
+
+Future<void> initDependencies() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // await Env.init();
+  // final currentEnv = await Environment.current();
+  // pensionAppLogger.e("Connecting to ${currentEnv.apiBaseUrl}");
+  await GetStorage.init();
+  //🔐 Initialize Firebase first
+  await initFirebaseApp();
+
+  // await FirebaseCrashlytics.instance.setCrashlyticsCollectionEnabled(
+  //   !kDebugMode,
+  // );
+
+  // // Optional: capture Flutter errors automatically
+  // FlutterError.onError = FirebaseCrashlytics.instance.recordFlutterFatalError;
+
+  // FirebaseMessaging.onBackgroundMessage(_backgroundHandler);
+}
+
+Future<void> initFirebaseApp() async {
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+
+  // await PNotificationService().init();
 }

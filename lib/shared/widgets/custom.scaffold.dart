@@ -5,7 +5,13 @@ import 'package:zeazn_invest_app/gen/assets.gen.dart';
 class ZCustomScaffold extends StatelessWidget {
   final Widget child;
   final double? top;
-  const ZCustomScaffold({super.key, required this.child, this.top});
+  //final bool showSignInLink;
+  const ZCustomScaffold({
+    super.key,
+    required this.child,
+    this.top,
+    // this.showSignInLink = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +40,33 @@ class ZCustomScaffold extends StatelessWidget {
             child: Assets.icons.loveSmIcon.svg(),
           ),
           Positioned(
-            bottom: 0, // ZDeviceUtil.getDeviceHeight(context) * 0.0,
+            bottom:
+                //  showSignInLink ? ZDeviceUtil.getDeviceWidth(context) * 0.06 :
+                0,
             right: ZDeviceUtil.getDeviceWidth(context) * 0.1,
             left: ZDeviceUtil.getDeviceWidth(context) * 0.1,
-
             child: Assets.icons.logoDark.svg(height: ZAppSize.s80),
           ),
+
+          // showSignInLink
+          //     ? Positioned(
+          //       bottom: ZDeviceUtil.getDeviceWidth(context) * 0.02,
+          //       right: ZDeviceUtil.getDeviceWidth(context) * 0.1,
+          //       left: ZDeviceUtil.getDeviceWidth(context) * 0.1,
+          //       child: ZAuthLinkButton(
+          //         title: '${'already_have_account'.tr} ',
+          //         subtitle: 'sign_in'.tr,
+          //         subtitleColor: ZAppColor.primary,
+          //         onTap:
+          //             () => ZHelperFunction.switchScreen(
+          //               destination: Routes.loginPage,
+          //             ),
+          //       ),
+          //     )
+          //     : Align(
+          //       alignment: Alignment.bottomCenter,
+          //       child: SizedBox.shrink(),
+          //     ),
 
           // form
           Positioned(

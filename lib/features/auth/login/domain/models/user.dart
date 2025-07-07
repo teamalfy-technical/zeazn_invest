@@ -1,3 +1,5 @@
+import 'package:zeazn_invest_app/core/utils/utils.dart';
+
 class User {
   String? token;
   String? name;
@@ -5,7 +7,7 @@ class User {
   String? phone;
   String? avatar;
   String? country;
-  String? role;
+  UserRole? role;
   String? kycVerifyStatus;
   String? kycVerifiedAt;
   String? emailVerifiedAt;
@@ -40,7 +42,8 @@ class User {
     phone = json['phone'];
     avatar = json['avatar'];
     country = json['country'];
-    role = json['role'];
+    role = userRoleFromString(json['role']);
+    //json['role'] == 'Creator' ? UserRole.creator : UserRole.investor;
     kycVerifyStatus = json['kyc_verify_status'];
     kycVerifiedAt = json['kyc_verified_at'];
     emailVerifiedAt = json['email_verified_at'];
@@ -59,7 +62,7 @@ class User {
     data['phone'] = phone;
     data['avatar'] = avatar;
     data['country'] = country;
-    data['role'] = role;
+    data['role'] = role?.value;
     data['kyc_verify_status'] = kycVerifyStatus;
     data['kyc_verified_at'] = kycVerifiedAt;
     data['email_verified_at'] = emailVerifiedAt;
@@ -69,5 +72,16 @@ class User {
     data['last_login_device'] = lastLoginDevice;
     data['last_login_browser'] = lastLoginBrowser;
     return data;
+  }
+
+  UserRole userRoleFromString(String? value) {
+    switch (value?.toLowerCase()) {
+      case 'creator':
+        return UserRole.creator;
+      case 'investor':
+        return UserRole.investor;
+      default:
+        return UserRole.other;
+    }
   }
 }

@@ -15,6 +15,16 @@ abstract class ProjectDs {
     required String location,
   });
 
+  Future<ApiResponse<ProjectReward>> addProjectReward({
+    required int projectId,
+    required String name,
+    required String description,
+    required String amount,
+    required String location,
+    required String dateTime,
+    required String slotsAvailable,
+  });
+
   Future<ApiResponse<Project>> addProjectFundingGoal({
     required int projectId,
     required String fundingGoal,

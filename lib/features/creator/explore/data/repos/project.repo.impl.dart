@@ -234,4 +234,28 @@ class ProjectRepoImpl implements ProjectRepo {
       function: () async => await projectDs.getProjectCategories(name: name),
     );
   }
+
+  @override
+  Future<Either<ZFailure, ApiResponse<ProjectReward>>> addProjectReward({
+    required int projectId,
+    required String name,
+    required String description,
+    required String amount,
+    required String location,
+    required String dateTime,
+    required String slotsAvailable,
+  }) async {
+    return await customRepositoryWrapper.wrapRepositoryFunction(
+      function:
+          () async => await projectDs.addProjectReward(
+            projectId: projectId,
+            name: name,
+            description: description,
+            amount: amount,
+            location: location,
+            dateTime: dateTime,
+            slotsAvailable: slotsAvailable,
+          ),
+    );
+  }
 }

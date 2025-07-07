@@ -253,18 +253,21 @@ class _ZSignupStep11State extends State<ZSignupStep11> {
 
             _isLoading
                 ? SizedBox.shrink()
-                : Positioned(
-                  bottom: ZDeviceUtil.getDeviceHeight(context) * 0.1,
-                  right: ZAppSize.s0,
-                  child: SizedBox(
-                    width: ZDeviceUtil.getDeviceWidth(context) * 0.55,
-                    child: ZCustomButton(
-                      label: 'submit'.tr,
-                      radius: ZAppSize.s5,
-                      icon: Assets.icons.arrowRectDiag.svg(
-                        height: ZAppSize.s32,
+                : Obx(
+                  () => Positioned(
+                    bottom: ZDeviceUtil.getDeviceHeight(context) * 0.1,
+                    right: ZAppSize.s0,
+                    child: SizedBox(
+                      width: ZDeviceUtil.getDeviceWidth(context) * 0.55,
+                      child: ZCustomButton(
+                        label: 'submit'.tr,
+                        radius: ZAppSize.s5,
+                        loading: ctrl.loading.value,
+                        icon: Assets.icons.arrowRectDiag.svg(
+                          height: ZAppSize.s32,
+                        ),
+                        onTap: () => ctrl.submitKYC(context: context),
                       ),
-                      onTap: () => ctrl.submitKYC(context: context),
                     ),
                   ),
                 ),

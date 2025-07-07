@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
 import 'package:zeazn_invest_app/gen/assets.gen.dart';
+import 'package:zeazn_invest_app/shared/widgets/custom.loading.indicator.dart';
 
 class ZCustomButton extends StatelessWidget {
   final String label;
@@ -10,6 +11,7 @@ class ZCustomButton extends StatelessWidget {
   final SvgPicture? icon;
   final double? radius;
   final double fontSize;
+  final LoadingState loading;
   const ZCustomButton({
     super.key,
     required this.label,
@@ -17,6 +19,7 @@ class ZCustomButton extends StatelessWidget {
     this.icon,
     this.radius,
     this.fontSize = ZAppSize.s20,
+    this.loading = LoadingState.completed,
   });
 
   @override
@@ -46,9 +49,13 @@ class ZCustomButton extends StatelessWidget {
             ),
           ),
           ZAppSize.s4.horizontalSpace,
-          icon ?? Assets.icons.arrowRectRightIcon.svg(height: ZAppSize.s32),
+          loading == LoadingState.loading
+              ? ZCustomLoadingIndicator()
+              : icon ??
+                  Assets.icons.arrowRectRightIcon.svg(height: ZAppSize.s32),
         ],
       ),
     ).onPressed(onTap: onTap);
+    //loading == LoadingState.loading ? null :
   }
 }

@@ -44,7 +44,7 @@ abstract class Routes {
   static const chooseSupportTypePage = _Paths.chooseSupportTypePage;
   static const chooseCardPage = _Paths.chooseCardPage;
   static const paymentProcessingPage = _Paths.paymentProcessingPage;
-  static const paymentSucessPage = _Paths.paymentSucessPage;
+  static const paymentSuccessPage = _Paths.paymentSuccessPage;
   static const topPerformingCampaignPage = _Paths.topPerformingCampaignPage;
   static const performanceOverviewPage = _Paths.performanceOverviewPage;
   static const rateProjectPage = _Paths.rateProjectPage;
@@ -90,13 +90,13 @@ abstract class _Paths {
   static const mediaUploadPage = '/media-upload-page';
   static const fundingDetailsPage = '/funding-details-page';
   static const chatPage = '/chat-page';
-  static const profilePage = '/prorfile-page';
+  static const profilePage = '/profile-page';
   static const messagingPage = '/messaging-page';
   static const exclusiveExperiencesPage = '/exclusive-experiences-page';
   static const supporterDashboardPage = '/supporter-dashboard-page';
   static const paymentMethodPage = '/payment-method-page';
   static const paymentProcessingPage = '/payment-processing-page';
-  static const paymentSucessPage = '/payment-success-page';
+  static const paymentSuccessPage = '/payment-success-page';
   static const topPerformingCampaignPage = '/top-performing-campaign-page';
   static const performanceOverviewPage = '/performance-overview-page';
   static const rateProjectPage = '/rate-project-page';

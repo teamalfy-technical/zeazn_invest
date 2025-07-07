@@ -10,10 +10,11 @@ class ZCustomDropdown<T> extends StatelessWidget {
   final T? value;
   final Widget? hint;
   final String hintText;
+  final Color focusColor;
   final Color fillColor;
   final Color borderColor;
   final bool filled;
-  final List<T> items;
+  final List<DropdownMenuItem<T>>? items;
   final Function(T?)? onChanged;
 
   ZCustomDropdown({
@@ -26,6 +27,7 @@ class ZCustomDropdown<T> extends StatelessWidget {
     this.hint,
     required this.hintText,
     required this.label,
+    this.focusColor = ZAppColor.blackColor,
     this.fillColor = ZAppColor.blackColor,
     this.borderColor = ZAppColor.primary,
     this.filled = true,
@@ -49,7 +51,7 @@ class ZCustomDropdown<T> extends StatelessWidget {
         SizedBox(
           height: height,
           child: DropdownButtonFormField<T>(
-            focusColor: borderColor, //ZAppColor.fillColor2,
+            focusColor: focusColor, //ZAppColor.fillColor2,
             dropdownColor:
                 ZHelperFunction.isDarkMode(context)
                     ? ZAppColor.lightBlackColor
@@ -83,18 +85,17 @@ class ZCustomDropdown<T> extends StatelessWidget {
             ),
             // hint: hint,
             value: value,
-            items:
-                items
-                    .map(
-                      (e) => DropdownMenuItem(
-                        value: e,
-                        child: Text(
-                          '$e',
-                          style: Theme.of(context).textTheme.bodySmall,
-                        ),
-                      ),
-                    )
-                    .toList(),
+            items: items,
+            // .map(
+            //   (e) => DropdownMenuItem(
+            //     value: e,
+            //     child: Text(
+            //       '$e',
+            //       style: Theme.of(context).textTheme.bodySmall,
+            //     ),
+            //   ),
+            // )
+            // .toList(),
             onChanged: onChanged,
           ),
         ),

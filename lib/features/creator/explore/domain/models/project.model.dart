@@ -158,6 +158,56 @@ class Project {
   }
 }
 
+class ProjectReward {
+  int? rewardId;
+  String? projectId;
+  String? rewardName;
+  String? description;
+  String? amount;
+  String? slotsAvailable;
+  dynamic slotsClaimed;
+  String? createdAt;
+  String? updatedAt;
+
+  ProjectReward({
+    this.rewardId,
+    this.projectId,
+    this.rewardName,
+    this.description,
+    this.amount,
+    this.slotsAvailable,
+    this.slotsClaimed,
+    this.createdAt,
+    this.updatedAt,
+  });
+
+  ProjectReward.fromJson(Map<String, dynamic> json) {
+    rewardId = json['reward_id'];
+    projectId = json['project_id'];
+    rewardName = json['reward_name'];
+    description = json['description'];
+    amount = json['amount'];
+    slotsAvailable = json['slots_available'];
+    slotsClaimed = json['slots_claimed'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['reward_id'] = rewardId;
+    data['project_id'] = projectId;
+    data['reward_name'] = rewardName;
+    data['description'] = description;
+    data['amount'] = amount;
+    data['slots_available'] = slotsAvailable;
+    data['slots_claimed'] = slotsClaimed;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
+    return data;
+  }
+}
+
 class ProjectDeal {
   int? rewardId;
   String? rewardName;
@@ -491,4 +541,17 @@ class ProjectCategory {
     data['updated_at'] = updatedAt;
     return data;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ProjectCategory &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
+
+  @override
+  int get hashCode => id.hashCode;
+
+  @override
+  String toString() => name ?? ''; // For easier debugging
 }

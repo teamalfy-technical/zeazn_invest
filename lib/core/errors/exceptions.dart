@@ -12,16 +12,12 @@ class TimeoutException implements Exception {
 }
 
 class BadRequestException implements Exception {
-  const BadRequestException({
-    required this.message,
-  });
+  const BadRequestException({required this.message});
   final String message;
 }
 
 class UnauthorisedException implements Exception {
-  const UnauthorisedException({
-    required this.message,
-  });
+  const UnauthorisedException({required this.message});
   final String message;
 }
 
@@ -47,10 +43,12 @@ class ServerException implements Exception {
     } else if (e.type == DioExceptionType.receiveTimeout) {
       message = 'Server took soo long respond.\nPlease try again';
     } else if (e.type == DioExceptionType.badResponse) {
-      message = 'Service unavailable';
+      message = 'internal_error_msg'.tr;
     } else if (e.type == DioExceptionType.cancel) {
       message = 'Request Cancelled';
+    } else if (e.type == DioExceptionType.unknown) {
+      message = 'An unknown error occurred. Please try again shortly';
     }
-    return message!;
+    return message;
   }
 }

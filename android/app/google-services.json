@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "607762154066",
+    "project_id": "zeazn-fae18",
+    "storage_bucket": "zeazn-fae18.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:607762154066:android:ea310aa1f7c0dbaa32958b",
+        "android_client_info": {
+          "package_name": "com.zeazn.invest.app.zeazn_invest_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBWZjfNejilaYfgSKFohlIXTyIYxy_ZyWc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

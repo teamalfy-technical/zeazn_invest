@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
-import 'package:zeazn_invest_app/features/creator/explore/domain/models/plan.model.dart';
-import 'package:zeazn_invest_app/features/creator/explore/presentation/vm/explore.vm.dart';
+import 'package:zeazn_invest_app/features/creator/explore/explore.dart';
 import 'package:zeazn_invest_app/gen/assets.gen.dart';
 import 'package:zeazn_invest_app/routes/app.pages.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
@@ -11,8 +10,7 @@ import 'package:zeazn_invest_app/shared/widgets/custom.container.dart';
 
 class ZExclusiveExperiencesPage extends StatelessWidget {
   ZExclusiveExperiencesPage({super.key});
-
-  final ctrl = Get.find<ZExploreVM>();
+  final ctrl = Get.find<ZCreateProjectVM>();
 
   @override
   Widget build(BuildContext context) {
@@ -33,34 +31,20 @@ class ZExclusiveExperiencesPage extends StatelessWidget {
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(),
           ),
           ZAppSize.s20.verticalSpace,
-          Expanded(
-            child: GetBuilder<ZExploreVM>(
-              builder: (controller) {
-                return ListView.builder(
-                  itemCount: ctrl.plans.length,
-                  itemBuilder: (context, index) {
-                    return planWidget(context, ctrl.plans[index], index);
-                  },
-                );
-              },
-            ),
-            // Column(
-            //   children:
-            //       ctrl.plans
-            //           .map((plan) => basicPlanWidget(context, plan))
-            //           .toList(),
-            //   // children: [
-            //   //   // Basic Subscription
-            //   //   basicPlanWidget(context),
-            //   //   ZAppSize.s24.verticalSpace,
-            //   //   // Standard Subscription
-            //   //   standardPlanWidget(context),
-            //   //   ZAppSize.s24.verticalSpace,
-            //   //   // Premium Subscription
-            //   //   premiumPlanWidget(context),
-            //   // ],
-            // ).scrollable(),
-          ),
+          Expanded(child: planWidget(context, ctrl)),
+          // Expanded(
+          //   child: GetBuilder<ZExploreVM>(
+          //     builder: (controller) {
+          //       return ListView.builder(
+          //         itemCount: ctrl.plans.length,
+          //         itemBuilder: (context, index) {
+          //           return planWidget(context, ctrl.plans[index], index);
+          //         },
+          //       );
+          //     },
+          //   ),
+
+          // ),
           ZAppSize.s24.verticalSpace,
           Row(
             children: [
@@ -187,22 +171,16 @@ class ZExclusiveExperiencesPage extends StatelessWidget {
                     ),
                     ZAppSize.s16.verticalSpace,
                     // continue button
-                    SizedBox(
-                      width: ZDeviceUtil.getDeviceWidth(context) * 0.5,
-                      child: ZCustomButton(
-                        label: 'continue'.tr,
-                        radius: ZAppSize.s5,
-                        icon: Assets.icons.arrowRectDiag.svg(),
-                        onTap:
-                            () => ZHelperFunction.switchScreen(
-                              destination: Routes.progressStatePage,
-                              args: [
-                                true,
-                                Routes.creatorDashboardPage,
-                                'creating_project_msg'.tr,
-                                null,
-                              ],
-                            ),
+                    Obx(
+                      () => SizedBox(
+                        width: ZDeviceUtil.getDeviceWidth(context) * 0.5,
+                        child: ZCustomButton(
+                          label: 'continue'.tr,
+                          radius: ZAppSize.s5,
+                          icon: Assets.icons.arrowRectDiag.svg(),
+                          loading: ctrl.loading.value,
+                          onTap: () => ctrl.addProjectRewards(context: context),
+                        ),
                       ),
                     ),
                   ],
@@ -250,135 +228,145 @@ class ZExclusiveExperiencesPage extends StatelessWidget {
     );
   }
 
-  Widget planWidget(BuildContext context, Plan plan, int index) {
-    zeaznLogger.e(plan.toString());
-    return Column(
-      children: [
-        ZCustomTextField(
-          labelText: plan.title ?? '',
-          hintText: 'price_hint'.tr,
-          fillColor: ZAppColor.blackColor,
-          filled: true,
-          prefixIcon: null,
-          textInputType: TextInputType.numberWithOptions(decimal: true),
-          onChanged: (val) => plan.price = val,
-        ),
-        ZAppSize.s16.verticalSpace,
-        ZCustomTextField(
-          labelText: '',
-          hintText: 'experience_reward_title'.tr,
-          fillColor: ZAppColor.blackColor,
-          filled: true,
-          prefixIcon: null,
-          textInputType: TextInputType.text,
-          onChanged: (val) => plan.reward = val,
-        ),
-        ZAppSize.s16.verticalSpace,
-        ZCustomTextField(
-          labelText: '',
-          hintText: 'description_hint'.tr,
-          fillColor: ZAppColor.blackColor,
-          filled: true,
-          prefixIcon: null,
-          maxLines: 4,
-          textInputType: TextInputType.multiline,
-          onChanged: (val) => plan.description = val,
-        ),
-        ZAppSize.s16.verticalSpace,
-        ZCustomTextField(
-          labelText: '',
-          hintText: 'location'.tr,
-          fillColor: ZAppColor.blackColor,
-          filled: true,
-          prefixIcon: null,
-          textInputType: TextInputType.text,
-          onChanged: (val) => plan.location = val,
-        ),
-        ZAppSize.s16.verticalSpace,
-        ZCustomTextField(
-          labelText: '',
-          hintText: 'slots_available'.tr,
-          fillColor: ZAppColor.blackColor,
-          filled: true,
-          prefixIcon: null,
-          textInputType: TextInputType.number,
-          onChanged: (val) => plan.slots = val,
-        ),
-        ZAppSize.s16.verticalSpace,
-        SizedBox(
-          height: ZDeviceUtil.getDeviceHeight(context) * 0.12,
-          child: Row(
+  Widget planWidget(BuildContext context, ZCreateProjectVM ctrl) {
+    return Form(
+      key: ctrl.rewardSetupFormKey,
+      child:
+          Column(
             children: [
-              Expanded(
-                flex: 3,
-                child: ZCustomContainer(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Expanded(
-                        child: Text(
-                          plan.dateTime ?? 'date_time'.tr,
-                          textAlign: TextAlign.start,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyLarge?.copyWith(
-                            fontSize: ZAppSize.s14,
-                            fontWeight: FontWeight.w500,
-                            color:
-                                plan.dateTime == null
-                                    ? ZAppColor.hintTextColor
-                                    : ZAppColor.whiteColor,
-                          ),
-                        ),
-                      ),
-                      ZAppSize.s6.verticalSpace,
-                      Row(
-                        children: [
-                          Assets.icons.calendarIcon.svg(),
-                          ZAppSize.s8.horizontalSpace,
-                          Assets.icons.clockIcon.svg(),
-                        ],
-                      ),
-                    ],
-                  ),
-                ).onPressed(
-                  onTap: () {
-                    ctrl.updateSelectedExperienceIndex(index);
-                    ctrl.showDateTimePicker();
-                  },
-                ),
+              ZCustomTextField(
+                labelText: '',
+                hintText: 'price_hint'.tr,
+                controller: ctrl.priceTEC,
+                fillColor: ZAppColor.blackColor,
+                filled: true,
+                prefixIcon: null,
+                validator: ZValidator.validateText,
+                textInputType: TextInputType.numberWithOptions(decimal: true),
               ),
-              ZAppSize.s14.horizontalSpace,
-              Expanded(
-                flex: 1,
-                child: ZCustomContainer(
-                  height: ZDeviceUtil.getDeviceHeight(context),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          'add'.tr,
-                          textAlign: TextAlign.start,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyLarge?.copyWith(
-                            fontSize: ZAppSize.s14,
-                            fontWeight: FontWeight.w500,
-                            color: ZAppColor.hintTextColor,
-                          ),
+              ZAppSize.s16.verticalSpace,
+              ZCustomTextField(
+                labelText: '',
+                hintText: 'experience_reward_title'.tr,
+                controller: ctrl.titleTEC,
+                fillColor: ZAppColor.blackColor,
+                filled: true,
+                prefixIcon: null,
+                validator: ZValidator.validateText,
+                textInputType: TextInputType.name,
+              ),
+              ZAppSize.s16.verticalSpace,
+              ZCustomTextField(
+                labelText: '',
+                hintText: 'description_hint'.tr,
+                controller: ctrl.descriptionTEC,
+                fillColor: ZAppColor.blackColor,
+                filled: true,
+                prefixIcon: null,
+                maxLines: 4,
+                validator: ZValidator.validateText,
+                textInputType: TextInputType.multiline,
+              ),
+              ZAppSize.s16.verticalSpace,
+              ZCountryCodePicker(label: ''.tr, ctrl: ctrl),
+              // ZCustomTextField(
+              //   labelText: '',
+              //   hintText: 'location'.tr,
+              //   fillColor: ZAppColor.blackColor,
+              //   filled: true,
+              //   prefixIcon: null,
+              //   textInputType: TextInputType.text,
+              //   onChanged: (val) => plan.location = val,
+              // ),
+              ZAppSize.s16.verticalSpace,
+              ZCustomTextField(
+                labelText: '',
+                controller: ctrl.slotsTEC,
+                hintText: 'slots_available'.tr,
+                fillColor: ZAppColor.blackColor,
+                filled: true,
+                prefixIcon: null,
+                validator: ZValidator.validateText,
+                textInputType: TextInputType.number,
+              ),
+              ZAppSize.s16.verticalSpace,
+              SizedBox(
+                height: ZDeviceUtil.getDeviceHeight(context) * 0.12,
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 3,
+                      child: ZCustomContainer(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                ctrl.selectedDateTime.value.isEmpty
+                                    ? 'date_time'.tr
+                                    : ctrl.selectedDateTime.value,
+                                textAlign: TextAlign.start,
+                                style: Theme.of(
+                                  context,
+                                ).textTheme.bodyLarge?.copyWith(
+                                  fontSize: ZAppSize.s14,
+                                  fontWeight: FontWeight.w500,
+                                  color:
+                                      ctrl.selectedDateTime.value.isEmpty
+                                          ? ZAppColor.hintTextColor
+                                          : ZAppColor.whiteColor,
+                                ),
+                              ),
+                            ),
+                            ZAppSize.s6.verticalSpace,
+                            Row(
+                              children: [
+                                Assets.icons.calendarIcon.svg(),
+                                ZAppSize.s8.horizontalSpace,
+                                Assets.icons.clockIcon.svg(),
+                              ],
+                            ),
+                          ],
                         ),
+                      ).onPressed(
+                        onTap: () {
+                          // ctrl.updateSelectedExperienceIndex(index);
+                          ctrl.showDateTimePicker();
+                        },
                       ),
-                      Assets.icons.addIcon.svg(color: ZAppColor.hintTextColor),
-                      // Icon(Icons.add, color: ZAppColor.hintTextColor),
-                    ],
-                  ),
+                    ),
+                    // ZAppSize.s14.horizontalSpace,
+                    // Expanded(
+                    //   flex: 1,
+                    //   child: ZCustomContainer(
+                    //     height: ZDeviceUtil.getDeviceHeight(context),
+                    //     child: Row(
+                    //       children: [
+                    //         Expanded(
+                    //           child: Text(
+                    //             'add'.tr,
+                    //             textAlign: TextAlign.start,
+                    //             style: Theme.of(
+                    //               context,
+                    //             ).textTheme.bodyLarge?.copyWith(
+                    //               fontSize: ZAppSize.s14,
+                    //               fontWeight: FontWeight.w500,
+                    //               color: ZAppColor.hintTextColor,
+                    //             ),
+                    //           ),
+                    //         ),
+                    //         Assets.icons.addIcon.svg(color: ZAppColor.hintTextColor),
+                    //         // Icon(Icons.add, color: ZAppColor.hintTextColor),
+                    //       ],
+                    //     ),
+                    //   ),
+                    // ),
+                  ],
                 ),
               ),
             ],
-          ),
-        ),
-      ],
-    ).only(bottom: ZAppSize.s24);
+          ).only(bottom: ZAppSize.s24).scrollable(),
+    );
   }
 }

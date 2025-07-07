@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
-import 'package:zeazn_invest_app/features/creator/explore/presentation/vm/explore.vm.dart';
-import 'package:zeazn_invest_app/features/creator/explore/presentation/widgets/video.player.dart';
+import 'package:zeazn_invest_app/features/creator/explore/explore.dart';
 import 'package:zeazn_invest_app/gen/assets.gen.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
-import 'package:zeazn_invest_app/shared/widgets/custom.outlined.button.dart';
 
 class ZVideoUploadPage extends StatelessWidget {
   ZVideoUploadPage({super.key});
-  final ctrl = Get.put(ZExploreVM());
+  // final ctrl = Get.put(ZCreateProjectVM());
+  final ctrl = Get.find<ZCreateProjectVM>();
 
   @override
   Widget build(BuildContext context) {
@@ -51,13 +50,16 @@ class ZVideoUploadPage extends StatelessWidget {
                 ),
                 ZAppSize.s20.verticalSpace,
                 Expanded(
-                  child: GetBuilder<ZExploreVM>(
-                    builder: (controller) {
+                  child: GetBuilder<ZCreateProjectVM>(
+                    builder: (ctrl) {
                       return ListView.builder(
                         shrinkWrap: true,
-                        itemCount: controller.files.length,
+                        itemCount: ctrl.files.length,
                         itemBuilder: (context, index) {
-                          return ZVideoPlayer(file: controller.files[index]);
+                          final file = ctrl.files[index];
+                          return file.fileType == FileType.image
+                              ? ZImageView(file: file)
+                              : ZVideoPlayer(file: file);
                         },
                       );
                     },
@@ -65,14 +67,17 @@ class ZVideoUploadPage extends StatelessWidget {
                 ),
 
                 ZAppSize.s24.verticalSpace,
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: SizedBox(
-                    width: ZDeviceUtil.getDeviceWidth(context) * 0.50,
-                    child: ZCustomButton(
-                      label: 'next'.tr,
-                      radius: ZAppSize.s5,
-                      onTap: ctrl.gotoMediaUploadPage,
+                Obx(
+                  () => Align(
+                    alignment: Alignment.bottomRight,
+                    child: SizedBox(
+                      width: ZDeviceUtil.getDeviceWidth(context) * 0.50,
+                      child: ZCustomButton(
+                        label: 'next'.tr,
+                        radius: ZAppSize.s5,
+                        loading: ctrl.loading.value,
+                        onTap: () => ctrl.gotoMediaUploadPage(context: context),
+                      ),
                     ),
                   ),
                 ),

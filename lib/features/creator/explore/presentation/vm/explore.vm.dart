@@ -1,10 +1,13 @@
 import 'dart:io';
 
+import 'package:country_code_picker/country_code_picker.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
+import 'package:zeazn_invest_app/features/creator/explore/application/service/project.service.impl.dart';
 import 'package:zeazn_invest_app/features/creator/explore/domain/models/plan.model.dart';
+import 'package:zeazn_invest_app/features/creator/explore/domain/models/project.model.dart';
 import 'package:zeazn_invest_app/routes/app.pages.dart';
 import 'package:zeazn_invest_app/shared/widgets/popup.dialog.dart';
 
@@ -15,8 +18,17 @@ class ZExploreVM extends GetxController {
 
   List<File> files = [];
   List<File> media = [];
+  List<ProjectCategory> categories = [];
+  ProjectCategory? selectedCategory;
   List<File> thumbnailFiles = [];
+  var country = ''.obs;
   var trimming = LoadingState.completed.obs;
+
+  final GlobalKey<CountryCodePickerState> countryPickerKey = GlobalKey();
+
+  final CountryCode mySelectedCountry = CountryCode.fromCountryCode('GH'); //
+
+  final projectInfoFormKey = GlobalKey<FormState>();
 
   var selectedExperience =
       <String, dynamic>{
@@ -27,6 +39,15 @@ class ZExploreVM extends GetxController {
 
   var selectedExperienceIndex = 0.obs;
   onSelectedDealIndex(int index) => selectedExperienceIndex.value = index;
+  onProjectCategoryChanged(ProjectCategory? category) {
+    selectedCategory = category;
+    update();
+  }
+
+  void onCountryChange(CountryCode countryCode) {
+    country.value = countryCode.name ?? '';
+    zeaznLogger.i("New Country selected: ${countryCode.name}");
+  }
 
   List<Map<String, dynamic>> exclusiveExperiences = [
     {
@@ -152,6 +173,21 @@ class ZExploreVM extends GetxController {
       quality: 100,
     );
     return thumbnailAsUnint8List;
+  }
+
+  Future<void> getCategories() async {
+    final res = await projectService.getProjectCategories();
+    res.fold(
+      (err) {
+        ZPopupDialog(
+          context,
+        ).errorMessage(title: 'error'.tr, message: err.getMessage());
+      },
+      (res) {
+        categories = res.data ?? [];
+        update();
+      },
+    );
   }
 
   // depending on file type show particular image

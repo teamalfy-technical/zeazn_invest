@@ -106,7 +106,7 @@ class _IDScannerWidgetState extends State<IDScannerWidget> {
           textInputType: TextInputType.name,
           fillColor: ZAppColor.darkFillColor,
           filled: true,
-          enabled: ctrl.nameOnIdTEC.text.isEmpty ? true : false,
+
           borderColor: ZAppColor.darkFillColor,
           onChanged: (val) => ctrl.idName(val),
         ),
@@ -121,7 +121,7 @@ class _IDScannerWidgetState extends State<IDScannerWidget> {
           textInputType: TextInputType.text,
           fillColor: ZAppColor.darkFillColor,
           filled: true,
-          enabled: ctrl.numberOnIdTEC.text.isEmpty ? true : false,
+
           borderColor: ZAppColor.darkFillColor,
           onChanged: (val) => ctrl.idNumber(val),
         ),
@@ -136,7 +136,7 @@ class _IDScannerWidgetState extends State<IDScannerWidget> {
           textInputType: TextInputType.datetime,
           fillColor: ZAppColor.darkFillColor,
           filled: true,
-          enabled: ctrl.dobOnIdTEC.text.isEmpty ? true : false,
+
           borderColor: ZAppColor.darkFillColor,
         ),
 
@@ -150,7 +150,7 @@ class _IDScannerWidgetState extends State<IDScannerWidget> {
           textInputType: TextInputType.text,
           fillColor: ZAppColor.darkFillColor,
           filled: true,
-          enabled: ctrl.sexOnIdTEC.text.isEmpty ? true : false,
+
           borderColor: ZAppColor.darkFillColor,
         ),
 
@@ -164,7 +164,7 @@ class _IDScannerWidgetState extends State<IDScannerWidget> {
           textInputType: TextInputType.text,
           fillColor: ZAppColor.darkFillColor,
           filled: true,
-          enabled: ctrl.expiryDateOnIdTEC.text.isEmpty ? true : false,
+
           borderColor: ZAppColor.darkFillColor,
         ),
 
@@ -172,7 +172,6 @@ class _IDScannerWidgetState extends State<IDScannerWidget> {
 
         Obx(
           () => ZCustomDropdown<String>(
-            items: ctrl.idTypes,
             value: ctrl.selectedIdType.value,
             hintText: '',
             label: '',
@@ -180,6 +179,18 @@ class _IDScannerWidgetState extends State<IDScannerWidget> {
             borderColor: ZAppColor.darkFillColor,
             filled: true,
             onChanged: ctrl.onIdTypeChanged,
+            items:
+                ctrl.idTypes
+                    .map(
+                      (e) => DropdownMenuItem(
+                        value: e,
+                        child: Text(
+                          e,
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ),
+                    )
+                    .toList(),
           ),
         ),
 

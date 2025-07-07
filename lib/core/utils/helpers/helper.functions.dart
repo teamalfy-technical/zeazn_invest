@@ -112,8 +112,11 @@ class ZHelperFunction {
     File file = File('');
     try {
       var pickedFiles = await filePicker.FilePicker.platform.pickFiles(
+        compressionQuality: 70,
         allowMultiple: allowMultiple ?? false,
-        type: filePicker.FileType.video,
+        // type: filePicker.FileType.media,
+        type: filePicker.FileType.custom,
+        allowedExtensions: ['mp4', 'mov', 'm4v'],
         //allowedExtensions: allowedExtensions ?? ['jpg', 'png', 'doc', 'docx', 'pdf'],
       );
       if (pickedFiles != null) {
@@ -122,7 +125,7 @@ class ZHelperFunction {
         // User canceled the picker
         ZPopupDialog(
           Get.context!,
-        ).errorMessage(title: 'Ooops', message: 'No file selected');
+        ).errorMessage(title: 'Oops', message: 'No file selected');
         debugPrint('User canceled the picker');
       }
     } catch (err) {
@@ -131,18 +134,27 @@ class ZHelperFunction {
     return file;
   }
 
-  static Future<List<File>> chooseMultipleFiles() async {
+  static Future<List<File>> chooseMultipleFiles({
+    List<String>? allowedExtensions,
+  }) async {
     List<File> files = [];
     try {
       var pickedFiles = await filePicker.FilePicker.platform.pickFiles(
+        compressionQuality: 70,
         allowMultiple: true,
-        type: filePicker.FileType.video,
+        type: filePicker.FileType.media,
+        // type: filePicker.FileType.custom,
+        // allowedExtensions:
+        //     allowedExtensions ??
+        //     ['jpg', 'png', 'jpeg', 'gif', 'webp', 'mp4', 'mov', 'avi', 'webm'],
       );
       if (pickedFiles != null) {
         files = pickedFiles.paths.map((path) => File(path!)).toList();
       } else {
-        // User canceled the picker
-        debugPrint('User canceled the picker');
+        // User cancelled the picker
+        ZPopupDialog(
+          Get.context!,
+        ).errorMessage(title: 'Oops', message: 'No file selected');
       }
     } catch (e) {
       debugPrint("Failed to pick files: $e");

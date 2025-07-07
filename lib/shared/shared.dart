@@ -3,6 +3,7 @@ export 'widgets/animated.listview.dart';
 export 'widgets/annotated.region.dart';
 export 'widgets/auth.link.button.dart';
 export 'widgets/chat.input.widget.dart';
+export 'widgets/country.code.picker.dart';
 export 'widgets/custom.bar.chart.dart';
 export 'widgets/custom.button.dart';
 export 'widgets/custom.button.left.dart';
