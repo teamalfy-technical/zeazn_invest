@@ -10,6 +10,7 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
 import 'package:zeazn_invest_app/features/auth/signup/signup.dart';
+import 'package:zeazn_invest_app/features/creator/explore/application/media.compressor.dart';
 import 'package:zeazn_invest_app/routes/app.pages.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
 
@@ -177,8 +178,8 @@ class ZSignupVm extends GetxController {
         ],
       );
       if (croppedFile == null) return;
-      final compressedFile = await ZHelperFunction.compressFile(
-        File(croppedFile.path),
+      final compressedFile = await ZMediaCompressor.compressImage(
+        file: File(croppedFile.path),
       );
       updateSelectedKYC(compressedFile, kycType);
     } on PlatformException catch (err) {

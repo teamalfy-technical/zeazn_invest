@@ -16,7 +16,7 @@ abstract class CatchApiErrorWrapper {
 class ZCatchApiErrorWrapperImpl implements CatchApiErrorWrapper {
   @override
   dynamic handleError({err, stackTrace}) {
-    // zeaznLogger.e('Error: ${err.toString()}');
+    zeaznLogger.e('Error: ${err.toString()}');
 
     String? errorMessage = '';
     // if (err.runtimeType != NoInternetException) {

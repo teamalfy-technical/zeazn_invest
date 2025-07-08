@@ -6,11 +6,14 @@ import 'package:get/get.dart';
 import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
+import 'package:zeazn_invest_app/features/creator/explore/explore.dart';
 
 class ZInsightsVM extends GetxController {
   static ZInsightsVM get instance => Get.find();
 
   var profileFile = File('').obs;
+
+  var projects = <Project>[].obs;
 
   var loading = LoadingState.completed.obs;
 

@@ -49,11 +49,12 @@ class ZInsightsDetailPage extends StatelessWidget {
 
           Expanded(
             child: ListView.builder(
-              itemCount: projects.take(1).toList().length,
+              itemCount: ctrl.projects.take(1).toList().length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                final project = projects.take(1).toList()[index];
+                final project = ctrl.projects.take(1).toList()[index];
                 return ZProjectListWidget(
+                  loading: ctrl.loading.value,
                   project: project,
                   ctrl: ctrl,
                   onTap: () {

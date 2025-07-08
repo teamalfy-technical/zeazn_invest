@@ -5,8 +5,7 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
-import 'package:zeazn_invest_app/features/creator/explore/application/service/project.service.impl.dart';
-import 'package:zeazn_invest_app/features/creator/explore/domain/models/project.model.dart';
+import 'package:zeazn_invest_app/features/creator/explore/explore.dart';
 import 'package:zeazn_invest_app/routes/app.pages.dart';
 import 'package:zeazn_invest_app/shared/widgets/popup.dialog.dart';
 
@@ -128,7 +127,11 @@ class ZCreateProjectVM extends GetxController {
   Future<void> chooseIntroVideo() async {
     files.clear();
     final file = await ZHelperFunction.chooseFile();
-    final compressedFile = await ZHelperFunction.compressFile(file);
+    zeaznLogger.i('Size BF: ${ZMediaCompressor.getFileSize(file: file)}');
+    final compressedFile = await ZMediaCompressor.compressVideo(file: file);
+    zeaznLogger.i(
+      'Size AF: ${ZMediaCompressor.getFileSize(file: compressedFile)}',
+    );
     files.add(compressedFile);
     update();
   }
@@ -139,10 +142,10 @@ class ZCreateProjectVM extends GetxController {
     for (final file in files) {
       late File compressedFile;
       if (file.fileType == FileType.image) {
-        compressedFile = await ZHelperFunction.compressFile(file);
+        compressedFile = await ZMediaCompressor.compressImage(file: file);
       }
       if (file.fileType == FileType.video) {
-        compressedFile = file;
+        compressedFile = await ZMediaCompressor.compressVideo(file: file);
       }
       media.add(compressedFile);
     }

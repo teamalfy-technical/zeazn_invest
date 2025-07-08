@@ -1,29 +1,34 @@
 import 'dart:io';
 
-// import 'package:ffmpeg_kit_flutter/ffmpeg_kit.dart';
-// import 'package:ffmpeg_kit_flutter/return_code.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
 
-class PVideoCompressor {
-  PVideoCompressor._();
+class ZMediaCompressor {
+  ZMediaCompressor._();
+
+  static Future<File> compressImage({required File file}) async {
+    final compressedFile = await FlutterImageCompress.compressAndGetFile(
+      file.absolute.path,
+      '${file.absolute.path}_compressed.jpg',
+      quality: 70, // You can adjust compression ratio
+    );
+    return File(compressedFile?.path ?? file.path);
+  }
 
   // returns the compressed file
-  static Future<File> compressVideo({
-    required File videoFile,
-    int? duration,
-  }) async {
+  static Future<File> compressVideo({required File file, int? duration}) async {
     try {
       //await VideoCompress.setLogLevel(0);
       var result =
           duration == null
               ? await VideoCompress.compressVideo(
-                videoFile.path,
+                file.path,
                 quality: VideoQuality.DefaultQuality,
                 deleteOrigin: true,
               )
               : await VideoCompress.compressVideo(
-                videoFile.path,
+                file.path,
                 quality: VideoQuality.DefaultQuality,
                 deleteOrigin: true,
                 startTime: 0, // customize start time
@@ -34,37 +39,9 @@ class PVideoCompressor {
     } catch (err) {
       VideoCompress.cancelCompression();
       zeaznLogger.e('Error compressing: ${err.toString()}');
-      return videoFile; // return original file if compression fails
+      return file; // return original file if compression fails
     }
   }
-
-  // static Future<String> convertVideoToGif({required File videoFile}) async {
-  //   // const basePath = '/storage/emulated/0/Download/';
-  //   final basePath =
-  //       await getTemporaryDirectory(); // '/data/user/0/com.matchesy.app.matchesy/cache/';
-
-  //   final outputFile =
-  //       '${basePath.path}/${DateTime.now().millisecondsSinceEpoch}.gif';
-  //   String command =
-  //       //'-i ${videoFile.path} -vf scale=500:0 -t 10 -r 10 $outputFile';
-  //       '-i ${videoFile.path} -vf scale=320:-1 -t 5 -r 7 $outputFile';
-
-  //   await FFmpegKit.execute(command)
-  //       .then((session) async {
-  //         final returnCode = await session.getReturnCode();
-  //         if (ReturnCode.isSuccess(returnCode)) {
-  //           zeaznLogger.d('Task completed');
-  //         } else if (ReturnCode.isCancel(returnCode)) {
-  //           zeaznLogger.w('Task cancelled');
-  //         } else {
-  //           zeaznLogger.e('An error occurred');
-  //         }
-  //       })
-  //       .catchError((err) {
-  //         zeaznLogger.e('Error: $err');
-  //       });
-  //   return outputFile;
-  // }
 
   // static Future<File> trimVideo({required File videoFile}) async {
   //   final basePath =
@@ -97,13 +74,13 @@ class PVideoCompressor {
   //       }
   //     },
   //     (log) {
-  //       // matchesyLogger.w(log.getMessage());
+  //       zeaznLogger.w(log.getMessage());
   //     },
   //     (stats) {
-  //       //matchesyLogger.w(stats.getTime());
+  //       zeaznLogger.w(stats.getTime());
   //     },
   //   ).then(
-  //     (session) => debugPrint(
+  //     (session) => zeaznLogger.i(
   //       'Async FFmpeg process started with sessionId ${session.getSessionId()}',
   //     ),
   //   );

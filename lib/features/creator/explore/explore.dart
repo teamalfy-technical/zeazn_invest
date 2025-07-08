@@ -1,6 +1,6 @@
+export 'application/media.compressor.dart';
 export 'application/service/project.service.dart';
 export 'application/service/project.service.impl.dart';
-export 'application/video.compressor.dart';
 export 'data/ds/project.ds.dart';
 export 'data/ds/project.ds.impl.dart';
 export 'data/repos/project.repo.dart';
@@ -21,5 +21,6 @@ export 'presentation/vm/explore.vm.dart';
 export 'presentation/widgets/image.view.dart';
 export 'presentation/widgets/project.detail.widget.dart';
 export 'presentation/widgets/project.list.widget.dart';
+export 'presentation/widgets/project.list.widget.redact.dart';
 export 'presentation/widgets/radio.listtile.widget.dart';
 export 'presentation/widgets/video.player.dart';

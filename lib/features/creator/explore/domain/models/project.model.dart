@@ -2,14 +2,14 @@ class Project {
   int? projectId;
   int? creatorId;
   String? creatorName;
-  String? projectCategoryId;
+  int? projectCategoryId;
   String? projectCategory;
   String? projectName;
   String? slug;
   String? shortDesc;
   String? desc;
-  int? amountRaised;
-  int? fundingGoal;
+  double? amountRaised;
+  double? fundingGoal;
   int? fundingPercentage;
   String? location;
   String? status;
@@ -65,8 +65,8 @@ class Project {
     slug = json['slug'];
     shortDesc = json['short_desc'];
     desc = json['desc'];
-    amountRaised = json['amount_raised'];
-    fundingGoal = json['funding_goal'];
+    amountRaised = json['amount_raised']?.toDouble();
+    fundingGoal = json['funding_goal']?.toDouble();
     fundingPercentage = json['funding_percentage'];
     location = json['location'];
     status = json['status'];
@@ -160,35 +160,38 @@ class Project {
 
 class ProjectReward {
   int? rewardId;
-  String? projectId;
   String? rewardName;
   String? description;
-  String? amount;
-  String? slotsAvailable;
-  dynamic slotsClaimed;
+  double? amount;
+  dynamic slotsAvailable;
+  int? slotsClaimed;
+  dynamic locations;
+  dynamic schedules;
   String? createdAt;
   String? updatedAt;
 
   ProjectReward({
     this.rewardId,
-    this.projectId,
     this.rewardName,
     this.description,
     this.amount,
     this.slotsAvailable,
     this.slotsClaimed,
+    this.locations,
+    this.schedules,
     this.createdAt,
     this.updatedAt,
   });
 
   ProjectReward.fromJson(Map<String, dynamic> json) {
     rewardId = json['reward_id'];
-    projectId = json['project_id'];
     rewardName = json['reward_name'];
     description = json['description'];
-    amount = json['amount'];
-    slotsAvailable = json['slots_available'];
+    amount = json['amount']?.toDouble();
+    // slotsAvailable = json['slots_available'];
     slotsClaimed = json['slots_claimed'];
+    locations = json['locations'];
+    schedules = json['schedules'];
     createdAt = json['created_at'];
     updatedAt = json['updated_at'];
   }
@@ -196,12 +199,13 @@ class ProjectReward {
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
     data['reward_id'] = rewardId;
-    data['project_id'] = projectId;
     data['reward_name'] = rewardName;
     data['description'] = description;
     data['amount'] = amount;
     data['slots_available'] = slotsAvailable;
     data['slots_claimed'] = slotsClaimed;
+    data['locations'] = locations;
+    data['schedules'] = schedules;
     data['created_at'] = createdAt;
     data['updated_at'] = updatedAt;
     return data;
@@ -212,9 +216,13 @@ class ProjectDeal {
   int? rewardId;
   String? rewardName;
   String? description;
-  String? amount;
+  double? amount;
   int? slotsAvailable;
   int? slotsClaimed;
+  dynamic locations;
+  dynamic schedules;
+  String? createdAt;
+  String? updatedAt;
 
   ProjectDeal({
     this.rewardId,
@@ -223,15 +231,23 @@ class ProjectDeal {
     this.amount,
     this.slotsAvailable,
     this.slotsClaimed,
+    this.locations,
+    this.schedules,
+    this.createdAt,
+    this.updatedAt,
   });
 
   ProjectDeal.fromJson(Map<String, dynamic> json) {
     rewardId = json['reward_id'];
     rewardName = json['reward_name'];
     description = json['description'];
-    amount = json['amount'];
+    amount = json['amount']?.toDouble();
     slotsAvailable = json['slots_available'];
     slotsClaimed = json['slots_claimed'];
+    locations = json['locations'];
+    schedules = json['schedules'];
+    createdAt = json['created_at'];
+    updatedAt = json['updated_at'];
   }
 
   Map<String, dynamic> toJson() {
@@ -242,6 +258,10 @@ class ProjectDeal {
     data['amount'] = amount;
     data['slots_available'] = slotsAvailable;
     data['slots_claimed'] = slotsClaimed;
+    data['locations'] = locations;
+    data['schedules'] = schedules;
+    data['created_at'] = createdAt;
+    data['updated_at'] = updatedAt;
     return data;
   }
 }

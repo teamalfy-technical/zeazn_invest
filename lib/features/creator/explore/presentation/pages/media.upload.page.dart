@@ -14,7 +14,6 @@ class ZMediaUploadPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    zeaznLogger.e(ctrl.createdProject.value.toJson());
     return ZZeaznScaffold(
       backgroundColor: ZAppColor.darkColor,
       resizeToAvoidBottomInset: false,
@@ -83,7 +82,7 @@ class ZMediaUploadPage extends StatelessWidget {
                     ),
                   ),
                 ),
-                // ZAppSize.s24.verticalSpace,
+                ZAppSize.s20.verticalSpace,
               ],
             ),
           ),

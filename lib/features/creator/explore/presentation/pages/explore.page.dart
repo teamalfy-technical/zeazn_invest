@@ -27,9 +27,10 @@ class ZExplorePage extends StatelessWidget {
                 radius: ZAppSize.s25,
                 backgroundImage: AssetImage(Assets.images.slideTwo.path),
               ),
+              ZAppSize.s8.horizontalSpace,
               Expanded(
                 child: Text(
-                  '${'welcome_back'.tr}, Sarah!',
+                  '${'welcome_back'.tr}, ${ZSecureStorage().getAuthResponse()?.name}!',
                   textAlign: TextAlign.center,
                   style: Theme.of(context).textTheme.titleLarge,
                 ),

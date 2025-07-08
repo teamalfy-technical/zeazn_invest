@@ -73,6 +73,7 @@ class ZExclusiveExperiencesPage extends StatelessWidget {
                 child: ZCustomButton(
                   label: 'next'.tr,
                   radius: ZAppSize.s5,
+                  loading: ctrl.loading.value,
                   onTap: () {
                     showDisclaimerDialog(context);
                   },
@@ -179,7 +180,10 @@ class ZExclusiveExperiencesPage extends StatelessWidget {
                           radius: ZAppSize.s5,
                           icon: Assets.icons.arrowRectDiag.svg(),
                           loading: ctrl.loading.value,
-                          onTap: () => ctrl.addProjectRewards(context: context),
+                          onTap: () {
+                            ZHelperFunction.pop();
+                            ctrl.addProjectRewards(context: context);
+                          },
                         ),
                       ),
                     ),

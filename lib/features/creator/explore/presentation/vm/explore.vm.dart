@@ -14,7 +14,9 @@ import 'package:zeazn_invest_app/shared/widgets/popup.dialog.dart';
 class ZExploreVM extends GetxController {
   static ZExploreVM get instance => Get.find();
 
-  var projects = [].obs;
+  var projects = <Project>[].obs;
+
+  var loading = LoadingState.completed.obs;
 
   List<File> files = [];
   List<File> media = [];
@@ -30,12 +32,11 @@ class ZExploreVM extends GetxController {
 
   final projectInfoFormKey = GlobalKey<FormState>();
 
-  var selectedExperience =
-      <String, dynamic>{
-        'title': 'Basic',
-        'sub_title': 'Mobile Phone',
-        'description': 'Support with GHS 6,000 and receive an iPhone 12 ProMax',
-      }.obs;
+  var selectedExperience = <String, dynamic>{
+    'title': 'Basic',
+    'sub_title': 'Mobile Phone',
+    'description': 'Support with GHS 6,000 and receive an iPhone 12 ProMax',
+  }.obs;
 
   var selectedExperienceIndex = 0.obs;
   onSelectedDealIndex(int index) => selectedExperienceIndex.value = index;
@@ -100,6 +101,12 @@ class ZExploreVM extends GetxController {
     Plan(title: 'premium'.tr),
   ];
 
+  @override
+  void onInit() {
+    getAllProjectsByCreator(context: context);
+    super.onInit();
+  }
+
   // var selectedExperienceIndex = 0.obs;
 
   updateSelectedExperienceIndex(int index) =>
@@ -109,7 +116,7 @@ class ZExploreVM extends GetxController {
   var sDateTime = ''.obs;
   var pDateTime = ''.obs;
 
-  var sliderValue = 1000.0.obs;
+  var sliderValue = 0.0.obs;
 
   var min = 0.0;
   var max = 20000.00;
@@ -186,6 +193,24 @@ class ZExploreVM extends GetxController {
       (res) {
         categories = res.data ?? [];
         update();
+      },
+    );
+  }
+
+  /// [Function] to get all projects by creator
+  Future<void> getAllProjectsByCreator({required BuildContext context}) async {
+    loading(LoadingState.loading);
+    final res = await projectService.getProjectByCreator();
+    res.fold(
+      (err) {
+        loading(LoadingState.error);
+        ZPopupDialog(
+          context,
+        ).errorMessage(title: 'error'.tr, message: err.getMessage());
+      },
+      (res) {
+        loading(LoadingState.completed);
+        projects.value = res.data?.projects ?? [];
       },
     );
   }

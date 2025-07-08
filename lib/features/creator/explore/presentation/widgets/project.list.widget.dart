@@ -8,7 +8,8 @@ import 'package:zeazn_invest_app/gen/assets.gen.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
 
 class ZProjectListWidget extends StatelessWidget {
-  final Projects project;
+  final Project project;
+  final LoadingState loading;
   // final ZExploreVM ctrl;
   final dynamic ctrl;
   final Function()? onTap;
@@ -17,6 +18,7 @@ class ZProjectListWidget extends StatelessWidget {
     required this.project,
     required this.ctrl,
     this.onTap,
+    required this.loading,
   });
 
   @override
@@ -40,7 +42,8 @@ class ZProjectListWidget extends StatelessWidget {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(ZAppSize.s6),
                     child: Image.network(
-                      project.image ?? '',
+                      'https://picsum.photos/200',
+                      // project.projectImages?.first.url ?? '',
                       fit: BoxFit.cover,
                       height: ZDeviceUtil.getDeviceHeight(context) * 0.09,
                       width: ZDeviceUtil.getDeviceWidth(context) * 0.32,
@@ -54,7 +57,9 @@ class ZProjectListWidget extends StatelessWidget {
                       CircleAvatar(
                         radius: ZAppSize.s16,
                         backgroundImage: NetworkImage(
-                          project.creator?.image ?? '',
+                          // project.creator?.image ?? '',
+                          'https://picsum.photos/200',
+                          // project.projectImages?.first.url ?? '',
                         ),
                       ),
                       ZAppSize.s8.horizontalSpace,
@@ -62,26 +67,24 @@ class ZProjectListWidget extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'By ${project.creator?.firstName} ${project.creator?.lastName}',
-                            style: Theme.of(
-                              context,
-                            ).textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: ZAppColor.hintTextColor,
-                              fontSize: ZAppSize.s10,
-                            ),
+                            'By ${project.creatorName}',
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: ZAppColor.hintTextColor,
+                                  fontSize: ZAppSize.s10,
+                                ),
                           ),
                           RatingBar.builder(
-                            initialRating: project.creator?.ratings ?? 0,
+                            initialRating: project.overallRating ?? 0,
                             minRating: 1,
                             direction: Axis.horizontal,
                             allowHalfRating: true,
                             itemCount: 5,
                             itemSize: 16,
                             // itemPadding: EdgeInsets.zero,
-                            itemBuilder:
-                                (context, _) =>
-                                    Icon(Icons.star, color: ZAppColor.primary),
+                            itemBuilder: (context, _) =>
+                                Icon(Icons.star, color: ZAppColor.primary),
                             onRatingUpdate: (rating) {
                               print(rating);
                             },
@@ -102,27 +105,25 @@ class ZProjectListWidget extends StatelessWidget {
                       children: [
                         Expanded(
                           child: Text(
-                            project.title ?? '',
-                            style: Theme.of(
-                              context,
-                            ).textTheme.bodyLarge?.copyWith(
-                              fontWeight: FontWeight.w700,
-                              color: ZAppColor.whiteColor,
-                              fontSize: ZAppSize.s10,
-                            ),
+                            project.projectName ?? '',
+                            style: Theme.of(context).textTheme.bodyLarge
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: ZAppColor.whiteColor,
+                                  fontSize: ZAppSize.s10,
+                                ),
                           ),
                         ),
                         Row(
                           children: [
                             Text(
                               'share'.tr,
-                              style: Theme.of(
-                                context,
-                              ).textTheme.bodySmall?.copyWith(
-                                fontWeight: FontWeight.w400,
-                                color: ZAppColor.primary,
-                                fontSize: ZAppSize.s10,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    color: ZAppColor.primary,
+                                    fontSize: ZAppSize.s10,
+                                  ),
                             ),
                             ZAppSize.s6.horizontalSpace,
                             Assets.icons.shareIcon.svg(),
@@ -136,7 +137,8 @@ class ZProjectListWidget extends StatelessWidget {
                     ),
                     ZAppSize.s8.verticalSpace,
                     Text(
-                      project.description ?? '',
+                      project.shortDesc?.trim() ?? project.desc?.trim() ?? '',
+                      textAlign: TextAlign.start,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         fontWeight: FontWeight.w400,
                         fontSize: ZAppSize.s10,
@@ -154,23 +156,21 @@ class ZProjectListWidget extends StatelessWidget {
                         textAlign: TextAlign.start,
                         text: TextSpan(
                           text: '${'target'.tr} ',
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyLarge?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            fontSize: ZAppSize.s10,
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                fontSize: ZAppSize.s10,
+                              ),
                           children: [
                             TextSpan(
                               text: ZFormatter.formatCurrency(
-                                amount: project.targetAmount ?? 0,
+                                amount: project.fundingGoal ?? 0,
                               ),
-                              style: Theme.of(
-                                context,
-                              ).textTheme.bodySmall?.copyWith(
-                                fontWeight: FontWeight.w400,
-                                fontSize: ZAppSize.s10,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: ZAppSize.s10,
+                                  ),
                             ),
                           ],
                         ),
@@ -195,8 +195,8 @@ class ZProjectListWidget extends StatelessWidget {
               ),
               child: Slider(
                 min: ctrl.min,
-                max: project.targetAmount ?? 0,
-                value: ctrl.sliderValue.value + 9000,
+                max: ctrl.max ?? 0,
+                value: project.fundingGoal ?? 0,
                 divisions: ZAppSize.s10.toInt(),
                 label: ZFormatter.formatCurrency(
                   amount: ctrl.sliderValue.value,
@@ -238,15 +238,14 @@ class ZProjectListWidget extends StatelessWidget {
               right: 0,
               left: 0,
               bottom: 0,
-              child:
-                  Text(
-                    'amt_raised'.tr,
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                      fontSize: ZAppSize.s8,
-                      color: ZAppColor.text500,
-                      fontWeight: FontWeight.w300,
-                    ),
-                  ).centered(),
+              child: Text(
+                'amt_raised'.tr,
+                style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                  fontSize: ZAppSize.s8,
+                  color: ZAppColor.text500,
+                  fontWeight: FontWeight.w300,
+                ),
+              ).centered(),
             ),
             Align(
               alignment: Alignment.center,

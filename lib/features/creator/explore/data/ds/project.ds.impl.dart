@@ -62,18 +62,8 @@ class ProjectDsImpl implements ProjectDs {
     required int projectId,
     required List<File> media,
   }) async {
-    // zeaznLogger.e(
-    final medias =
-        media
-            .map(
-              (file) async => await dio.MultipartFile.fromFile(
-                file.path,
-                filename: file.path.split('/').last.split('.').first,
-              ),
-            )
-            .toList();
-    // );
     return await asyncFunctionWrapper.handleAsyncNetworkCall(() async {
+      media.removeAt(0);
       final payload = dio.FormData.fromMap({
         'media[]': await Future.wait(
           media.map(
@@ -83,6 +73,11 @@ class ProjectDsImpl implements ProjectDs {
             ),
           ),
         ),
+
+        // 'media[]': await dio.MultipartFile.fromFile(
+        //   media[1].path,
+        //   filename: media[1].path.split('/').last.split('.').first,
+        // ),
       });
       final res = await apiService.callService(
         requestType: RequestType.post,
@@ -384,7 +379,8 @@ class ProjectDsImpl implements ProjectDs {
       'description': description,
       'amount': amount,
       'slots_available': slotsAvailable,
-      //'location': location,
+      'location[]': [location],
+      'schedules[]': [dateTime],
     });
     return await asyncFunctionWrapper.handleAsyncNetworkCall(() async {
       final res = await apiService.callService(

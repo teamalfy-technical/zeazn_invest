@@ -52,6 +52,10 @@ class ZVideoUploadPage extends StatelessWidget {
                 Expanded(
                   child: GetBuilder<ZCreateProjectVM>(
                     builder: (ctrl) {
+                      // final file = ctrl.files[0];
+                      // return file.fileType == FileType.image
+                      //     ? ZImageView(file: file)
+                      //     : ZVideoPlayer(file: file);
                       return ListView.builder(
                         shrinkWrap: true,
                         itemCount: ctrl.files.length,
