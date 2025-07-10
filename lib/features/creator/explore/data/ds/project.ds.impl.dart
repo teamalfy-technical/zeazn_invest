@@ -115,6 +115,7 @@ class ProjectDsImpl implements ProjectDs {
 
   @override
   Future<ApiResponse<PaginatedProject>> getAllProjects({
+    required int page,
     required String creatorName,
     required String projectName,
     required String slug,
@@ -125,6 +126,7 @@ class ProjectDsImpl implements ProjectDs {
       final res = await apiService.callService(
         requestType: RequestType.get,
         queryParams: {
+          'page': page,
           'filter[creator.name]': creatorName,
           'filter[name]': projectName,
           'filter[slug]': slug,
@@ -166,10 +168,13 @@ class ProjectDsImpl implements ProjectDs {
   }
 
   @override
-  Future<ApiResponse<PaginatedProject>> getProjectByCreator() async {
+  Future<ApiResponse<PaginatedProject>> getProjectByCreator({
+    required int page,
+  }) async {
     return await asyncFunctionWrapper.handleAsyncNetworkCall(() async {
       final res = await apiService.callService(
         requestType: RequestType.get,
+        queryParams: {'page': page},
         endPoint: Env.getProjectByCreator,
       );
       return ApiResponse<PaginatedProject>.fromJson(

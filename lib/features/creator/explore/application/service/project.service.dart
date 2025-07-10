@@ -32,7 +32,9 @@ abstract class ProjectService {
     required String fundingGoal,
   });
 
-  Future<Either<ZFailure, ApiResponse<PaginatedProject>>> getProjectByCreator();
+  Future<Either<ZFailure, ApiResponse<PaginatedProject>>> getProjectByCreator({
+    required int page,
+  });
 
   Future<Either<ZFailure, ApiResponse<int>>> getProjectCountByCreator();
 
@@ -46,6 +48,7 @@ abstract class ProjectService {
   });
 
   Future<Either<ZFailure, ApiResponse<PaginatedProject>>> getAllProjects({
+    required int page,
     required String creatorName,
     required String projectName,
     required String slug,

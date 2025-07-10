@@ -61,6 +61,7 @@ class ProjectServiceImpl implements ProjectService {
 
   @override
   Future<Either<ZFailure, ApiResponse<PaginatedProject>>> getAllProjects({
+    required int page,
     required String creatorName,
     required String projectName,
     required String slug,
@@ -68,6 +69,7 @@ class ProjectServiceImpl implements ProjectService {
     required String featuredStatus,
   }) {
     return projectRepo.getAllProjects(
+      page: page,
       creatorName: creatorName,
       projectName: projectName,
       slug: slug,
@@ -89,9 +91,10 @@ class ProjectServiceImpl implements ProjectService {
   }
 
   @override
-  Future<Either<ZFailure, ApiResponse<PaginatedProject>>>
-  getProjectByCreator() {
-    return projectRepo.getProjectByCreator();
+  Future<Either<ZFailure, ApiResponse<PaginatedProject>>> getProjectByCreator({
+    required int page,
+  }) {
+    return projectRepo.getProjectByCreator(page: page);
   }
 
   @override

@@ -8,7 +8,7 @@ import 'package:zeazn_invest_app/gen/assets.gen.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
 
 class ZMyCampaignWidget extends StatelessWidget {
-  final Projects project;
+  final Project project;
   // final ZExploreVM ctrl;
   final dynamic ctrl;
   final Function()? onTap;
@@ -24,7 +24,7 @@ class ZMyCampaignWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // height: ZDeviceUtil.getDeviceHeight(context) * 0.22,
+      // height: ZDeviceUtil.getDeviceHeight(context) * 0.50,
       margin: EdgeInsets.only(bottom: ZAppSize.s18),
       padding: EdgeInsets.all(ZAppSize.s16),
       decoration: BoxDecoration(
@@ -32,55 +32,63 @@ class ZMyCampaignWidget extends StatelessWidget {
         borderRadius: BorderRadius.circular(ZAppSize.s10),
       ),
       child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(ZAppSize.s6),
-                child: Image.network(
-                  project.image ?? '',
-                  fit: BoxFit.cover,
-                  height: ZDeviceUtil.getDeviceHeight(context) * 0.09,
-                  width: ZDeviceUtil.getDeviceWidth(context) * 0.32,
-                ),
-              ),
-              ZAppSize.s8.verticalSpace,
-              // creator info
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
+              Column(
                 children: [
-                  CircleAvatar(
-                    radius: ZAppSize.s16,
-                    backgroundImage: NetworkImage(project.creator?.image ?? ''),
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(ZAppSize.s6),
+                    child: Image.network(
+                      project.creator?.url ?? 'https://picsum.photos/200',
+                      fit: BoxFit.cover,
+                      height: ZDeviceUtil.getDeviceHeight(context) * 0.09,
+                      width: ZDeviceUtil.getDeviceWidth(context) * 0.32,
+                    ),
                   ),
-                  ZAppSize.s8.horizontalSpace,
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                  ZAppSize.s8.verticalSpace,
+                  // creator info
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text(
-                        'By ${project.creator?.firstName} ${project.creator?.lastName}',
-                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                          fontWeight: FontWeight.w700,
-                          color: ZAppColor.hintTextColor,
-                          fontSize: ZAppSize.s10,
+                      CircleAvatar(
+                        radius: ZAppSize.s16,
+                        backgroundImage: NetworkImage(
+                          project.creator?.url ?? 'https://picsum.photos/200',
                         ),
                       ),
-                      RatingBar.builder(
-                        initialRating: project.creator?.ratings ?? 0,
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: true,
-                        itemCount: 5,
-                        itemSize: 16,
-                        // itemPadding: EdgeInsets.zero,
-                        itemBuilder:
-                            (context, _) =>
+                      ZAppSize.s8.horizontalSpace,
+
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'By ${project.creator?.name}',
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w700,
+                                  color: ZAppColor.hintTextColor,
+                                  fontSize: ZAppSize.s10,
+                                ),
+                          ),
+                          RatingBar.builder(
+                            initialRating: project.overallRating ?? 0,
+                            minRating: 1,
+                            direction: Axis.horizontal,
+                            allowHalfRating: true,
+                            itemCount: 5,
+                            itemSize: 16,
+                            // itemPadding: EdgeInsets.zero,
+                            itemBuilder: (context, _) =>
                                 Icon(Icons.star, color: ZAppColor.primary),
-                        onRatingUpdate: (rating) {
-                          print(rating);
-                        },
+                            onRatingUpdate: (rating) {
+                              print(rating);
+                            },
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -131,13 +139,12 @@ class ZMyCampaignWidget extends StatelessWidget {
                       children: [
                         Text(
                           'share'.tr,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.w400,
-                            color: ZAppColor.primary,
-                            fontSize: ZAppSize.s13,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.w400,
+                                color: ZAppColor.primary,
+                                fontSize: ZAppSize.s13,
+                              ),
                         ),
                         ZAppSize.s6.horizontalSpace,
                         Assets.icons.shareIcon.svg(height: ZAppSize.s20),
@@ -153,15 +160,14 @@ class ZMyCampaignWidget extends StatelessWidget {
                 RichText(
                   textAlign: TextAlign.start,
                   text: TextSpan(
-                    text:
-                        '${project.creator?.firstName} ${project.creator?.lastName}: ',
+                    text: '${project.creator?.name}: ',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                       fontSize: ZAppSize.s12,
                     ),
                     children: [
                       TextSpan(
-                        text: project.description,
+                        text: project.desc,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.w400,
                           fontSize: ZAppSize.s12,
@@ -181,7 +187,7 @@ class ZMyCampaignWidget extends StatelessWidget {
                     ),
                     children: [
                       TextSpan(
-                        text: 'Ghana',
+                        text: project.location,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.w400,
                           fontSize: ZAppSize.s12,
@@ -197,7 +203,7 @@ class ZMyCampaignWidget extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomRight,
                   child: // supporter toggle
-                      KCustomToggleButton(
+                  KCustomToggleButton(
                     width: ZDeviceUtil.getDeviceWidth(context) * 0.27,
                     label: 'chat'.tr,
                     value: '',

@@ -25,7 +25,7 @@ class ProfileDsImpl implements ProfileDs {
     return await asyncFunctionWrapper.handleAsyncNetworkCall(() async {
       final res = await apiService.callService(
         requestType: RequestType.get,
-        endPoint: '${Env.getProfile}/$userId',
+        endPoint: '${Env.showUserProfile}/$userId',
       );
       return ApiResponse<User>.fromJson(res, (data) => User.fromJson(data));
     });

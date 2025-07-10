@@ -22,7 +22,7 @@ abstract class ProjectRepo {
     required String name,
     required String description,
     required String amount,
-       required String location,
+    required String location,
     required String dateTime,
     required String slotsAvailable,
   });
@@ -32,7 +32,9 @@ abstract class ProjectRepo {
     required String fundingGoal,
   });
 
-  Future<Either<ZFailure, ApiResponse<PaginatedProject>>> getProjectByCreator();
+  Future<Either<ZFailure, ApiResponse<PaginatedProject>>> getProjectByCreator({
+    required int page,
+  });
 
   Future<Either<ZFailure, ApiResponse<int>>> getProjectCountByCreator();
 
@@ -46,6 +48,7 @@ abstract class ProjectRepo {
   });
 
   Future<Either<ZFailure, ApiResponse<PaginatedProject>>> getAllProjects({
+    required int page,
     required String creatorName,
     required String projectName,
     required String slug,

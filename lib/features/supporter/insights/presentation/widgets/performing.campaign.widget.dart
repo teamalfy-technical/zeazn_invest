@@ -8,7 +8,7 @@ import 'package:zeazn_invest_app/gen/assets.gen.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
 
 class ZPerformingCampaignWidget extends StatelessWidget {
-  final Projects project;
+  final Project project;
   // final ZExploreVM ctrl;
   final dynamic ctrl;
   final Function()? onTap;
@@ -42,7 +42,7 @@ class ZPerformingCampaignWidget extends StatelessWidget {
               ClipRRect(
                 borderRadius: BorderRadius.circular(ZAppSize.s6),
                 child: Image.network(
-                  project.image ?? '',
+                  project.projectImages![0].url ?? 'https://picsum.photos/200',
                   fit: BoxFit.cover,
                   height: ZDeviceUtil.getDeviceHeight(context) * 0.09,
                   width: ZDeviceUtil.getDeviceWidth(context) * 0.32,
@@ -55,14 +55,16 @@ class ZPerformingCampaignWidget extends StatelessWidget {
                 children: [
                   CircleAvatar(
                     radius: ZAppSize.s16,
-                    backgroundImage: NetworkImage(project.creator?.image ?? ''),
+                    backgroundImage: NetworkImage(
+                      project.creator?.url ?? 'https://picsum.photos/200',
+                    ),
                   ),
                   ZAppSize.s8.horizontalSpace,
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        'By ${project.creator?.firstName} ${project.creator?.lastName}',
+                        'By ${project.creator?.name}',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.w700,
                           color: ZAppColor.hintTextColor,
@@ -70,16 +72,15 @@ class ZPerformingCampaignWidget extends StatelessWidget {
                         ),
                       ),
                       RatingBar.builder(
-                        initialRating: project.creator?.ratings ?? 0,
+                        initialRating: project.overallRating ?? 0,
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
                         itemCount: 5,
                         itemSize: 16,
                         // itemPadding: EdgeInsets.zero,
-                        itemBuilder:
-                            (context, _) =>
-                                Icon(Icons.star, color: ZAppColor.primary),
+                        itemBuilder: (context, _) =>
+                            Icon(Icons.star, color: ZAppColor.primary),
                         onRatingUpdate: (rating) {
                           print(rating);
                         },
@@ -157,17 +158,15 @@ class ZPerformingCampaignWidget extends StatelessWidget {
                 ZAppSize.s8.verticalSpace,
                 RichText(
                   textAlign: TextAlign.start,
-
                   text: TextSpan(
-                    text:
-                        '${project.creator?.firstName} ${project.creator?.lastName}: ',
+                    text: '${project.creator?.name}: ',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       fontWeight: FontWeight.w700,
                       fontSize: ZAppSize.s12,
                     ),
                     children: [
                       TextSpan(
-                        text: project.description,
+                        text: project.shortDesc,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.w400,
                           fontSize: ZAppSize.s12,
@@ -187,7 +186,7 @@ class ZPerformingCampaignWidget extends StatelessWidget {
                     ),
                     children: [
                       TextSpan(
-                        text: 'Ghana',
+                        text: project.location,
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.w400,
                           fontSize: ZAppSize.s12,
@@ -203,7 +202,7 @@ class ZPerformingCampaignWidget extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomRight,
                   child: // supporter toggle
-                      KCustomToggleButton(
+                  KCustomToggleButton(
                     width: ZDeviceUtil.getDeviceWidth(context) * 0.27,
                     label: 'rate'.tr,
                     value: '',

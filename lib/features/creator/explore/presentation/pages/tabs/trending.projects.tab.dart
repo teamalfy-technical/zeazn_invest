@@ -13,44 +13,81 @@ class ZTrendingProjectsTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // search fields
-        ZCustomFilterField(
-          onSearchTap: () {},
-          onFilterTap: () {
-            showTopModal(context, ZFilterTopModal(ctrl: ctrl));
-          },
-        ),
-        ZAppSize.s16.verticalSpace,
-        Expanded(
-          child: ListView.builder(
-            itemCount: projects.length,
-            itemBuilder: (context, index) {
-              final project = projects[index];
-              return ZTrendingProjectWidget(
-                project: project,
-                onVideoProfileTap:
-                    () => ZHelperFunction.switchScreen(
-                      destination: Routes.videoProfilePage,
-                    ),
-                onProfileTap: () {
-                  ZHelperFunction.switchScreen(
-                    destination: Routes.profilePage,
-                    args: ZSecureStorage().getAuthResponse()?.role,
-                  );
-                },
-                onTap: () {
-                  ZHelperFunction.switchScreen(
-                    destination: Routes.projectDetailPage,
-                    args: project,
-                  );
-                },
-              );
+    return Obx(
+      () => Column(
+        children: [
+          // search fields
+          ZCustomFilterField(
+            onSearchTap: () {},
+            onFilterTap: () {
+              showTopModal(context, ZFilterTopModal(ctrl: ctrl));
             },
           ),
-        ),
-      ],
+          ZAppSize.s16.verticalSpace,
+          Expanded(
+            child: Column(
+              children: [
+                Expanded(
+                  child: RefreshIndicator.adaptive(
+                    backgroundColor: ZAppColor.primary,
+                    onRefresh: () =>
+                        ctrl.getAllProjectsByCreator(context: context),
+                    color: ZAppColor.whiteColor,
+                    child: ctrl.loading.value == LoadingState.loading
+                        ? ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: 10,
+                            itemBuilder: (context, index) {
+                              return ZProjectListWidgetRedact(
+                                loading: ctrl.loading.value,
+                                ctrl: ctrl,
+                              );
+                            },
+                          )
+                        : ctrl.projects.isEmpty
+                        ? ZEmptyProjectState()
+                        : ZAnimatedListView<Project>(
+                            scrollController: ctrl.trendingScrollController,
+                            child: (index, project) => ZTrendingProjectWidget(
+                              project: project,
+                              onVideoProfileTap: () =>
+                                  ZHelperFunction.switchScreen(
+                                    destination: Routes.videoProfilePage,
+                                  ),
+                              onProfileTap: () {
+                                ZHelperFunction.switchScreen(
+                                  destination: Routes.profilePage,
+                                  args: [
+                                    ZSecureStorage().getAuthResponse()?.role,
+                                    project.creator?.id,
+                                  ],
+                                );
+                              },
+                              onTap: () {
+                                ZHelperFunction.switchScreen(
+                                  destination: Routes.projectDetailPage,
+                                  args: project,
+                                );
+                              },
+                            ),
+                            items: ctrl.projects,
+                          ),
+                  ),
+                ),
+                // load more here
+                if (ctrl.loadingMore.value == LoadingState.loading)
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: ZAppSize.s8),
+                    color: ZAppColor.whiteColor,
+                    child: const ZCustomLoadingIndicator(
+                      color: ZAppColor.primary,
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        ],
+      ),
     );
   }
 

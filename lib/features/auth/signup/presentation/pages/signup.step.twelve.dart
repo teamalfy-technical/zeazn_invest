@@ -15,6 +15,7 @@ class ZSignupStep12 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    zeaznLogger.i(ctrl.role.value);
     return ZCustomScaffold(
       child: Obx(
         () => Form(

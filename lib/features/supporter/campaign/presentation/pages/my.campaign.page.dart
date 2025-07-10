@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
-import 'package:zeazn_invest_app/features/creator/explore/explore.dart';
 import 'package:zeazn_invest_app/features/supporter/explore/explore.dart';
 import 'package:zeazn_invest_app/routes/app.pages.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
@@ -85,11 +84,10 @@ class ZMyCampaignPage extends StatelessWidget {
                   ),
                 ],
               ).onPressed(
-                onTap:
-                    () => ZHelperFunction.switchScreen(
-                      destination: Routes.profilePage,
-                      args: UserRole.investor,
-                    ),
+                onTap: () => ZHelperFunction.switchScreen(
+                  destination: Routes.profilePage,
+                  args: [ZSecureStorage().getAuthResponse()?.role, null],
+                ),
               ),
               // stats layout
               Expanded(
@@ -137,17 +135,16 @@ class ZMyCampaignPage extends StatelessWidget {
         ZAppSize.s16.verticalSpace,
         Expanded(
           child: ListView.builder(
-            itemCount: projects.length,
+            itemCount: ctrl.projects.length,
             itemBuilder: (context, index) {
-              final project = projects[index];
+              final project = ctrl.projects[index];
               return ZMyCampaignWidget(
                 project: project,
                 ctrl: ctrl,
-                onChatTap:
-                    () => ZHelperFunction.switchScreen(
-                      destination: Routes.chatPage,
-                      args: true,
-                    ),
+                onChatTap: () => ZHelperFunction.switchScreen(
+                  destination: Routes.chatPage,
+                  args: true,
+                ),
                 onTap: () {
                   // ZHelperFunction.switchScreen(
                   //   destination: Routes.projectDetailPage,

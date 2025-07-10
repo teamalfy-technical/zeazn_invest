@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
-import 'package:zeazn_invest_app/features/creator/explore/explore.dart';
 import 'package:zeazn_invest_app/features/creator/insights/insights.dart';
 import 'package:zeazn_invest_app/features/supporter/insights/insights.dart';
 import 'package:zeazn_invest_app/gen/assets.gen.dart';
@@ -20,8 +19,8 @@ class ZTopPerformingCampaignsPage extends StatelessWidget {
       backgroundColor: ZAppColor.offWhiteColor,
       logoPath: Assets.icons.logoDark.svg(height: ZAppSize.s55),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed:
-            () => ZHelperFunction.switchScreen(destination: Routes.reportPage),
+        onPressed: () =>
+            ZHelperFunction.switchScreen(destination: Routes.reportPage),
         elevation: 0,
         backgroundColor: ZAppColor.whiteColor,
         label: Text(
@@ -52,10 +51,10 @@ class ZTopPerformingCampaignsPage extends StatelessWidget {
 
           Expanded(
             child: ListView.builder(
-              itemCount: projects.take(2).toList().length,
+              itemCount: ctrl.projects.take(2).toList().length,
               shrinkWrap: true,
               itemBuilder: (context, index) {
-                final project = projects.take(2).toList()[index];
+                final project = ctrl.projects.take(2).toList()[index];
                 return ZPerformingCampaignWidget(
                   project: project,
                   ctrl: ctrl,

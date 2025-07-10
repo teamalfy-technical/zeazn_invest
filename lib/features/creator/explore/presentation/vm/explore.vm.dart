@@ -16,7 +16,18 @@ class ZExploreVM extends GetxController {
 
   var projects = <Project>[].obs;
 
+  int page = 1;
+
+  var hasMore = true.obs;
+
   var loading = LoadingState.completed.obs;
+  var loadingMore = LoadingState.completed.obs;
+
+  late ScrollController projectScrollController = ScrollController()
+    ..addListener(_loadMoreProjectsByCreator);
+
+  late ScrollController trendingScrollController = ScrollController()
+    ..addListener(_loadMoreProjectsByCreator);
 
   List<File> files = [];
   List<File> media = [];
@@ -199,8 +210,9 @@ class ZExploreVM extends GetxController {
 
   /// [Function] to get all projects by creator
   Future<void> getAllProjectsByCreator({required BuildContext context}) async {
+    page = 1;
     loading(LoadingState.loading);
-    final res = await projectService.getProjectByCreator();
+    final res = await projectService.getProjectByCreator(page: page);
     res.fold(
       (err) {
         loading(LoadingState.error);
@@ -210,9 +222,39 @@ class ZExploreVM extends GetxController {
       },
       (res) {
         loading(LoadingState.completed);
+        hasMore(res.data?.pagination?.hasMore ?? false);
         projects.value = res.data?.projects ?? [];
       },
     );
+  }
+
+  /// Function to load more project by creator
+  /// [_loadMoreProjectsByCreator]
+  Future<void> _loadMoreProjectsByCreator() async {
+    if (hasMore.value &&
+        (projectScrollController.position.pixels ==
+            projectScrollController.position.maxScrollExtent)) {
+      loadingMore.value = LoadingState.loading;
+      page += 1; // increase page by 1
+      final result = await projectService.getProjectByCreator(page: page);
+      result.fold(
+        (err) {
+          loadingMore.value = LoadingState.error;
+          ZPopupDialog(
+            context,
+          ).errorMessage(title: 'error'.tr, message: err.getMessage());
+        },
+        (res) {
+          loadingMore.value = LoadingState.completed;
+          hasMore(res.data?.pagination?.hasMore ?? false);
+          if (res.data?.projects != null || res.data!.projects!.isNotEmpty) {
+            projects.addAll(res.data?.projects ?? []);
+          } else {
+            hasMore(false);
+          }
+        },
+      );
+    }
   }
 
   // depending on file type show particular image

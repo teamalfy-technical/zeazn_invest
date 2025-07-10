@@ -90,10 +90,14 @@ class AppPages {
     GetPage(name: _Paths.mediaUploadPage, page: () => ZMediaUploadPage()),
     GetPage(name: _Paths.fundingDetailsPage, page: () => ZFundingDetailsPage()),
     GetPage(name: _Paths.insightsDetailPage, page: () => ZInsightsDetailPage()),
-    GetPage(name: _Paths.chatPage, page: () => ZChatPage(isPop: Get.arguments)),
+    GetPage(
+      name: _Paths.chatPage,
+      page: () => ZChatPage(isPop: Get.arguments),
+    ),
     GetPage(
       name: _Paths.profilePage,
-      page: () => ZProfilePage(role: Get.arguments),
+      page: () =>
+          ZProfilePage(role: Get.arguments[0], userId: Get.arguments[1]),
     ),
     GetPage(
       name: _Paths.messagingPage,
@@ -137,21 +141,19 @@ class AppPages {
 
     GetPage(
       name: _Paths.progressStatePage,
-      page:
-          () => ZProgressStatePage(
-            replace: Get.arguments[0],
-            nextRoute: Get.arguments[1],
-            message: Get.arguments[2],
-          ),
+      page: () => ZProgressStatePage(
+        replace: Get.arguments[0],
+        nextRoute: Get.arguments[1],
+        message: Get.arguments[2],
+      ),
     ),
     GetPage(
       name: _Paths.completeStatePage,
-      page:
-          () => ZCompleteStatePage(
-            replace: Get.arguments[0],
-            nextRoute: Get.arguments[1],
-            message: Get.arguments[2],
-          ),
+      page: () => ZCompleteStatePage(
+        replace: Get.arguments[0],
+        nextRoute: Get.arguments[1],
+        message: Get.arguments[2],
+      ),
     ),
   ];
 }

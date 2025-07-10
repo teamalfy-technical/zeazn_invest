@@ -9,7 +9,7 @@ import 'package:zeazn_invest_app/gen/assets.gen.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
 
 class ZRateProjectPage extends StatelessWidget {
-  final Projects project;
+  final Project project;
   ZRateProjectPage({super.key, required this.project});
 
   final ctrl = Get.put(ZInsightsVM());
@@ -72,16 +72,15 @@ class ZRateProjectPage extends StatelessWidget {
                 ),
                 ZAppSize.s8.verticalSpace,
                 RatingBar.builder(
-                  initialRating: project.creator?.ratings ?? 0,
+                  initialRating: project.overallRating ?? 0,
                   minRating: 1,
                   direction: Axis.horizontal,
                   allowHalfRating: true,
                   itemCount: 5,
                   itemSize: 32,
                   // itemPadding: EdgeInsets.zero,
-                  itemBuilder:
-                      (context, _) =>
-                          Icon(Icons.star, color: ZAppColor.primary),
+                  itemBuilder: (context, _) =>
+                      Icon(Icons.star, color: ZAppColor.primary),
                   onRatingUpdate: (rating) {
                     print(rating);
                   },
@@ -91,7 +90,7 @@ class ZRateProjectPage extends StatelessWidget {
                 Align(
                   alignment: Alignment.bottomRight,
                   child: // supporter toggle
-                      KCustomToggleButton(
+                  KCustomToggleButton(
                     width: ZDeviceUtil.getDeviceWidth(context) * 0.25,
                     label: 'rate'.tr,
                     value: '',

@@ -61,7 +61,7 @@ abstract class Env {
   @EnviedField(defaultValue: '/profile', obfuscate: true)
   static final String getProfile = _Env.getProfile;
 
-  /// [GetProfile] endpoint
+  /// [ShowUserProfile] endpoint
   @EnviedField(defaultValue: '/user/show-profile', obfuscate: true)
   static final String showUserProfile = _Env.showUserProfile;
 

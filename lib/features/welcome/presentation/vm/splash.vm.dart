@@ -25,8 +25,7 @@ class ZSplashVm extends GetxController {
         );
       } else {
         if (ZSecureStorage().getAuthResponse() != null) {
-          if (ZSecureStorage().getAuthResponse()?.role ==
-              UserRole.investor.name.capitalizeFirst) {
+          if (ZSecureStorage().getAuthResponse()?.role == UserRole.investor) {
             ZHelperFunction.switchScreen(
               destination: Routes.supporterDashboardPage,
               replace: true,

@@ -36,10 +36,9 @@ class _ZProgressStatePageState extends State<ZProgressStatePage> {
     if (Get.previousRoute == Routes.signupStep3) {
       Future.delayed(Duration(milliseconds: ZAppSize.s1000), () {
         setState(() {
-          message =
-              ctrl.role.value == UserRole.creator
-                  ? 'few_more_details_msg'.tr
-                  : 'just_one_step_msg'.tr;
+          message = ctrl.role.value == UserRole.creator
+              ? 'few_more_details_msg'.tr
+              : 'just_one_step_msg'.tr;
         });
       });
     }
@@ -47,6 +46,7 @@ class _ZProgressStatePageState extends State<ZProgressStatePage> {
       ZHelperFunction.switchScreen(
         destination: widget.nextRoute,
         replace: widget.replace,
+        args: ctrl.role.value,
       );
     });
   }

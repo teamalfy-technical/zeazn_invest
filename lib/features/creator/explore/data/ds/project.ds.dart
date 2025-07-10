@@ -30,7 +30,9 @@ abstract class ProjectDs {
     required String fundingGoal,
   });
 
-  Future<ApiResponse<PaginatedProject>> getProjectByCreator();
+  Future<ApiResponse<PaginatedProject>> getProjectByCreator({
+    required int page,
+  });
 
   Future<ApiResponse<int>> getProjectCountByCreator();
 
@@ -44,6 +46,7 @@ abstract class ProjectDs {
   });
 
   Future<ApiResponse<PaginatedProject>> getAllProjects({
+    required int page,
     required String creatorName,
     required String projectName,
     required String slug,

@@ -18,14 +18,13 @@ class ProjectRepoImpl implements ProjectRepo {
     required String location,
   }) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async => await projectDs.addProject(
-            projectCategoryId: projectCategoryId,
-            name: name,
-            description: description,
-            shortDescription: shortDescription,
-            location: location,
-          ),
+      function: () async => await projectDs.addProject(
+        projectCategoryId: projectCategoryId,
+        name: name,
+        description: description,
+        shortDescription: shortDescription,
+        location: location,
+      ),
     );
   }
 
@@ -35,11 +34,10 @@ class ProjectRepoImpl implements ProjectRepo {
     required String fundingGoal,
   }) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async => await projectDs.addProjectFundingGoal(
-            projectId: projectId,
-            fundingGoal: fundingGoal,
-          ),
+      function: () async => await projectDs.addProjectFundingGoal(
+        projectId: projectId,
+        fundingGoal: fundingGoal,
+      ),
     );
   }
 
@@ -49,11 +47,8 @@ class ProjectRepoImpl implements ProjectRepo {
     required List<File> media,
   }) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async => await projectDs.addProjectMedia(
-            projectId: projectId,
-            media: media,
-          ),
+      function: () async =>
+          await projectDs.addProjectMedia(projectId: projectId, media: media),
     );
   }
 
@@ -62,8 +57,8 @@ class ProjectRepoImpl implements ProjectRepo {
     required int projectId,
   }) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async => await projectDs.archiveProject(projectId: projectId),
+      function: () async =>
+          await projectDs.archiveProject(projectId: projectId),
     );
   }
 
@@ -78,6 +73,7 @@ class ProjectRepoImpl implements ProjectRepo {
 
   @override
   Future<Either<ZFailure, ApiResponse<PaginatedProject>>> getAllProjects({
+    required int page,
     required String creatorName,
     required String projectName,
     required String slug,
@@ -85,14 +81,14 @@ class ProjectRepoImpl implements ProjectRepo {
     required String featuredStatus,
   }) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async => await projectDs.getAllProjects(
-            creatorName: creatorName,
-            projectName: projectName,
-            slug: slug,
-            location: location,
-            featuredStatus: featuredStatus,
-          ),
+      function: () async => await projectDs.getAllProjects(
+        page: page,
+        creatorName: creatorName,
+        projectName: projectName,
+        slug: slug,
+        location: location,
+        featuredStatus: featuredStatus,
+      ),
     );
   }
 
@@ -113,10 +109,11 @@ class ProjectRepoImpl implements ProjectRepo {
   }
 
   @override
-  Future<Either<ZFailure, ApiResponse<PaginatedProject>>>
-  getProjectByCreator() async {
+  Future<Either<ZFailure, ApiResponse<PaginatedProject>>> getProjectByCreator({
+    required int page,
+  }) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function: () async => await projectDs.getProjectByCreator(),
+      function: () async => await projectDs.getProjectByCreator(page: page),
     );
   }
 
@@ -124,8 +121,8 @@ class ProjectRepoImpl implements ProjectRepo {
   Future<Either<ZFailure, ApiResponse<List<ProjectComment>>>>
   getProjectComments({required int projectId}) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async => await projectDs.getProjectComments(projectId: projectId),
+      function: () async =>
+          await projectDs.getProjectComments(projectId: projectId),
     );
   }
 
@@ -141,8 +138,8 @@ class ProjectRepoImpl implements ProjectRepo {
     required int projectId,
   }) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async => await projectDs.getProjectFaqs(projectId: projectId),
+      function: () async =>
+          await projectDs.getProjectFaqs(projectId: projectId),
     );
   }
 
@@ -151,8 +148,8 @@ class ProjectRepoImpl implements ProjectRepo {
     required int projectId,
   }) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async => await projectDs.getProjectReviews(projectId: projectId),
+      function: () async =>
+          await projectDs.getProjectReviews(projectId: projectId),
     );
   }
 
@@ -169,9 +166,8 @@ class ProjectRepoImpl implements ProjectRepo {
   Future<Either<ZFailure, ApiResponse<List<ProjectSupporter>>>>
   getProjectSupporters({required int projectId}) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async =>
-              await projectDs.getProjectSupporters(projectId: projectId),
+      function: () async =>
+          await projectDs.getProjectSupporters(projectId: projectId),
     );
   }
 
@@ -179,9 +175,8 @@ class ProjectRepoImpl implements ProjectRepo {
   Future<Either<ZFailure, ApiResponse<UploadStatus>>>
   getProjectVideoUploadStatus({required int projectId}) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async =>
-              await projectDs.getProjectVideoUploadStatus(projectId: projectId),
+      function: () async =>
+          await projectDs.getProjectVideoUploadStatus(projectId: projectId),
     );
   }
 
@@ -190,8 +185,8 @@ class ProjectRepoImpl implements ProjectRepo {
     required int projectId,
   }) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async => await projectDs.publishProject(projectId: projectId),
+      function: () async =>
+          await projectDs.publishProject(projectId: projectId),
     );
   }
 
@@ -200,8 +195,8 @@ class ProjectRepoImpl implements ProjectRepo {
     required int projectId,
   }) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async => await projectDs.saveProjectAsDraft(projectId: projectId),
+      function: () async =>
+          await projectDs.saveProjectAsDraft(projectId: projectId),
     );
   }
 
@@ -215,15 +210,14 @@ class ProjectRepoImpl implements ProjectRepo {
     required String location,
   }) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async => await projectDs.updateProjectByCreator(
-            projectId: projectId,
-            projectCategoryId: projectCategoryId,
-            name: name,
-            description: description,
-            shortDescription: shortDescription,
-            location: location,
-          ),
+      function: () async => await projectDs.updateProjectByCreator(
+        projectId: projectId,
+        projectCategoryId: projectCategoryId,
+        name: name,
+        description: description,
+        shortDescription: shortDescription,
+        location: location,
+      ),
     );
   }
 
@@ -246,16 +240,15 @@ class ProjectRepoImpl implements ProjectRepo {
     required String slotsAvailable,
   }) async {
     return await customRepositoryWrapper.wrapRepositoryFunction(
-      function:
-          () async => await projectDs.addProjectReward(
-            projectId: projectId,
-            name: name,
-            description: description,
-            amount: amount,
-            location: location,
-            dateTime: dateTime,
-            slotsAvailable: slotsAvailable,
-          ),
+      function: () async => await projectDs.addProjectReward(
+        projectId: projectId,
+        name: name,
+        description: description,
+        amount: amount,
+        location: location,
+        dateTime: dateTime,
+        slotsAvailable: slotsAvailable,
+      ),
     );
   }
 }

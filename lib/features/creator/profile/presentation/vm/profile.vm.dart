@@ -30,11 +30,11 @@ class ZProfileVM extends GetxController {
   final bLocationTEC = TextEditingController();
   final bSlotsTEC = TextEditingController();
 
-  @override
-  void onInit() {
-    getProfile();
-    super.onInit();
-  }
+  // @override
+  // void onInit() {
+  //   getProfile();
+  //   super.onInit();
+  // }
 
   // Pick an image.
   Future<void> chooseFromGallery() async {
@@ -95,9 +95,11 @@ class ZProfileVM extends GetxController {
   // }
 
   // Get user profile information
-  Future<void> getProfile() async {
+  Future<void> getProfile({required int? userId}) async {
     loading(LoadingState.loading);
-    final result = await profileService.getProfile();
+    final result = userId == null
+        ? await profileService.getProfile()
+        : await profileService.showUserProfile(userId: '$userId');
     result.fold(
       (err) {
         loading(LoadingState.error);

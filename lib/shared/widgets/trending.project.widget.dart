@@ -9,7 +9,7 @@ import 'package:zeazn_invest_app/routes/app.pages.dart';
 import 'package:zeazn_invest_app/shared/shared.dart';
 
 class ZTrendingProjectWidget extends StatelessWidget {
-  final Projects project;
+  final Project project;
   final String? supportValue;
   final Function()? onTap;
   final Function()? onSupportTap;
@@ -65,7 +65,10 @@ class ZTrendingProjectWidget extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: ZAppSize.s40,
-                backgroundImage: NetworkImage(project.image ?? ''),
+                backgroundImage: NetworkImage(
+                  project.creator?.url ?? 'https://picsum.photos/200',
+                  // project.image ?? ''
+                ),
               ).onPressed(onTap: onProfileTap),
               ZAppSize.s14.horizontalSpace,
               Expanded(
@@ -77,13 +80,12 @@ class ZTrendingProjectWidget extends StatelessWidget {
                       children: [
                         Text(
                           'view_profile_video'.tr,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodySmall?.copyWith(
-                            fontWeight: FontWeight.w700,
-                            color: ZAppColor.primary,
-                            // fontSize: ZAppSize.s10,
-                          ),
+                          style: Theme.of(context).textTheme.bodySmall
+                              ?.copyWith(
+                                fontWeight: FontWeight.w700,
+                                color: ZAppColor.primary,
+                                // fontSize: ZAppSize.s10,
+                              ),
                         ).onPressed(onTap: onVideoProfileTap),
                         ZAppSize.s8.horizontalSpace,
                         Row(
@@ -91,13 +93,12 @@ class ZTrendingProjectWidget extends StatelessWidget {
                           children: [
                             Text(
                               'share'.tr,
-                              style: Theme.of(
-                                context,
-                              ).textTheme.bodySmall?.copyWith(
-                                fontWeight: FontWeight.w500,
-                                color: ZAppColor.primary,
-                                fontSize: ZAppSize.s13,
-                              ),
+                              style: Theme.of(context).textTheme.bodySmall
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.w500,
+                                    color: ZAppColor.primary,
+                                    fontSize: ZAppSize.s13,
+                                  ),
                             ),
                             ZAppSize.s6.horizontalSpace,
                             Assets.icons.shareIcon.svg(height: ZAppSize.s20),
@@ -112,23 +113,20 @@ class ZTrendingProjectWidget extends StatelessWidget {
                     ZAppSize.s6.verticalSpace,
                     RichText(
                       textAlign: TextAlign.start,
-
                       text: TextSpan(
-                        text:
-                            '${project.creator?.firstName} ${project.creator?.lastName}: ',
+                        text: '${project.creatorName}: ',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: ZAppSize.s12,
                         ),
                         children: [
                           TextSpan(
-                            text: project.description,
-                            style: Theme.of(
-                              context,
-                            ).textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w400,
-                              fontSize: ZAppSize.s12,
-                            ),
+                            text: project.shortDesc, // creator bio
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: ZAppSize.s12,
+                                ),
                           ),
                         ],
                       ),
@@ -159,16 +157,15 @@ class ZTrendingProjectWidget extends StatelessWidget {
                   ZAppSize.s4.horizontalSpace,
 
                   RatingBar.builder(
-                    initialRating: project.creator?.ratings ?? 0,
+                    initialRating: project.overallRating ?? 0,
                     minRating: 1,
                     direction: Axis.horizontal,
                     allowHalfRating: true,
                     itemCount: 5,
                     itemSize: ZAppSize.s18,
                     // itemPadding: EdgeInsets.zero,
-                    itemBuilder:
-                        (context, _) =>
-                            Icon(Icons.star, color: ZAppColor.primary),
+                    itemBuilder: (context, _) =>
+                        Icon(Icons.star, color: ZAppColor.primary),
                     onRatingUpdate: (rating) {
                       print(rating);
                     },
@@ -284,13 +281,15 @@ class ZTrendingProjectWidget extends StatelessWidget {
                   height: ZDeviceUtil.getDeviceHeight(context) * 0.09,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: 3,
+                    itemCount: project.projectVideos!.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return ClipRRect(
                         borderRadius: BorderRadius.circular(ZAppSize.s12),
                         child: Image.network(
-                          project.image ?? '',
+                          project.projectVideos![index].url ??
+                              'https://picsum.photos/200',
+                          // project.image ?? '',
                           fit: BoxFit.cover,
                           width: ZDeviceUtil.getDeviceWidth(context) * 0.21,
                         ),
@@ -329,7 +328,7 @@ class ZTrendingProjectWidget extends StatelessWidget {
                         ),
                       ),
                       Text(
-                        'Ghana',
+                        project.location ?? 'Ghana',
                         style: Theme.of(context).textTheme.bodySmall?.copyWith(
                           fontWeight: FontWeight.w600,
                         ),
@@ -340,7 +339,7 @@ class ZTrendingProjectWidget extends StatelessWidget {
               ),
               ZAppSize.s6.verticalSpace,
               Text(
-                project.description ?? '',
+                project.shortDesc ?? '',
                 style: Theme.of(
                   context,
                 ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w400),
@@ -366,9 +365,7 @@ class ZTrendingProjectWidget extends StatelessWidget {
                   ),
                   ZAppSize.s6.verticalSpace,
                   Text(
-                    ZFormatter.formatCurrency(
-                      amount: project.targetAmount ?? 0,
-                    ),
+                    ZFormatter.formatCurrency(amount: project.fundingGoal ?? 0),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w400,
                     ),
@@ -406,7 +403,7 @@ class ZTrendingProjectWidget extends StatelessWidget {
                   ZAppSize.s6.verticalSpace,
                   Text(
                     ZFormatter.formatCurrency(
-                      amount: project.targetAmount ?? 0,
+                      amount: project.amountRaised ?? 0,
                     ),
                     style: Theme.of(context).textTheme.bodySmall?.copyWith(
                       fontWeight: FontWeight.w400,
@@ -423,10 +420,9 @@ class ZTrendingProjectWidget extends StatelessWidget {
                   color: ZAppColor.primary,
                 ),
               ).onPressed(
-                onTap:
-                    () => ZHelperFunction.switchScreen(
-                      destination: Routes.projectSupportersPage,
-                    ),
+                onTap: () => ZHelperFunction.switchScreen(
+                  destination: Routes.projectSupportersPage,
+                ),
               ),
             ],
           ),

@@ -18,6 +18,7 @@ var zeaznLogger = Logger(printer: PrettyPrinter(lineLength: 500));
 Future showCustomBottomSheet({
   required BuildContext context,
   required Widget child,
+  ShapeBorder? shape,
   bool enableDrag = false,
   bool useSafeArea = true,
   bool isScrollControlled = false,
@@ -26,7 +27,7 @@ Future showCustomBottomSheet({
     enableDrag: enableDrag,
     isScrollControlled: isScrollControlled,
     useSafeArea: useSafeArea,
-    // shape: customRectShape,
+    shape: shape,
     context: context,
     builder: (context) => child,
   );
@@ -41,15 +42,13 @@ void showOptionsMenu(
 ) {
   showMenu<String>(
     context: context,
-    color:
-        ZHelperFunction.isDarkMode(context)
-            ? ZAppColor.lightBlackColor
-            : ZAppColor.whiteColor,
+    color: ZHelperFunction.isDarkMode(context)
+        ? ZAppColor.lightBlackColor
+        : ZAppColor.whiteColor,
     shadowColor: ZAppColor.shadowColor,
-    surfaceTintColor:
-        ZHelperFunction.isDarkMode(context)
-            ? ZAppColor.lightBlackColor
-            : ZAppColor.whiteColor,
+    surfaceTintColor: ZHelperFunction.isDarkMode(context)
+        ? ZAppColor.lightBlackColor
+        : ZAppColor.whiteColor,
     elevation: ZAppSize.s3,
     shape: RoundedRectangleBorder(
       borderRadius: BorderRadius.circular(ZAppSize.s8),
@@ -80,10 +79,9 @@ Future showConfirmDialog({
     barrierDismissible: hideNegBtn ? false : true,
     builder: (context) {
       return AlertDialog.adaptive(
-        backgroundColor:
-            ZHelperFunction.isDarkMode(context)
-                ? ZAppColor.lightBlackColor
-                : ZAppColor.whiteColor,
+        backgroundColor: ZHelperFunction.isDarkMode(context)
+            ? ZAppColor.lightBlackColor
+            : ZAppColor.whiteColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(ZAppSize.s10),
         ),
@@ -100,12 +98,12 @@ Future showConfirmDialog({
           hideNegBtn
               ? const SizedBox.shrink()
               : TextButton(
-                onPressed: onNegativeTap ?? () => ZHelperFunction.pop(),
-                child: Text(
-                  negativeText ?? 'cancel'.tr,
-                  style: const TextStyle(color: ZAppColor.errorColor),
+                  onPressed: onNegativeTap ?? () => ZHelperFunction.pop(),
+                  child: Text(
+                    negativeText ?? 'cancel'.tr,
+                    style: const TextStyle(color: ZAppColor.errorColor),
+                  ),
                 ),
-              ),
         ],
       );
     },
@@ -121,10 +119,9 @@ Future showLoadingdialog({
     barrierDismissible: false,
     builder: (context) {
       return AlertDialog.adaptive(
-        backgroundColor:
-            ZHelperFunction.isDarkMode(context)
-                ? ZAppColor.lightBlackColor
-                : ZAppColor.whiteColor,
+        backgroundColor: ZHelperFunction.isDarkMode(context)
+            ? ZAppColor.lightBlackColor
+            : ZAppColor.whiteColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(ZAppSize.s10),
         ),
@@ -147,10 +144,9 @@ Future showSucccessdialog({
     barrierDismissible: false,
     builder: (context) {
       return AlertDialog.adaptive(
-        backgroundColor:
-            ZHelperFunction.isDarkMode(context)
-                ? ZAppColor.lightBlackColor
-                : ZAppColor.whiteColor,
+        backgroundColor: ZHelperFunction.isDarkMode(context)
+            ? ZAppColor.lightBlackColor
+            : ZAppColor.whiteColor,
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(ZAppSize.s10),
         ),
@@ -403,231 +399,217 @@ Future showCalendarPickerDialog({
           //   border: Border.all(width: 1, color: ZAppColor.primary),
           //   borderRadius: BorderRadius.circular(ZAppSize.s20),
           // ),
-          child:
-              Column(
-                children: [
-                  Container(
-                    height: ZDeviceUtil.getDeviceHeight(context) * 0.14,
-                    padding: EdgeInsets.all(ZAppSize.s12),
-                    decoration: BoxDecoration(
-                      color: ZAppColor.whiteColor,
-                      borderRadius: BorderRadius.circular(ZAppSize.s12),
+          child: Column(
+            children: [
+              Container(
+                height: ZDeviceUtil.getDeviceHeight(context) * 0.14,
+                padding: EdgeInsets.all(ZAppSize.s12),
+                decoration: BoxDecoration(
+                  color: ZAppColor.whiteColor,
+                  borderRadius: BorderRadius.circular(ZAppSize.s12),
+                ),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Select Date and Time to participate in this Experience. ',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontSize: ZAppSize.s13,
+                        color: ZAppColor.blackColor,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
-                    child: Column(
+                    // Spacer(),
+                    Text(
+                      'Available Dates/Time on this calendar are based on schedules provided by the Creator',
+                      textAlign: TextAlign.center,
+                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        fontSize: ZAppSize.s13,
+                        color: ZAppColor.blackColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ).scrollable(physics: NeverScrollableScrollPhysics()),
+              ),
+              // Text(
+              //   'exclusive_experience_support'.tr,
+              //   textAlign: TextAlign.center,
+              //   style: Theme.of(
+              //     context,
+              //   ).textTheme.titleMedium?.copyWith(fontSize: ZAppSize.s20),
+              // ).symmetric(horizontal: ZAppSize.s20),
+              ZAppSize.s16.verticalSpace,
+              // Calenedar picker
+              Container(
+                height: ZDeviceUtil.getDeviceHeight(context) * 0.41,
+                // padding: EdgeInsets.all(ZAppSize.s16),
+                decoration: BoxDecoration(
+                  color: ZAppColor.whiteColor,
+
+                  borderRadius: BorderRadius.circular(ZAppSize.s12),
+                ),
+                child: Column(
+                  children: [
+                    Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Select Date and Time to participate in this Experience. ',
+                          'date'.tr,
                           textAlign: TextAlign.center,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyLarge?.copyWith(
-                            fontSize: ZAppSize.s13,
-                            color: ZAppColor.blackColor,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                fontSize: ZAppSize.s14,
+                                color: ZAppColor.blackColor,
+                                fontWeight: FontWeight.w500,
+                              ),
                         ),
-                        // Spacer(),
+                        Assets.icons.cancelSquare.svg().onPressed(
+                          onTap: ZHelperFunction.pop,
+                        ),
+                      ],
+                    ).only(
+                      top: ZAppSize.s16,
+                      left: ZAppSize.s20,
+                      right: ZAppSize.s20,
+                    ),
+                    Theme(
+                      data: Theme.of(context).copyWith(
+                        colorScheme: ColorScheme.light(
+                          primary: ZAppColor.primary, // Header background color
+                          onPrimary: ZAppColor.primary, // Header text color
+                          onSurface: ZAppColor.blackColor, // Body text color
+                        ),
+                      ),
+                      child: CalendarDatePicker(
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime.now(),
+                        lastDate: DateTime(2050),
+                        onDateChanged: (value) {},
+                        // onDateChanged: controller.setSelectedDate,
+                      ),
+                    ),
+                  ],
+                ).scrollable(physics: NeverScrollableScrollPhysics()),
+              ),
+
+              ZAppSize.s16.verticalSpace,
+
+              Container(
+                height: ZDeviceUtil.getDeviceHeight(context) * 0.12,
+                padding: EdgeInsets.all(ZAppSize.s16),
+                decoration: BoxDecoration(
+                  color: ZAppColor.whiteColor,
+                  borderRadius: BorderRadius.circular(ZAppSize.s12),
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
                         Text(
-                          'Available Dates/Time on this calendar are based on schedules provided by the Creator',
+                          'available_time'.tr,
                           textAlign: TextAlign.center,
-                          style: Theme.of(
-                            context,
-                          ).textTheme.bodyLarge?.copyWith(
-                            fontSize: ZAppSize.s13,
-                            color: ZAppColor.blackColor,
-                            fontWeight: FontWeight.bold,
-                          ),
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                fontSize: ZAppSize.s14,
+                                color: ZAppColor.blackColor,
+                                fontWeight: FontWeight.w500,
+                              ),
+                        ),
+                        Text(
+                          '4th,April 2025',
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                fontSize: ZAppSize.s14,
+                                color: ZAppColor.blackColor,
+                                fontWeight: FontWeight.w500,
+                              ),
                         ),
                       ],
-                    ).scrollable(physics: NeverScrollableScrollPhysics()),
-                  ),
-                  // Text(
-                  //   'exclusive_experience_support'.tr,
-                  //   textAlign: TextAlign.center,
-                  //   style: Theme.of(
-                  //     context,
-                  //   ).textTheme.titleMedium?.copyWith(fontSize: ZAppSize.s20),
-                  // ).symmetric(horizontal: ZAppSize.s20),
-                  ZAppSize.s16.verticalSpace,
-                  // Calenedar picker
-                  Container(
-                    height: ZDeviceUtil.getDeviceHeight(context) * 0.41,
-                    // padding: EdgeInsets.all(ZAppSize.s16),
-                    decoration: BoxDecoration(
-                      color: ZAppColor.whiteColor,
-
-                      borderRadius: BorderRadius.circular(ZAppSize.s12),
                     ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'date'.tr,
-                              textAlign: TextAlign.center,
-                              style: Theme.of(
-                                context,
-                              ).textTheme.bodyLarge?.copyWith(
-                                fontSize: ZAppSize.s14,
-                                color: ZAppColor.blackColor,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Assets.icons.cancelSquare.svg().onPressed(
-                              onTap: ZHelperFunction.pop,
-                            ),
-                          ],
-                        ).only(
-                          top: ZAppSize.s16,
-                          left: ZAppSize.s20,
-                          right: ZAppSize.s20,
-                        ),
-                        Theme(
-                          data: Theme.of(context).copyWith(
-                            colorScheme: ColorScheme.light(
-                              primary:
-                                  ZAppColor.primary, // Header background color
-                              onPrimary: ZAppColor.primary, // Header text color
-                              onSurface:
-                                  ZAppColor.blackColor, // Body text color
-                            ),
-                          ),
-                          child: CalendarDatePicker(
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime.now(),
-                            lastDate: DateTime(2050),
-                            onDateChanged: (value) {},
-                            // onDateChanged: controller.setSelectedDate,
-                          ),
-                        ),
-                      ],
-                    ).scrollable(physics: NeverScrollableScrollPhysics()),
-                  ),
 
-                  ZAppSize.s16.verticalSpace,
+                    ZAppSize.s8.verticalSpace,
 
-                  Container(
-                    height: ZDeviceUtil.getDeviceHeight(context) * 0.12,
-                    padding: EdgeInsets.all(ZAppSize.s16),
-                    decoration: BoxDecoration(
-                      color: ZAppColor.whiteColor,
-                      borderRadius: BorderRadius.circular(ZAppSize.s12),
-                    ),
-                    child: Column(
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              'available_time'.tr,
-                              textAlign: TextAlign.center,
-                              style: Theme.of(
-                                context,
-                              ).textTheme.bodyLarge?.copyWith(
-                                fontSize: ZAppSize.s14,
-                                color: ZAppColor.blackColor,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                            Text(
-                              '4th,April 2025',
-                              textAlign: TextAlign.center,
-                              style: Theme.of(
-                                context,
-                              ).textTheme.bodyLarge?.copyWith(
-                                fontSize: ZAppSize.s14,
-                                color: ZAppColor.blackColor,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ],
-                        ),
-
-                        ZAppSize.s8.verticalSpace,
-
-                        // available time
-                        Align(
-                          alignment: Alignment.topLeft,
-                          child: Wrap(
-                            runSpacing: ZAppSize.s8,
-                            alignment: WrapAlignment.start,
-                            crossAxisAlignment: WrapCrossAlignment.start,
-                            spacing: 2.5,
-                            children: List.generate(
-                              ctrl.availableTimes.length,
-                              (index) {
-                                return Obx(
-                                  () => Container(
-                                    padding: EdgeInsets.symmetric(
-                                      vertical: ZAppSize.s8,
-                                      horizontal: ZAppSize.s20,
+                    // available time
+                    Align(
+                      alignment: Alignment.topLeft,
+                      child: Wrap(
+                        runSpacing: ZAppSize.s8,
+                        alignment: WrapAlignment.start,
+                        crossAxisAlignment: WrapCrossAlignment.start,
+                        spacing: 2.5,
+                        children: List.generate(ctrl.availableTimes.length, (
+                          index,
+                        ) {
+                          return Obx(
+                            () =>
+                                Container(
+                                  padding: EdgeInsets.symmetric(
+                                    vertical: ZAppSize.s8,
+                                    horizontal: ZAppSize.s20,
+                                  ),
+                                  margin: EdgeInsets.only(right: ZAppSize.s20),
+                                  // height: 40,
+                                  decoration: BoxDecoration(
+                                    color:
+                                        ctrl.selectedTime.value ==
+                                            ctrl.availableTimes[index]
+                                        ? ZAppColor.primary
+                                        : ZAppColor.fillColor,
+                                    borderRadius: BorderRadius.circular(
+                                      ZAppSize.s6,
                                     ),
-                                    margin: EdgeInsets.only(
-                                      right: ZAppSize.s20,
-                                    ),
-                                    // height: 40,
-                                    decoration: BoxDecoration(
-                                      color:
-                                          ctrl.selectedTime.value ==
-                                                  ctrl.availableTimes[index]
-                                              ? ZAppColor.primary
-                                              : ZAppColor.fillColor,
-                                      borderRadius: BorderRadius.circular(
-                                        ZAppSize.s6,
-                                      ),
-                                    ),
-                                    child: Text(
-                                      ctrl.availableTimes[index],
-                                      textAlign: TextAlign.center,
-                                      style: Theme.of(
-                                        context,
-                                      ).textTheme.bodySmall?.copyWith(
-                                        fontSize: ZAppSize.s13,
-                                        color: ZAppColor.blackColor,
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  ).onPressed(
-                                    onTap:
-                                        () => ctrl.onSelectedTimeChanged(
-                                          ctrl.availableTimes[index],
+                                  ),
+                                  child: Text(
+                                    ctrl.availableTimes[index],
+                                    textAlign: TextAlign.center,
+                                    style: Theme.of(context).textTheme.bodySmall
+                                        ?.copyWith(
+                                          fontSize: ZAppSize.s13,
+                                          color: ZAppColor.blackColor,
+                                          fontWeight: FontWeight.w500,
                                         ),
                                   ),
-                                );
-                              },
-                            ),
-                          ).scrollable(physics: NeverScrollableScrollPhysics()),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  ZAppSize.s16.verticalSpace,
-
-                  Row(
-                    children: [
-                      Expanded(child: Container()),
-                      KCustomToggleButton(
-                        label: 'continue'.tr,
-                        value: '',
-                        onTap: () {
-                          ctrl.setSupportType(SupportType.one);
-                          ZHelperFunction.pop();
-                          // show review payment dialog
-                          showReviewPaymentModal(
-                            context,
-                            projects[0],
-                            ctrl,
-                            ctrl.sliderValue.value,
+                                ).onPressed(
+                                  onTap: () => ctrl.onSelectedTimeChanged(
+                                    ctrl.availableTimes[index],
+                                  ),
+                                ),
                           );
-                        },
-                      ),
-                    ],
+                        }),
+                      ).scrollable(physics: NeverScrollableScrollPhysics()),
+                    ),
+                  ],
+                ),
+              ),
+
+              ZAppSize.s16.verticalSpace,
+
+              Row(
+                children: [
+                  Expanded(child: Container()),
+                  KCustomToggleButton(
+                    label: 'continue'.tr,
+                    value: '',
+                    onTap: () {
+                      ctrl.setSupportType(SupportType.one);
+                      ZHelperFunction.pop();
+                      // show review payment dialog
+                      showReviewPaymentModal(
+                        context,
+                        projects[0],
+                        ctrl,
+                        ctrl.sliderValue.value,
+                      );
+                    },
                   ),
                 ],
-              ).scrollable(),
+              ),
+            ],
+          ).scrollable(),
         ),
       );
     },
@@ -658,86 +640,84 @@ Future showReviewPaymentModal(
             borderRadius: BorderRadius.circular(ZAppSize.s20),
           ),
           child: Obx(
-            () =>
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Text(
-                      '${'review_payment_details'.tr}?',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.titleMedium?.copyWith(fontSize: ZAppSize.s20),
-                    ),
+            () => Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  '${'review_payment_details'.tr}?',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleMedium?.copyWith(fontSize: ZAppSize.s20),
+                ),
 
-                    ZAppSize.s14.verticalSpace,
+                ZAppSize.s14.verticalSpace,
 
-                    Text(
-                      '${'exclusive_deal_price'.tr} \$$supportPrice',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.titleSmall?.copyWith(fontSize: ZAppSize.s18),
-                    ),
+                Text(
+                  '${'exclusive_deal_price'.tr} \$$supportPrice',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleSmall?.copyWith(fontSize: ZAppSize.s18),
+                ),
 
-                    ZAppSize.s3.verticalSpace,
+                ZAppSize.s3.verticalSpace,
 
-                    Text(
-                      '${'number_of_purchase'.tr} : 5',
-                      textAlign: TextAlign.center,
-                      style: Theme.of(
-                        context,
-                      ).textTheme.titleSmall?.copyWith(fontSize: ZAppSize.s16),
-                    ),
+                Text(
+                  '${'number_of_purchase'.tr} : 5',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleSmall?.copyWith(fontSize: ZAppSize.s16),
+                ),
 
-                    ZAppSize.s16.verticalSpace,
-                    ZCustomCheckbox(
-                      value: ctrl.supportAnonymously.value,
-                      onChanged: ctrl.onSupportAnonymously,
-                      child: Text('support_anonymously'.tr),
-                    ).centered(),
+                ZAppSize.s16.verticalSpace,
+                ZCustomCheckbox(
+                  value: ctrl.supportAnonymously.value,
+                  onChanged: ctrl.onSupportAnonymously,
+                  child: Text('support_anonymously'.tr),
+                ).centered(),
 
-                    // ZAppSize.s5.verticalSpace,
-                    ZCustomCheckbox(
-                      value: ctrl.agree.value,
-                      onChanged: ctrl.onAgreeToTerms,
-                      child: RichText(
-                        text: TextSpan(
-                          text: 'agree_to'.tr,
-                          children: [
-                            TextSpan(
-                              text: ' ${'terms'.tr}',
-                              style: Theme.of(
-                                context,
-                              ).textTheme.bodyMedium?.copyWith(
+                // ZAppSize.s5.verticalSpace,
+                ZCustomCheckbox(
+                  value: ctrl.agree.value,
+                  onChanged: ctrl.onAgreeToTerms,
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'agree_to'.tr,
+                      children: [
+                        TextSpan(
+                          text: ' ${'terms'.tr}',
+                          style: Theme.of(context).textTheme.bodyMedium
+                              ?.copyWith(
                                 fontSize: ZAppSize.s16,
                                 color: ZAppColor.primary,
                               ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ).centered(),
-
-                    ZAppSize.s16.verticalSpace,
-
-                    Row(
-                      children: [
-                        Expanded(child: Container()),
-                        KCustomToggleButton(
-                          label: 'pay'.tr.toUpperCase(),
-                          value: '\$${ctrl.sliderValue.value}',
-                          onTap: () {
-                            ZHelperFunction.switchScreen(
-                              destination: Routes.paymentMethodPage,
-                              replace: true,
-                            );
-                          },
                         ),
                       ],
                     ),
+                  ),
+                ).centered(),
+
+                ZAppSize.s16.verticalSpace,
+
+                Row(
+                  children: [
+                    Expanded(child: Container()),
+                    KCustomToggleButton(
+                      label: 'pay'.tr.toUpperCase(),
+                      value: '\$${ctrl.sliderValue.value}',
+                      onTap: () {
+                        ZHelperFunction.switchScreen(
+                          destination: Routes.paymentMethodPage,
+                          replace: true,
+                        );
+                      },
+                    ),
                   ],
-                ).scrollable(),
+                ),
+              ],
+            ).scrollable(),
           ),
         ),
       );
@@ -827,68 +807,68 @@ Future<DateTime?> showDatePickerModal(
   DateTime? dateTime;
   ZDeviceUtil.isIOS()
       ? await showCupertinoModalPopup<void>(
-        context: context,
-        builder: (_) {
-          return Container(
-            decoration: BoxDecoration(
-              color:
-                  ZHelperFunction.isDarkMode(context)
-                      ? ZAppColor.text500
-                      : ZAppColor.whiteColor,
-              borderRadius: const BorderRadius.only(
-                topLeft: Radius.circular(ZAppSize.s12),
-                topRight: Radius.circular(ZAppSize.s12),
-              ),
-            ),
-            height: ZDeviceUtil.getDeviceHeight(context) * 0.27,
-            child: Stack(
-              children: [
-                CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.date,
-                  initialDateTime:
-                      initialDateTime ??
-                      DateTime.now().subtract(const Duration(days: 4751)),
-                  minimumDate: minimumDate ?? DateTime(1950),
-                  maximumDate:
-                      maximumDate ??
-                      DateTime.now().subtract(const Duration(days: 4751)),
-                  onDateTimeChanged: (value) {
-                    dateTime = value;
-                  },
+          context: context,
+          builder: (_) {
+            return Container(
+              decoration: BoxDecoration(
+                color: ZHelperFunction.isDarkMode(context)
+                    ? ZAppColor.text500
+                    : ZAppColor.whiteColor,
+                borderRadius: const BorderRadius.only(
+                  topLeft: Radius.circular(ZAppSize.s12),
+                  topRight: Radius.circular(ZAppSize.s12),
                 ),
-                Positioned(
-                  right: 0,
-                  child: TextButton(
-                    onPressed: () => ZHelperFunction.pop(),
-                    child: Text(
-                      'ok'.tr,
-                      textAlign: TextAlign.start,
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        fontSize: ZAppSize.s16,
-                        color: ZAppColor.primary,
+              ),
+              height: ZDeviceUtil.getDeviceHeight(context) * 0.27,
+              child: Stack(
+                children: [
+                  CupertinoDatePicker(
+                    mode: CupertinoDatePickerMode.date,
+                    initialDateTime:
+                        initialDateTime ??
+                        DateTime.now().subtract(const Duration(days: 4751)),
+                    minimumDate: minimumDate ?? DateTime(1950),
+                    maximumDate:
+                        maximumDate ??
+                        DateTime.now().subtract(const Duration(days: 4751)),
+                    onDateTimeChanged: (value) {
+                      dateTime = value;
+                    },
+                  ),
+                  Positioned(
+                    right: 0,
+                    child: TextButton(
+                      onPressed: () => ZHelperFunction.pop(),
+                      child: Text(
+                        'ok'.tr,
+                        textAlign: TextAlign.start,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          fontSize: ZAppSize.s16,
+                          color: ZAppColor.primary,
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
-      )
+                ],
+              ),
+            );
+          },
+        )
       : dateTime = await showDatePicker(
-        context: context,
-        initialDate:
-            initialDateTime ??
-            DateTime.now().subtract(const Duration(days: 4751)),
-        firstDate: minimumDate ?? DateTime(1950),
-        lastDate:
-            maximumDate ?? DateTime.now().subtract(const Duration(days: 4751)),
-        //helpText: 'Select Date of birth',
-        cancelText: 'Close',
-        confirmText: 'Confirm',
-        errorFormatText: 'Enter valid date',
-        errorInvalidText: 'Enter valid date range',
-      );
+          context: context,
+          initialDate:
+              initialDateTime ??
+              DateTime.now().subtract(const Duration(days: 4751)),
+          firstDate: minimumDate ?? DateTime(1950),
+          lastDate:
+              maximumDate ??
+              DateTime.now().subtract(const Duration(days: 4751)),
+          //helpText: 'Select Date of birth',
+          cancelText: 'Close',
+          confirmText: 'Confirm',
+          errorFormatText: 'Enter valid date',
+          errorInvalidText: 'Enter valid date range',
+        );
   return dateTime;
 }
 

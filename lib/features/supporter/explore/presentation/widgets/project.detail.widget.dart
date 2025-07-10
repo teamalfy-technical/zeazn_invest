@@ -6,7 +6,7 @@ import 'package:zeazn_invest_app/core/utils/utils.dart';
 import 'package:zeazn_invest_app/features/creator/explore/explore.dart';
 
 class ZProjectDetailWidget extends StatelessWidget {
-  final Projects project;
+  final Project project;
   final Function()? onTap;
   const ZProjectDetailWidget({super.key, required this.project, this.onTap});
 
@@ -26,7 +26,9 @@ class ZProjectDetailWidget extends StatelessWidget {
             children: [
               CircleAvatar(
                 radius: ZAppSize.s40,
-                backgroundImage: NetworkImage(project.image ?? ''),
+                backgroundImage: NetworkImage(
+                  project.creator?.url ?? 'https://picsum.photos/200',
+                ),
               ),
               ZAppSize.s14.horizontalSpace,
               Expanded(
@@ -37,21 +39,19 @@ class ZProjectDetailWidget extends StatelessWidget {
                       textAlign: TextAlign.start,
 
                       text: TextSpan(
-                        text:
-                            '${project.creator?.firstName} ${project.creator?.lastName}: ',
+                        text: '${project.creator?.name}: ',
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                           fontWeight: FontWeight.w700,
                           fontSize: ZAppSize.s12,
                         ),
                         children: [
                           TextSpan(
-                            text: project.description,
-                            style: Theme.of(
-                              context,
-                            ).textTheme.bodySmall?.copyWith(
-                              fontWeight: FontWeight.w400,
-                              fontSize: ZAppSize.s12,
-                            ),
+                            text: project.shortDesc,
+                            style: Theme.of(context).textTheme.bodySmall
+                                ?.copyWith(
+                                  fontWeight: FontWeight.w400,
+                                  fontSize: ZAppSize.s12,
+                                ),
                           ),
                         ],
                       ),
@@ -77,15 +77,15 @@ class ZProjectDetailWidget extends StatelessWidget {
               ZAppSize.s4.horizontalSpace,
 
               RatingBar.builder(
-                initialRating: project.creator?.ratings ?? 0,
+                initialRating: project.overallRating ?? 0,
                 minRating: 1,
                 direction: Axis.horizontal,
                 allowHalfRating: true,
                 itemCount: 5,
                 itemSize: ZAppSize.s18,
                 // itemPadding: EdgeInsets.zero,
-                itemBuilder:
-                    (context, _) => Icon(Icons.star, color: ZAppColor.primary),
+                itemBuilder: (context, _) =>
+                    Icon(Icons.star, color: ZAppColor.primary),
                 onRatingUpdate: (rating) {
                   print(rating);
                 },
@@ -110,13 +110,14 @@ class ZProjectDetailWidget extends StatelessWidget {
                   height: ZDeviceUtil.getDeviceHeight(context) * 0.09,
                   child: ListView.builder(
                     shrinkWrap: true,
-                    itemCount: 3,
+                    itemCount: project.projectVideos!.length,
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) {
                       return ClipRRect(
                         borderRadius: BorderRadius.circular(ZAppSize.s12),
                         child: Image.network(
-                          project.image ?? '',
+                          project.projectVideos![index].url ??
+                              'https://picsum.photos/200',
                           fit: BoxFit.cover,
                           width: ZDeviceUtil.getDeviceWidth(context) * 0.21,
                         ),
@@ -157,7 +158,7 @@ class ZProjectDetailWidget extends StatelessWidget {
               ),
               ZAppSize.s6.verticalSpace,
               Text(
-                project.description ?? '',
+                project.desc ?? '',
                 style: Theme.of(
                   context,
                 ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w400),
@@ -181,7 +182,7 @@ class ZProjectDetailWidget extends StatelessWidget {
                 ),
                 ZAppSize.s6.verticalSpace,
                 Text(
-                  ZFormatter.formatCurrency(amount: project.targetAmount ?? 0),
+                  ZFormatter.formatCurrency(amount: project.fundingGoal ?? 0),
                   style: Theme.of(
                     context,
                   ).textTheme.bodySmall?.copyWith(fontWeight: FontWeight.w400),

@@ -2,6 +2,7 @@ class Project {
   int? projectId;
   int? creatorId;
   String? creatorName;
+  Creator? creator;
   int? projectCategoryId;
   String? projectCategory;
   String? projectName;
@@ -30,6 +31,7 @@ class Project {
     this.projectId,
     this.creatorId,
     this.creatorName,
+    this.creator,
     this.projectCategoryId,
     this.projectCategory,
     this.projectName,
@@ -59,6 +61,9 @@ class Project {
     projectId = json['project_id'];
     creatorId = json['creator_id'];
     creatorName = json['creator_name'];
+    creator = json['creator_avatar'] != null
+        ? Creator.fromJson(json['creator_avatar'])
+        : null;
     projectCategoryId = json['project_category_id'];
     projectCategory = json['project_category'];
     projectName = json['project_name'];
@@ -119,6 +124,7 @@ class Project {
     data['project_id'] = projectId;
     data['creator_id'] = creatorId;
     data['creator_name'] = creatorName;
+    data['creator_avatar'] = creator?.toJson();
     data['project_category_id'] = projectCategoryId;
     data['project_category'] = projectCategory;
     data['project_name'] = projectName;
@@ -154,6 +160,28 @@ class Project {
     if (projectVideos != null) {
       data['project_videos'] = projectVideos?.map((v) => v.toJson()).toList();
     }
+    return data;
+  }
+}
+
+class Creator {
+  int? id;
+  String? name;
+  String? url;
+
+  Creator({this.id, this.name, this.url});
+
+  Creator.fromJson(Map<String, dynamic> json) {
+    id = json['id'];
+    name = json['name'];
+    url = json['url'];
+  }
+
+  Map<String, dynamic> toJson() {
+    final Map<String, dynamic> data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['url'] = url;
     return data;
   }
 }

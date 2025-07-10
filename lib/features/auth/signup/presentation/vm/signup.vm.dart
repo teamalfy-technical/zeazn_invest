@@ -35,19 +35,18 @@ class ZSignupVm extends GetxController {
 
   var country = ''.obs;
 
-  var position =
-      Position(
-        latitude: 0,
-        longitude: 0,
-        timestamp: DateTime.timestamp(),
-        accuracy: 0,
-        altitude: 0,
-        altitudeAccuracy: 0,
-        heading: 0,
-        headingAccuracy: 0,
-        speed: 0,
-        speedAccuracy: 0,
-      ).obs;
+  var position = Position(
+    latitude: 0,
+    longitude: 0,
+    timestamp: DateTime.timestamp(),
+    accuracy: 0,
+    altitude: 0,
+    altitudeAccuracy: 0,
+    heading: 0,
+    headingAccuracy: 0,
+    speed: 0,
+    speedAccuracy: 0,
+  ).obs;
 
   var idFrontImage = File('').obs;
   var idBackImage = File('').obs;
@@ -101,19 +100,18 @@ class ZSignupVm extends GetxController {
     'GH',
   ); // Default
 
-  var selectedCountry =
-      Country(
-        phoneCode: '233',
-        e164Sc: 1,
-        countryCode: 'GH',
-        level: 1,
-        geographic: true,
-        name: 'Ghana',
-        example: '2012345678',
-        displayName: 'Ghana (GH) [+233]',
-        displayNameNoCountryCode: 'Ghana (GH)',
-        e164Key: '1-GH-0',
-      ).obs;
+  var selectedCountry = Country(
+    phoneCode: '233',
+    e164Sc: 1,
+    countryCode: 'GH',
+    level: 1,
+    geographic: true,
+    name: 'Ghana',
+    example: '2012345678',
+    displayName: 'Ghana (GH) [+233]',
+    displayNameNoCountryCode: 'Ghana (GH)',
+    e164Key: '1-GH-0',
+  ).obs;
 
   void setSelectedCountry(Country country) {
     selectedCountry.value = country;
@@ -132,8 +130,9 @@ class ZSignupVm extends GetxController {
     try {
       image = await ImagePicker().pickImage(
         source: ImageSource.camera,
-        preferredCameraDevice:
-            kycType == KycType.selfie ? CameraDevice.front : CameraDevice.rear,
+        preferredCameraDevice: kycType == KycType.selfie
+            ? CameraDevice.front
+            : CameraDevice.rear,
       );
       if (image == null) return;
       _cropImage(imagePath: image.path, kycType: kycType);
@@ -276,13 +275,9 @@ class ZSignupVm extends GetxController {
     //   ],
     // );
 
-    final result =
-        isSignup
-            ? await signupService.verifyOTPOnRegister(otp: pin, email: email)
-            : await signupService.verifyOTPOnForgotPassword(
-              otp: pin,
-              email: email,
-            );
+    final result = isSignup
+        ? await signupService.verifyOTPOnRegister(otp: pin, email: email)
+        : await signupService.verifyOTPOnForgotPassword(otp: pin, email: email);
     result.fold(
       (err) {
         // PHelperFunction.pop();
@@ -306,6 +301,20 @@ class ZSignupVm extends GetxController {
     );
   }
 
+  clearFields() {
+    nameOnIdTEC.clear();
+    emailTEC.clear();
+    phoneTEC.clear();
+    nameTEC.clear();
+    passwordTEC.clear();
+    confirmPasswordTEC.clear();
+    numberOnIdTEC.clear();
+    dobOnIdTEC.clear();
+    sexOnIdTEC.clear();
+    expiryDateOnIdTEC.clear();
+    idTypeTEC.clear();
+  }
+
   /// [Function] to add password to user account
   /// @params => context
   Future<void> addPassword({required BuildContext context}) async {
@@ -321,6 +330,7 @@ class ZSignupVm extends GetxController {
         ).errorMessage(title: 'error'.tr, message: err.message);
       },
       (res) {
+        clearFields();
         ZSecureStorage().removeData(ZSecureStorage().authResKey);
         ZHelperFunction.switchScreen(
           destination: Routes.progressStatePage,

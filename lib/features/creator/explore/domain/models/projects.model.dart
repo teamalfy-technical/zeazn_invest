@@ -1,3 +1,5 @@
+import 'package:zeazn_invest_app/features/creator/explore/explore.dart';
+
 class Projects {
   String? title;
   String? description;
@@ -18,8 +20,9 @@ class Projects {
     description = json['description'];
     image = json['image'];
     targetAmount = json['target'];
-    creator =
-        json['creator'] != null ? Creator.fromJson(json['creator']) : null;
+    creator = json['creator'] != null
+        ? Creator.fromJson(json['creator'])
+        : null;
   }
 
   Map<String, dynamic> toJson() {
@@ -35,32 +38,32 @@ class Projects {
   }
 }
 
-class Creator {
-  String? firstName;
-  String? lastName;
-  String? image;
+// class Creator {
+//   String? firstName;
+//   String? lastName;
+//   String? image;
 
-  double? ratings;
+//   double? ratings;
 
-  Creator({this.firstName, this.lastName, this.image, this.ratings});
+//   Creator({this.firstName, this.lastName, this.image, this.ratings});
 
-  Creator.fromJson(Map<String, dynamic> json) {
-    firstName = json['firstName'];
-    lastName = json['lastName'];
-    image = json['image'];
-    ratings = json['ratings'];
-  }
+//   Creator.fromJson(Map<String, dynamic> json) {
+//     firstName = json['firstName'];
+//     lastName = json['lastName'];
+//     image = json['image'];
+//     ratings = json['ratings'];
+//   }
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = <String, dynamic>{};
-    data['firstName'] = firstName;
-    data['lastName'] = lastName;
-    data['image'] = image;
-    data['ratings'] = ratings;
+//   Map<String, dynamic> toJson() {
+//     final Map<String, dynamic> data = <String, dynamic>{};
+//     data['firstName'] = firstName;
+//     data['lastName'] = lastName;
+//     data['image'] = image;
+//     data['ratings'] = ratings;
 
-    return data;
-  }
-}
+//     return data;
+//   }
+// }
 
 final List<Projects> projects = [
   Projects(
@@ -70,10 +73,10 @@ final List<Projects> projects = [
     image: 'https://picsum.photos/200',
     targetAmount: 20000,
     creator: Creator(
-      firstName: 'Sarah',
-      lastName: 'Donut',
-      image: 'https://picsum.photos/200',
-      ratings: 5,
+      id: 1,
+      name: 'Donut',
+      // image: 'https://picsum.photos/200',
+      // ratings: 5,
     ),
   ),
   Projects(
@@ -83,10 +86,10 @@ final List<Projects> projects = [
     image: 'https://picsum.photos/200',
     targetAmount: 20000,
     creator: Creator(
-      firstName: 'Amakye',
-      lastName: 'Dede',
-      image: 'https://picsum.photos/200',
-      ratings: 3.5,
+      id: 2,
+      name: 'Dede',
+      // image: 'https://picsum.photos/200',
+      // ratings: 3.5,
     ),
   ),
   Projects(
@@ -96,10 +99,10 @@ final List<Projects> projects = [
     image: 'https://picsum.photos/200',
     targetAmount: 20000,
     creator: Creator(
-      firstName: 'Sarah',
-      lastName: 'Donut',
-      image: 'https://picsum.photos/200',
-      ratings: 4.5,
+      id: 3,
+      name: 'Donut',
+      // image: 'https://picsum.photos/200',
+      // ratings: 4.5,
     ),
   ),
 ];

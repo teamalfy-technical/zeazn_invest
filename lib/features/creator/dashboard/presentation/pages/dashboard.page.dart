@@ -16,7 +16,7 @@ class ZDashboardPage extends StatelessWidget {
 
   final List<Widget> _pages = [
     ZExplorePage(),
-    ZProfilePage(role: UserRole.other),
+    ZProfilePage(role: UserRole.other, userId: null),
     ZInsightsPage(),
     ZChatPage(isPop: false),
   ];

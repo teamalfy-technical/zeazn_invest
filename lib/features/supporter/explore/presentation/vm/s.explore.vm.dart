@@ -4,12 +4,30 @@ import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:video_compress/video_compress.dart';
 import 'package:zeazn_invest_app/core/utils/utils.dart';
-import 'package:zeazn_invest_app/features/creator/explore/domain/models/plan.model.dart';
+import 'package:zeazn_invest_app/features/creator/explore/explore.dart';
 import 'package:zeazn_invest_app/routes/app.pages.dart';
 import 'package:zeazn_invest_app/shared/widgets/popup.dialog.dart';
 
 class ZSExploreVM extends GetxController {
   static ZSExploreVM get instance => Get.find();
+
+  var projects = <Project>[].obs;
+
+  var projectName = ''.obs;
+  var creatorName = ''.obs;
+  var slug = ''.obs;
+  var location = ''.obs;
+  var featuredStatus = ''.obs;
+
+  int page = 1;
+
+  var hasMore = true.obs;
+
+  var loading = LoadingState.completed.obs;
+  var loadingMore = LoadingState.completed.obs;
+
+  late ScrollController projectScrollController = ScrollController()
+    ..addListener(_loadMoreProjects);
 
   List<File> files = [];
   List<File> media = [];
@@ -20,12 +38,11 @@ class ZSExploreVM extends GetxController {
 
   final supportAmountTEC = TextEditingController();
 
-  var selectedDeal =
-      <String, dynamic>{
-        'title': 'Basic',
-        'sub_title': 'Mobile Phone',
-        'description': 'Support with GHS 6,000 and receive an iPhone 12 ProMax',
-      }.obs;
+  var selectedDeal = <String, dynamic>{
+    'title': 'Basic',
+    'sub_title': 'Mobile Phone',
+    'description': 'Support with GHS 6,000 and receive an iPhone 12 ProMax',
+  }.obs;
 
   var selectedDealIndex = 0.obs;
   onSelectedDealIndex(int index) => selectedDealIndex.value = index;
@@ -49,6 +66,75 @@ class ZSExploreVM extends GetxController {
           'Support with GHS 8,000 and receive A Thank you note and shoutout on social media',
     },
   ];
+
+  @override
+  void onInit() {
+    getAllProjects(context: context);
+    super.onInit();
+  }
+
+  /// [Function] to get all projects
+  Future<void> getAllProjects({required BuildContext context}) async {
+    page = 1;
+    loading(LoadingState.loading);
+    final res = await projectService.getAllProjects(
+      page: page,
+      projectName: projectName.value,
+      creatorName: creatorName.value,
+      slug: slug.value,
+      location: location.value,
+      featuredStatus: featuredStatus.value,
+    );
+    res.fold(
+      (err) {
+        loading(LoadingState.error);
+        ZPopupDialog(
+          context,
+        ).errorMessage(title: 'error'.tr, message: err.getMessage());
+      },
+      (res) {
+        loading(LoadingState.completed);
+        hasMore(res.data?.pagination?.hasMore ?? false);
+        projects.value = res.data?.projects ?? [];
+      },
+    );
+  }
+
+  /// Function to load more project
+  /// [_loadMoreProjects]
+  Future<void> _loadMoreProjects() async {
+    if (hasMore.value &&
+        (projectScrollController.position.pixels ==
+            projectScrollController.position.maxScrollExtent)) {
+      loadingMore.value = LoadingState.loading;
+      page += 1; // increase page by 1
+      final result = await projectService.getAllProjects(
+        page: page,
+        projectName: projectName.value,
+        creatorName: creatorName.value,
+        slug: slug.value,
+        location: location.value,
+        featuredStatus: featuredStatus.value,
+      );
+      result.fold(
+        (err) {
+          loadingMore.value = LoadingState.error;
+          ZPopupDialog(
+            context,
+          ).errorMessage(title: 'error'.tr, message: err.getMessage());
+        },
+        (res) {
+          loadingMore.value = LoadingState.completed;
+          hasMore(res.data?.pagination?.hasMore ?? false);
+          if (res.data?.projects != null || res.data!.projects!.isNotEmpty) {
+            projects.addAll(res.data?.projects ?? []);
+          } else {
+            hasMore(false);
+          }
+        },
+      );
+    }
+  }
 
   void setSupportType(SupportType type) {
     supportType.value = type;

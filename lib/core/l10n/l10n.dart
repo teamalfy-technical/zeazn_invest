@@ -178,6 +178,10 @@ class AppTranslations extends Translations {
       'standard': 'Standard',
       'premium': 'Premium',
       'skip': 'Skip',
+      'continue_as_creator': 'Continue as a Creator',
+      'continue_as_investor': 'Continue as an Investor',
+      'no_projects_investor_msg':
+          'There are currently no projects. Please check back later or try adjusting your filters',
       'add': 'Add',
       'creating_project_msg': 'We\'re creating your project in a moment',
       'share': 'Share',
